@@ -1,0 +1,13 @@
+<v-col cols="12" md="12" lg="12" class="mx-auto my-0 py-0 text-button">
+    <template v-for="(item,item_index) in link_array">
+
+        <router-link v-if="item.link!=''" :to="item.link">{{item.title}}</router-link>
+
+        <span v-else class="grey--text  text--darken-1">{{item.title}}</span>
+
+        <span v-if="item_index != link_array.length-1">
+            /
+        </span>
+
+    </template>
+</v-col>

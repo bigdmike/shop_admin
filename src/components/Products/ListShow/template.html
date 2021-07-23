@@ -1,0 +1,32 @@
+<v-container class="product_list px-0">
+    <v-data-table :headers="headers" :items="filter_value" :disable-pagination="true" :hide-default-footer="true"
+        sort-by="calories" class="elevation-1 pb-10">
+        <template v-slot:body="props">
+            <draggable :list="filter_value" tag="tbody" handle=".page__grab-icon" @end="drag=false,ChangeSort()">
+                <tr v-for="(item, index) in filter_value" :key="index">
+                    <td>
+                        <v-icon small class="page__grab-icon">
+                            mdi-dots-grid
+                        </v-icon>
+                    </td>
+                    <td>
+                        <router-link :to="`/product/${item.id}`">{{ item.name }}</router-link>
+                    </td>
+                    <td> {{product_category_data.filter(category=>category.value==item.category)[0].label}} </td>
+                    <td>
+                        <v-chip :class="{'primary':item.status=='Y'}" small>
+                            {{product_status_data.filter(category=>category.value==item.status)[0].label}}
+                        </v-chip>
+                    </td>
+                    <td> ${{ item.price | money_format }} </td>
+                </tr>
+            </draggable>
+        </template>
+
+        <template v-slot:no-data>
+            <v-btn color="primary">
+                Reset
+            </v-btn>
+        </template>
+    </v-data-table>
+</v-container>

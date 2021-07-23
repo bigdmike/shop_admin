@@ -1,0 +1,59 @@
+<div id="Products">
+    <v-container>
+        <v-row>
+            <Breadcrumb :link_array="breadcrumb_data" />
+            <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+                <div class="header d-flex justify-space-between align-center">
+                    <h3 class="my-0 text-h5 font-weight-black">商品 / 日本・福井金福西瓜
+                        <span class="text-body-2 grey--text text--darken-1 font-weight-regular ml-2">最後更新於 : 08-07-2021,
+                            7:59
+                            晚上
+                            by朱柏瑋</span>
+                    </h3>
+                    <div class="d-flex align-center">
+                        <v-btn color="elevation-0 mx-3 px-0 font-weight-bold" icon large>
+                            <v-icon>mdi-chevron-left</v-icon>
+                        </v-btn>
+                        <v-btn color="elevation-0 mx-3 font-weight-bold" icon large>
+                            <v-icon>mdi-chevron-right</v-icon>
+                        </v-btn>
+                    </div>
+                </div>
+            </v-col>
+            <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+                <v-btn class="px-0 mr-4" color="error" small text>
+                    <v-icon small>mdi-trash-can-outline</v-icon>刪除商品
+                </v-btn>
+                <v-btn class="px-0" color="primary" small text>
+                    <v-icon small>mdi-content-copy</v-icon>複製商品
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="8">
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <p class="mt-0 mb-2">商品名稱*</p>
+                    <v-text-field dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">商品描述</p>
+                    <FroalaEditor />
+                </v-card>
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <div class="header d-flex align-center justify-space-between">
+                        <p class="text-h5 font-weight-black mt-0 mb-2">圖片</p>
+                        <div>
+                            <v-btn color="primary" text>新增圖片</v-btn>
+                            <v-btn color="primary" text>以URL新增圖片</v-btn>
+                            <v-btn color="primary" text>新增Youtube影片</v-btn>
+                        </div>
+                    </div>
+
+                    <ImageEditor ref="ImageEditor" v-model="image" />
+
+                </v-card>
+            </v-col>
+            <v-col cols="4">
+                <v-card elevation="2"></v-card>
+            </v-col>
+        </v-row>
+    </v-container>
+</div>
