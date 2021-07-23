@@ -3,12 +3,17 @@
     <v-navigation-drawer
       class="grey lighten-3 border-none"
       v-model="drawer"
+      v-if="$route.name != 'Login'"
       app
     >
       <MainMenu />
     </v-navigation-drawer>
 
-    <v-app-bar app class="elevation-0 grey lighten-3">
+    <v-app-bar
+      app
+      class="elevation-0 grey lighten-3"
+      v-if="$route.name != 'Login'"
+    >
       <AccountMenu v-if="change_header == 'account'" />
       <EditButtonGroup
         v-on:CallCancelFunction="CallCancelFunction"
