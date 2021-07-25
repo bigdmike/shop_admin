@@ -10,15 +10,19 @@
                         </v-icon>
                     </td>
                     <td>
-                        <router-link :to="`/product/${item.id}`">{{ item.name }}</router-link>
+                        <router-link :to="`/product/${item.product_id}`">{{ item.name }}</router-link>
                     </td>
-                    <td> {{product_category_data.filter(category=>category.value==item.category)[0].label}} </td>
+                    <td> {{product_category_data.filter(category=>category.category_id==item.category.category_id)[0].name}}
+                    </td>
                     <td>
                         <v-chip :class="{'primary':item.status=='Y'}" small>
                             {{product_status_data.filter(category=>category.value==item.status)[0].label}}
                         </v-chip>
                     </td>
                     <td> ${{ item.price | money_format }} </td>
+                    <td>
+                        <v-btn small color="error">刪除</v-btn>
+                    </td>
                 </tr>
             </draggable>
         </template>

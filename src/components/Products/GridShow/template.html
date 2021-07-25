@@ -13,7 +13,7 @@
 
                         <v-card-text>
                             <div class="text-subtitle-1 blue--text text--darken-1">
-                                {{product_category_data.filter(category=>category.value==item.category)[0].label}}
+                                {{product_category_data.filter(category=>category.category_id==item.category.category_id)[0].name}}
                             </div>
 
                             <div>${{item.price | money_format}}</div>

@@ -1,15 +1,16 @@
 <template src="./template.html"></template>
 
 <script>
+import qs from "qs"
 import Breadcrumb from "@/components/Breadcrumb/"
 import FroalaEditor from "@/components/FroalaEditor/"
-import ImageEditor from "@/components/ProductEdit/ImageEditor/"
+import ImageShow from "@/components/ProductEdit/ImageShow/"
 export default {
   name: "ProductEdit",
   components: {
     Breadcrumb,
     FroalaEditor,
-    ImageEditor
+    ImageShow,
   },
   data() {
     return {
@@ -45,6 +46,7 @@ export default {
           name: "5"
         },
       ],
+      product_data: null,
       drag: false
     }
   },
@@ -54,10 +56,19 @@ export default {
     },
     CancelEdit() {
       console.log("close")
+    },
+    async GetProductData() {
+      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/get_product.php", qs.stringify({ id: this.$route.params.id }))
+      if (result != "error") {
+        console.log(JSON.parse(result.data))
+        this.product_data = JSON.parse(result.data)
+      }
     }
   },
   computed: {},
-  created() { }
+  created() {
+    this.GetProductData()
+  }
 }
 </script>
 <style>

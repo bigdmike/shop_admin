@@ -32,102 +32,8 @@ export default {
         }
       ],
       product_category_data: [
-        {
-          label: "全部商品",
-          value: "all"
-        },
-        {
-          label: "GOGORO",
-          value: "1"
-        },
-        {
-          label: "AEON",
-          value: "2"
-        },
-        {
-          label: "YAMAHA",
-          value: "3"
-        },
-        {
-          label: "PGO",
-          value: "4"
-        }
       ],
-      product_data: [
-        {
-          id: 1,
-          name: "GOGORO2",
-          category: 1,
-          price: "33900",
-          status: "Y",
-          sort: 1,
-          cover: "/img/products/1/1a54172e-6497-49c1-9549-07056213f2bb.jpg",
-          image: [
-            "/img/products/1/4dbb324d-21a3-4a58-8b36-310d3283d795.jpg",
-            "/img/products/1/395eb01b-be65-46c1-9e28-12797f0717a2.jpg"
-          ]
-        },
-        {
-          id: 2,
-          name: "GOGORO2",
-          category: 1,
-          price: "20900",
-          status: "Y",
-          sort: 2,
-          cover: "/img/products/1/395eb01b-be65-46c1-9e28-12797f0717a2.jpg",
-          image: [
-            "/img/products/1/4dbb324d-21a3-4a58-8b36-310d3283d795.jpg",
-          ]
-        },
-        {
-          id: 3,
-          name: "GOGORO2",
-          category: 1,
-          price: "44900",
-          status: "Y",
-          sort: 3,
-          cover: "/img/products/2/5e9fa29a-6c90-4dcd-83dd-e1b7e2fcc594.jpg",
-          image: [
-            "/img/products/1/4dbb324d-21a3-4a58-8b36-310d3283d795.jpg",
-          ]
-        },
-        {
-          id: 4,
-          name: "GOGORO2",
-          category: 1,
-          price: "33600",
-          status: "N",
-          sort: 4,
-          cover: "/img/products/2/78eb2070-48ff-44fc-99ee-106262f4845e.jpg",
-          image: [
-            "/img/products/1/4dbb324d-21a3-4a58-8b36-310d3283d795.jpg",
-          ]
-        },
-        {
-          id: 5,
-          name: "GOGORO2 S",
-          category: 1,
-          price: "44900",
-          status: "Y",
-          sort: 5,
-          cover: "/img/products/2/5e9fa29a-6c90-4dcd-83dd-e1b7e2fcc594.jpg",
-          image: [
-            "/img/products/1/4dbb324d-21a3-4a58-8b36-310d3283d795.jpg",
-          ]
-        },
-        {
-          id: 6,
-          name: "GOGORO2 ABS",
-          category: 1,
-          price: "33600",
-          status: "N",
-          sort: 20,
-          cover: "/img/products/2/78eb2070-48ff-44fc-99ee-106262f4845e.jpg",
-          image: [
-            "/img/products/1/4dbb324d-21a3-4a58-8b36-310d3283d795.jpg",
-          ]
-        }
-      ],
+      product_data: null,
       key_word: "",
       show_type: "list"
     }
@@ -140,10 +46,19 @@ export default {
       console.log(this.show_type)
       this.show_type == 'list' ? this.show_type = "grid" : this.show_type = "list"
       console.log(this.show_type)
+    },
+    async GetProductData() {
+      let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "products/get_product_list.php")
+      if (result != "error") {
+        console.log(JSON.parse(result.data))
+        this.product_data = JSON.parse(result.data).products
+        this.product_category_data.push({ category_id: "all", name: "全部" })
+        this.product_category_data = this.product_category_data.concat(JSON.parse(result.data).category)
+      }
     }
   },
   created() {
-
+    this.GetProductData()
   },
   computed: {
   }

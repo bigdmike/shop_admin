@@ -15,6 +15,11 @@ Vue.use(VueFroala)
 Vue.config.productionTip = false
 
 export default {
+  props: {
+    value: {
+      require: true
+    }
+  },
   data() {
     return {
       config: {
@@ -26,9 +31,13 @@ export default {
           ['bold', 'italic', 'underline', 'strikeThrough', 'fontSize', 'textColor', 'backgroundColor', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'html'],
         ],
         heightMin: 200,
+        heightMax: 300,
         events: {
           initialized: function () {
             console.log('initialized')
+          },
+          input: function (inputEvent) {
+            console.log(inputEvent);
           }
         }
       },

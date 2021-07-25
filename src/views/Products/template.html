@@ -1,9 +1,8 @@
 <div id="Products">
-    <FilterDialog ref="FilterDialog" :product_status_data="product_status_data"
-        :product_category_data="product_category_data" v-model="filter_data" />
-    <v-container>
+    <v-container v-if="product_data!=null">
+        <FilterDialog ref="FilterDialog" :product_status_data="product_status_data"
+            :product_category_data="product_category_data" v-model="filter_data" />
         <v-row>
-
             <v-col cols="12" md="12" lg="12" class="mx-auto">
                 <div class="header d-flex justify-space-between align-center">
                     <h3 class="my-0 text-h5 font-weight-bold">所有商品</h3>
@@ -67,7 +66,8 @@
                     </v-chip>
                     <v-chip v-if="filter_data.category!='all'" class="ma-2 caption" color="secondary" close
                         @click:close="filter_data.category = 'all'">
-                        分類: {{product_category_data.filter(item=>item.value==filter_data.category)[0].label}}
+                        分類:
+                        {{product_category_data.filter(item=>item.category_id==filter_data.category)[0].name}}
                     </v-chip>
                 </div>
 

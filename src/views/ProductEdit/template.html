@@ -1,14 +1,12 @@
 <div id="Products">
-    <v-container>
+    <v-container v-if="product_data!=null">
         <v-row>
             <Breadcrumb :link_array="breadcrumb_data" />
             <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
                 <div class="header d-flex justify-space-between align-center">
-                    <h3 class="my-0 text-h5 font-weight-black">商品 / 日本・福井金福西瓜
-                        <span class="text-body-2 grey--text text--darken-1 font-weight-regular ml-2">最後更新於 : 08-07-2021,
-                            7:59
-                            晚上
-                            by朱柏瑋</span>
+                    <h3 class="my-0 text-h5 font-weight-black">商品 / {{product_data.name}}
+                        <span class="text-body-2 grey--text text--darken-1 font-weight-regular ml-2">最後更新於
+                            : {{product_data.update_time}}</span>
                     </h3>
                     <div class="d-flex align-center">
                         <v-btn color="elevation-0 mx-3 px-0 font-weight-bold" icon large>
@@ -33,9 +31,9 @@
             <v-col cols="12" md="8">
                 <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
                     <p class="mt-0 mb-2">商品名稱*</p>
-                    <v-text-field dense outlined></v-text-field>
+                    <v-text-field v-model="product_data.name" dense outlined></v-text-field>
                     <p class="mt-0 mb-2">商品描述</p>
-                    <FroalaEditor />
+                    <FroalaEditor v-model="product_data.description" />
                 </v-card>
                 <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
                     <div class="header d-flex align-center justify-space-between">
@@ -47,7 +45,7 @@
                         </div>
                     </div>
 
-                    <ImageEditor ref="ImageEditor" v-model="image" />
+                    <ImageShow ref="ImageShow" v-model="product_data.images" />
 
                 </v-card>
             </v-col>

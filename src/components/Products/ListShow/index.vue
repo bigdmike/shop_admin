@@ -44,6 +44,7 @@ export default {
         { text: '產品分類', value: 'category' },
         { text: '上架狀態', value: 'status' },
         { text: '價錢', value: 'price' },
+        { text: '動作', value: 'action' },
       ],
     }
   },
@@ -74,7 +75,7 @@ export default {
             data = data.filter(item => item.status == this.filter_data.status)
           }
           if (this.filter_data.category != "all") {
-            data = data.filter(item => item.category == this.filter_data.category)
+            data = data.filter(item => item.category.category_id == this.filter_data.category)
           }
           return data
         }
