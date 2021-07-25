@@ -1,4 +1,5 @@
-<draggable class="body d-flex flex-wrap" v-model="image_data" @start="drag=true" @end="drag=false">
+<draggable class="body d-flex flex-wrap" v-model="image_data" @change="ChangePosition" @start="drag=true"
+    @end="drag=false">
     <ImageShowDialog ref="ImageShowDialog" :images="value" />
     <template v-for="(item, i) in image_data">
         <v-col :key="i" cols="12" md="4">

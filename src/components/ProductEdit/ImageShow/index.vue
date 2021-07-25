@@ -24,6 +24,13 @@ export default {
   methods: {
     OpenShowDialog(index) {
       this.$refs.ImageShowDialog.Open(index)
+    },
+    ChangePosition(val) {
+      let value = JSON.parse(JSON.stringify(this.value))
+      let tmp_data = value[val.moved.oldIndex - 1]
+      value.splice(val.moved.oldIndex - 1, 1)
+      value.splice(val.moved.newIndex - 1, 0, tmp_data)
+      this.$emit("input", value)
     }
   },
   computed: {
@@ -32,7 +39,7 @@ export default {
         return this.value
       },
       set(value) {
-        this.$emit("input", value)
+        console.log(value)
       }
     }
   }

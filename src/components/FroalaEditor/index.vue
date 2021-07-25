@@ -32,16 +32,22 @@ export default {
         ],
         heightMin: 200,
         heightMax: 300,
-        events: {
-          initialized: function () {
-            console.log('initialized')
-          },
-          input: function (inputEvent) {
-            console.log(inputEvent);
-          }
+        imageUploadURL: process.env.VUE_APP_BASE_API + 'admin/create_froala_image.php',
+        requestHeaders: {
+          Authorization: `${this.$cookie.get("account_token")}`
         }
       },
       model: 'Edit Your Content Here!'
+    }
+  },
+  computed: {
+    content: {
+      get() {
+        return this.value
+      },
+      set(val) {
+        this.$emit("input", val)
+      }
     }
   }
 }
