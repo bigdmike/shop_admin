@@ -1,5 +1,8 @@
 <template>
   <v-app id="inspire">
+    <MainSnackbar />
+    <MainLoading />
+    <MainDialog />
     <v-navigation-drawer
       class="grey lighten-3 border-none"
       v-model="drawer"
@@ -32,12 +35,18 @@
 import MainMenu from "@/components/MainMenu/index"
 import AccountMenu from "@/components/MainHeader/AccountMenu"
 import EditButtonGroup from "@/components/MainHeader/EditButtonGroup"
+import MainLoading from "@/components/MainLoading"
+import MainDialog from "@/components/MainDialog"
+import MainSnackbar from "@/components/MainSnackbar"
 export default {
   name: "App",
   components: {
     MainMenu,
     AccountMenu,
-    EditButtonGroup
+    EditButtonGroup,
+    MainLoading,
+    MainDialog,
+    MainSnackbar
   },
   data() {
     return {
@@ -61,7 +70,8 @@ export default {
       this.$refs.RouterView.CancelEdit()
     },
   },
-  created() {
+  async created() {
+    await this.CheckToken()
     this.ChangeHeader()
   },
   watch: {

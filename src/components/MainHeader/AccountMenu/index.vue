@@ -7,19 +7,19 @@ export default {
     return {
       open: false,
       menu: [
-        {
-          title: "帳單資訊",
-          link: "/settings/billing",
-          icon: "mdi-credit-card-multiple"
-        },
-        {
-          title: "個人資料",
-          link: "/settings/profile",
-          icon: "mdi-account-circle-outline"
-        },
+        // {
+        //   title: "帳單資訊",
+        //   link: "/settings/billing",
+        //   icon: "mdi-credit-card-multiple"
+        // },
+        // {
+        //   title: "個人資料",
+        //   link: "/settings/profile",
+        //   icon: "mdi-account-circle-outline"
+        // },
         {
           title: "登出",
-          link: "/logout",
+          link: "",
           icon: "mdi-logout"
         }
       ]
@@ -28,11 +28,23 @@ export default {
   methods: {
     IfPopUp(val) {
       this.open = val
+    },
+    Logout() {
+      this.RemoveToken()
+      this.$router.push("/login")
     }
   },
   computed: {
     arrow_icon() {
       return this.open ? "mdi-chevron-up" : "mdi-chevron-down"
+    },
+    user_data() {
+      if (this.$cookie.get("account_data")) {
+        return JSON.parse(this.$cookie.get("account_data"))
+      }
+      else {
+        return { name: "", admin_id: -1 }
+      }
     }
   }
 }

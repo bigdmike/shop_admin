@@ -1,0 +1,31 @@
+<v-dialog v-model="dialog" width="500">
+    <v-card>
+        <v-container>
+            <v-row>
+                <v-col class="d-flex" cols="12">
+                    <h4>訂單篩選</h4>
+                </v-col>
+                <v-col class="d-flex" cols="12">
+                    <v-select v-model="status" hide-details="auto" dense :items="order_status_data" item-text="label"
+                        item-value="value" label="訂單狀態" outlined></v-select>
+                </v-col>
+                <v-col class="d-flex" cols="12">
+                    <v-select v-model="payment" hide-details="auto" dense :items="order_payment_data" item-text="label"
+                        item-value="value" label="付款方式" outlined></v-select>
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn class="elevation-0" color="grey lighten-2" @click="dialog = false">
+                取消
+            </v-btn>
+            <v-btn class="elevation-0" color="primary" @click="ChangeValue">
+                篩選
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>

@@ -1,0 +1,19 @@
+<v-dialog v-model="dialog" width="500">
+
+    <v-card>
+        <v-card-text class="pt-4">
+            <h3 class="text-h6 font-weight-black black--text mb-4">商家備註欄</h3>
+            <v-textarea outlined label="商店訂單備註" v-model="comment" hint="訂單備註..."></v-textarea>
+        </v-card-text>
+
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="Close">
+                取消
+            </v-btn>
+            <v-btn color="primary" @click="UpdateData">
+                儲存
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>

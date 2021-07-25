@@ -1,0 +1,52 @@
+<div id="OrderPrint">
+    <div id="PrintArea" v-if="order_data!=null">
+        <div class="header" style="width: 100%;text-align: center;margin-bottom: 30px;">
+            <img src="/img/logo.png" style="width: 150px;margin: 0 auto;" />
+        </div>
+        <div
+            style="display: flex;flex-wrap: wrap;width: 100%;border-top: 1px solid #666;border-bottom: 1px solid #666;padding:30px 10px;">
+            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">訂單編號:</span>
+                #{{order_data.order_id}}</p>
+            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">訂單建立日期:</span>
+                {{order_data.create_time}}</p>
+            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">收件人姓名:</span>
+                {{order_data.name}}</p>
+            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">收件人地址:</span>
+                {{order_data.address}}</p>
+            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">收件人電話:</span>
+                {{order_data.phone}}</p>
+            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">收件人信箱:</span>
+                {{order_data.email}}</p>
+        </div>
+        <div style="width:100%;padding:30px 10px;">
+            <table
+                style="width:100%;border: 1px solid black;border-collapse: collapse;font-size: 14px;margin-bottom: 10px;">
+                <tr style="text-align: left;">
+                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">序號</th>
+                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">商品名稱</th>
+                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">商品規格</th>
+                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">數量</th>
+                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">小計</th>
+                </tr>
+                <tr v-for="(item,item_index) in order_data.products" :key="`print_product_${item_index}`">
+                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">{{item_index+1}}</td>
+                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">{{item.name}}</td>
+                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">{{item.options}}</td>
+                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">{{item.amount}} </td>
+                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">
+                        {{item.price * item.amount | money_format}} <span style="font-size: 12px;">TWD</span></td>
+                </tr>
+            </table>
+            <p style="font-size: 14px;margin-bottom: 10px;">運費: {{order_data.shipping_fee | money_format}} <span
+                    style="font-size: 12px;">TWD</span></p>
+            <p style="font-size: 14px;">總計: {{order_data.total_price | money_format}} <span
+                    style="font-size: 12px;">TWD</span></p>
+        </div>
+        <div style="width: 100%;border-top: 1px solid #000;padding: 30px 10px;">
+            <p style="width: 100%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">訂單備註:</span><br>
+                <span style="padding-top: 5px;display: block;">{{order_data.comment}}</span></p>
+        </div>
+    </div>
+
+    <button style="display: none;" ref="PrintBtn" v-print="'#PrintArea'">Print local range</button>
+</div>
