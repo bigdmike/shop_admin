@@ -1,0 +1,41 @@
+<v-card>
+    <OptionEditDialog ref="OptionEditDialog" v-on:update-options="UpdateOptions" />
+    <div class="header d-flex align-center justify-space-between">
+        <p class="text-h5 font-weight-black mt-0 mb-2">商品規格</p>
+        <div>
+            <v-btn color="primary" text>新增選項</v-btn>
+        </div>
+    </div>
+
+    <v-simple-table height="200px">
+        <template v-slot:default>
+            <thead>
+                <tr>
+                    <th class="text-left">
+                        選項名稱
+                    </th>
+                    <th class="text-left">
+                        選項類型
+                    </th>
+                    <th class="text-left">
+                        選項數量
+                    </th>
+                    <th class="text-left">
+                        動作
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,item_index) in value" :key="item.title">
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.type |option_type}}</td>
+                    <td>{{ item.options.length }}</td>
+                    <td>
+                        <v-btn @click="OpenOptionEdit(item, item_index)" color="primary" class="mr-2" small>編輯</v-btn>
+                        <v-btn @click="DeleteType(item, item_index)" color="error" small>刪除</v-btn>
+                    </td>
+                </tr>
+            </tbody>
+        </template>
+    </v-simple-table>
+</v-card>

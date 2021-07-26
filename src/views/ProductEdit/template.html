@@ -35,22 +35,30 @@
                     <p class="mt-0 mb-2">商品描述</p>
                     <FroalaEditor v-model="product_data.description" />
                 </v-card>
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <div class="header d-flex align-center justify-space-between">
-                        <p class="text-h5 font-weight-black mt-0 mb-2">圖片</p>
-                        <div>
-                            <v-btn color="primary" text>新增圖片</v-btn>
-                            <v-btn color="primary" text>以URL新增圖片</v-btn>
-                            <v-btn color="primary" text>新增Youtube影片</v-btn>
-                        </div>
-                    </div>
 
-                    <ImageShow ref="ImageShow" v-model="product_data.images" />
-
-                </v-card>
+                <ImageCard ref="ImageCard" v-model="product_data.images" elevation="2" class="pa-8 mb-5 rounded-lg" />
+                <OptionCard ref="OptionCard" v-on:delete-option="UpdateDeleteOptions"
+                    v-on:delete-type="UpdateDeleteOptionTypes" v-model="product_data.options" elevation="2"
+                    class="pa-8 mb-5 rounded-lg" />
+                <OptionCombineCard ref="OptionCombineCard" :options="product_data.options"
+                    v-on:update="UpdateOptionCombine" :option_combine="product_data.option_combine" elevation="2"
+                    class="pa-8 mb-5 rounded-lg" />
             </v-col>
             <v-col cols="4">
-                <v-card elevation="2"></v-card>
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <h3 class="d-flex align-center mb-4">
+                        <v-icon class="mr-2">mdi-list-status</v-icon>商品狀態
+                    </h3>
+                    <v-select v-model="product_data.status" :items="status_data" item-text="label" item-value="value"
+                        hide-details dense outlined single-line></v-select>
+                </v-card>
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <h3 class="d-flex align-center mb-4">
+                        <v-icon class="mr-2">mdi-shape-outline</v-icon>商品分類
+                    </h3>
+                    <v-select v-model="product_data.category.category_id" :items="category_data" item-text="name"
+                        item-value="category_id" chips multiple hide-details></v-select>
+                </v-card>
             </v-col>
         </v-row>
     </v-container>

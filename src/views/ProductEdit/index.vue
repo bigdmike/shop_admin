@@ -1,16 +1,19 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs"
 import Breadcrumb from "@/components/Breadcrumb/"
 import FroalaEditor from "@/components/FroalaEditor/"
-import ImageShow from "@/components/ProductEdit/ImageShow/"
+import ImageCard from "@/components/ProductEdit/ImageCard/"
+import OptionCard from "@/components/ProductEdit/OptionCard/"
+import OptionCombineCard from "@/components/ProductEdit/OptionCombineCard/"
 export default {
   name: "ProductEdit",
   components: {
     Breadcrumb,
     FroalaEditor,
-    ImageShow,
+    ImageCard,
+    OptionCard,
+    OptionCombineCard
   },
   data() {
     return {
@@ -24,29 +27,26 @@ export default {
           link: ""
         }
       ],
-      image: [
+      status_data: [
         {
-          img: 'https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3264&q=80',
-          name: "1"
+          label: "已發布",
+          value: "Y"
         },
         {
-          img: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80',
-          name: "2"
+          label: "尚未開賣",
+          value: "W"
         },
         {
-          img: 'https://images.unsplash.com/photo-1542320868-f4d80389e1c4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3750&q=80',
-          name: "3"
-        },
-        {
-          img: 'https://images.unsplash.com/photo-1542320868-f4d80389e1c4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3750&q=80',
-          name: "4"
-        },
-        {
-          img: 'https://images.unsplash.com/photo-1542320868-f4d80389e1c4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=3750&q=80',
-          name: "5"
+          label: "隱藏",
+          value: "N"
         },
       ],
       product_data: null,
+      category_data: [],
+      delete_array: {
+        options: [],
+        option_types: [],
+      },
       drag: false
     }
   },
@@ -58,11 +58,44 @@ export default {
       console.log("close")
     },
     async GetProductData() {
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/get_product.php", qs.stringify({ id: this.$route.params.id }))
+      let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "products/get_product_list.php")
       if (result != "error") {
         console.log(JSON.parse(result.data))
-        this.product_data = JSON.parse(result.data)
+        this.product_data = JSON.parse(result.data).products.filter(item => item.product_id == this.$route.params.id)[0]
+        this.category_data = JSON.parse(result.data).category
       }
+    },
+    OpenUploadImage() {
+      this.$refs.ImageUpload.click()
+    },
+    async ChangeImageFile(files) {
+      console.log(files)
+      if (files.length > 0) {
+        let formData = new FormData();
+        formData.append("file", files[0]);
+        let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/create_product_image.php", formData)
+        if (result != "error") {
+          console.log(JSON.parse(result.data).link)
+          this.product_data.images.push(
+            {
+              image_id: 0,
+              url: JSON.parse(result.data).link,
+              title: "",
+              alt: "",
+              position: this.product_data.images.length - 1
+            }
+          )
+        }
+      }
+    },
+    UpdateDeleteOptions(array) {
+      this.delete_array["options"] = this.delete_array["options"].concat(array)
+    },
+    UpdateDeleteOptionTypes(array) {
+      this.delete_array["option_types"] = this.delete_array["option_types"].concat(array)
+    },
+    UpdateOptionCombine(array) {
+      this.product_data.option_combine = array
     }
   },
   computed: {},

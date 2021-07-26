@@ -1,0 +1,51 @@
+<v-card>
+    <ImageUrlDialog ref="ImageUrlDialog" v-on:create-image="CreateUrlImage" />
+    <ImageShowDialog ref="ImageShowDialog" :images="value" />
+    <ImageInfoDialog ref="ImageInfoDialog" v-on:update-info="UpdateImageInfo" />
+    <div class="header d-flex align-center justify-space-between">
+        <p class="text-h5 font-weight-black mt-0 mb-2">圖片</p>
+        <div>
+            <v-btn color="primary" text @click="OpenUploadImage">新增圖片</v-btn>
+            <input type="file" ref="ImageUpload" style="display: none;"
+                @change="ChangeImageFile($event.target.files)" />
+            <v-btn @click="OpenImageUrlDialog" color="primary" text>以URL新增圖片</v-btn>
+        </div>
+    </div>
+
+    <draggable class="body d-flex flex-wrap" v-model="image_data" @change="ChangePosition" @start="drag=true"
+        @end="drag=false">
+        <template v-for="(item, i) in image_data">
+            <v-col :key="i" cols="12" md="4">
+                <v-hover v-slot="{ hover }">
+                    <v-card class="image_card" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }">
+                        <v-img :src="item.url" aspect-ratio="1">
+                            <v-card-title :class="{'show':hover}"
+                                class="text-h6 white--text fill-height img_card_control">
+                                <div class="d-flex justify-space-between align-center my-auto mx-auto">
+                                    <v-btn @click="OpenImageInfoDialog(item,i)" :class="{ 'show-btns': hover }"
+                                        color="rgba(255, 255, 255, 0)" icon>
+                                        <v-icon :class="{ 'show-btns': hover }" small color="rgba(255, 255, 255, 0)">
+                                            mdi-pencil-outline
+                                        </v-icon>
+                                    </v-btn>
+                                    <v-btn @click="OpenShowDialog(i)" :class="{ 'show-btns': hover }"
+                                        color="rgba(255, 255, 255, 0)" icon>
+                                        <v-icon :class="{ 'show-btns': hover }" small color="rgba(255, 255, 255, 0)">
+                                            mdi-eye
+                                        </v-icon>
+                                    </v-btn>
+                                    <v-btn :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)" icon>
+                                        <v-icon :class="{ 'show-btns': hover }" small color="rgba(255, 255, 255, 0)">
+                                            mdi-trash-can-outline
+                                        </v-icon>
+                                    </v-btn>
+                                </div>
+                            </v-card-title>
+                        </v-img>
+                    </v-card>
+                </v-hover>
+            </v-col>
+        </template>
+    </draggable>
+
+</v-card>

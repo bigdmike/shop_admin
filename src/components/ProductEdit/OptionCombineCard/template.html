@@ -1,0 +1,71 @@
+<v-card>
+    <input type="file" ref="ImageUpload" style="display: none;" @change="ChangeImageFile($event.target.files)" />
+    <div class="header d-flex align-center justify-space-between">
+        <p class="text-h5 font-weight-black mt-0 mb-2">商品選項設定</p>
+    </div>
+
+    <v-simple-table height="500px">
+        <template v-slot:default>
+            <thead>
+                <tr>
+                    <th class="text-left">
+                        選項名稱
+                    </th>
+                    <th class="text-left">
+                        選項圖片
+                    </th>
+                    <th class="text-left">
+                        選項價錢
+                    </th>
+                    <th class="text-left">
+                        選項庫存
+                    </th>
+                    <th class="text-left">
+                        選項狀態
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,item_index) in option_list" :key="item.title">
+                    <td width="">{{ item.option_text_group }}</td>
+                    <td width="100">
+                        <v-hover v-slot="{ hover }">
+                            <v-card class="image_card" elevation="0" width="50" height="50"
+                                :class="{ 'on-hover': hover }">
+                                <v-img aspect-ratio="1" width="50" height="50" :src="item.image">
+                                    <v-card-title :class="{'show':hover}" class="text-h6 white--text  img_card_control"
+                                        style="padding: 0;
+                                    height: 100%;
+                                    width: 100%;">
+                                        <div class="d-flex justify-space-between align-center my-auto mx-auto">
+
+                                            <v-btn @click="OpenImageDialog(item_index)" :class="{ 'show-btns': hover }"
+                                                color="rgba(255, 255, 255, 0)" icon>
+                                                <v-icon :class="{ 'show-btns': hover }" small
+                                                    color="rgba(255, 255, 255, 0)">
+                                                    mdi-pencil-outline
+                                                </v-icon>
+                                            </v-btn>
+                                            </v-btn>
+                                        </div>
+                                    </v-card-title>
+                                </v-img>
+                            </v-card>
+                        </v-hover>
+                    </td>
+                    <td width="200">
+                        <v-text-field @change="ChangeData" v-model="item.price" outlined dense :hide-details="true">
+                        </v-text-field>
+                    </td>
+                    <td width="100">
+                        <v-text-field @change="ChangeData" v-model="item.stock" outlined dense :hide-details="true">
+                        </v-text-field>
+                    </td>
+                    <td>
+                        <v-switch @change="ChangeData" v-model="item.status"></v-switch>
+                    </td>
+                </tr>
+            </tbody>
+        </template>
+    </v-simple-table>
+</v-card>
