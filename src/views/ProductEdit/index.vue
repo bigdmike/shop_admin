@@ -46,13 +46,19 @@ export default {
       delete_array: {
         options: [],
         option_types: [],
+        images: []
       },
       drag: false
     }
   },
   methods: {
     UpdateData() {
-      console.log("update!!")
+      console.log(
+        {
+          product_data: this.product_data,
+          delete_array: this.delete_array
+        }
+      )
     },
     CancelEdit() {
       console.log("close")
@@ -94,8 +100,22 @@ export default {
     UpdateDeleteOptionTypes(array) {
       this.delete_array["option_types"] = this.delete_array["option_types"].concat(array)
     },
+    UpdateDeleteImages(array) {
+      this.delete_array["images"] = this.delete_array["images"].concat(array)
+    },
     UpdateOptionCombine(array) {
       this.product_data.option_combine = array
+    },
+    async UpdateCoverImage(files) {
+      if (files.length > 0) {
+        let formData = new FormData();
+        formData.append("file", files[0]);
+        let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/create_product_image.php", formData)
+        if (result != "error") {
+          console.log(JSON.parse(result.data).link)
+          this.product_data.cover = JSON.parse(result.data).link
+        }
+      }
     }
   },
   computed: {},

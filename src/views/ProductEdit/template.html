@@ -36,7 +36,8 @@
                     <FroalaEditor v-model="product_data.description" />
                 </v-card>
 
-                <ImageCard ref="ImageCard" v-model="product_data.images" elevation="2" class="pa-8 mb-5 rounded-lg" />
+                <ImageCard ref="ImageCard" v-model="product_data.images" v-on:delete-image="UpdateDeleteImages"
+                    elevation="2" class="pa-8 mb-5 rounded-lg" />
                 <OptionCard ref="OptionCard" v-on:delete-option="UpdateDeleteOptions"
                     v-on:delete-type="UpdateDeleteOptionTypes" v-model="product_data.options" elevation="2"
                     class="pa-8 mb-5 rounded-lg" />
@@ -56,9 +57,35 @@
                     <h3 class="d-flex align-center mb-4">
                         <v-icon class="mr-2">mdi-shape-outline</v-icon>商品分類
                     </h3>
-                    <v-select v-model="product_data.category.category_id" :items="category_data" item-text="name"
+                    <v-select v-model="product_data.category" :items="category_data" item-text="name"
                         item-value="category_id" chips multiple hide-details></v-select>
                 </v-card>
+
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <h3 class="d-flex align-center mb-4">
+                        <v-icon class="mr-2">mdi-image</v-icon>商品封面圖
+                    </h3>
+                    <input style="display: none;" type="file" ref="ImageUpload"
+                        @change="UpdateCoverImage($event.target.files)" />
+                    <v-hover v-slot="{ hover }">
+                        <v-card class="image_card" elevation="0" :class="{ 'on-hover': hover }">
+                            <v-img :src="product_data.cover" aspect-ratio="1">
+                                <v-card-title :class="{'show':hover}"
+                                    class="text-h6 white--text fill-height img_card_control">
+                                    <div class="d-flex justify-space-between align-center my-auto mx-auto">
+                                        <v-btn @click="OpenUploadImage()" :class="{ 'show-btns': hover }"
+                                            color="rgba(255, 255, 255, 0)" icon>
+                                            <v-icon :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)">
+                                                mdi-pencil-outline
+                                            </v-icon>
+                                        </v-btn>
+                                    </div>
+                                </v-card-title>
+                            </v-img>
+                        </v-card>
+                    </v-hover>
+                </v-card>
+
             </v-col>
         </v-row>
     </v-container>

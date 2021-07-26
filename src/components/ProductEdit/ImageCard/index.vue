@@ -90,6 +90,12 @@ export default {
       value[index].title = title
       value[index].alt = alt
       this.$emit("input", value)
+    },
+    DeleteImage(item, index) {
+      let tmp_data = JSON.parse(JSON.stringify(this.value))
+      item.image_id == 0 ? "" : this.$emit("delete-image", [item.image_id])
+      tmp_data.splice(index, 1)
+      this.$emit("input", tmp_data)
     }
   },
   computed: {

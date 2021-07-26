@@ -3,7 +3,7 @@
     <ImageShowDialog ref="ImageShowDialog" :images="value" />
     <ImageInfoDialog ref="ImageInfoDialog" v-on:update-info="UpdateImageInfo" />
     <div class="header d-flex align-center justify-space-between">
-        <p class="text-h5 font-weight-black mt-0 mb-2">圖片</p>
+        <p class="text-h5 font-weight-black mt-0 mb-2">商品圖片</p>
         <div>
             <v-btn color="primary" text @click="OpenUploadImage">新增圖片</v-btn>
             <input type="file" ref="ImageUpload" style="display: none;"
@@ -34,7 +34,8 @@
                                             mdi-eye
                                         </v-icon>
                                     </v-btn>
-                                    <v-btn :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)" icon>
+                                    <v-btn @click="DeleteImage(item, i)" :class="{ 'show-btns': hover }"
+                                        color="rgba(255, 255, 255, 0)" icon>
                                         <v-icon :class="{ 'show-btns': hover }" small color="rgba(255, 255, 255, 0)">
                                             mdi-trash-can-outline
                                         </v-icon>
