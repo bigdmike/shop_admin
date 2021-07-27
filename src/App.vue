@@ -16,6 +16,7 @@
       app
       class="elevation-0 grey lighten-3"
       v-if="$route.name != 'Login'"
+      style="z-index: 99"
     >
       <AccountMenu v-if="change_header == 'account'" />
       <EditButtonGroup

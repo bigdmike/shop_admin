@@ -56,6 +56,14 @@ export default {
       })
       this.$emit("input", this.filter_value)
     },
+    GetCategoryName(item) {
+      let text = ""
+      item.category.forEach((id, id_index) => {
+        text += this.product_category_data.filter(category => category.category_id == id)[0].name
+        id_index == item.category.length - 1 ? "" : text += ","
+      })
+      return text
+    },
   },
   created() {
     this.product_sort_array = []
@@ -75,7 +83,7 @@ export default {
             data = data.filter(item => item.status == this.filter_data.status)
           }
           if (this.filter_data.category != "all") {
-            data = data.filter(item => item.category.category_id == this.filter_data.category)
+            data = data.filter(item => item.category.indexOf(this.filter_data.category) != -1)
           }
           return data
         }
