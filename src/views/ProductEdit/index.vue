@@ -54,16 +54,20 @@ export default {
   },
   methods: {
     async UpdateData() {
+
+      //先傳product 資料表的內容
+      //再傳product images 跟 delete_array的images部分
+      //最後傳product options 跟 option_types 還有delete_array的options跟option_types
+
       let tmp_product = JSON.parse(JSON.stringify(this.product_data))
       tmp_product.option_combine.forEach(item => {
         item.status = item.status == true ? "Y" : "N"
       })
-      let data = {
-        product_data: tmp_product,
-        delete_array: this.delete_array
-      }
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/update_product.php", qs.stringify({
-        post_data: data
+      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/update_product_options.php", qs.stringify({
+        post_data: {
+          option_type: tmp_product.options,
+          option_combine: tmp_product.option_combine
+        }
       }))
       if (result != "error") {
         console.log(JSON.parse(result.data))
