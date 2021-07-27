@@ -1,6 +1,7 @@
 <template src="./template.html"></template>
 
 <script>
+import qs from "qs"
 import Breadcrumb from "@/components/Breadcrumb/"
 import FroalaEditor from "@/components/FroalaEditor/"
 import ImageCard from "@/components/ProductEdit/ImageCard/"
@@ -52,13 +53,21 @@ export default {
     }
   },
   methods: {
-    UpdateData() {
-      console.log(
-        {
-          product_data: this.product_data,
-          delete_array: this.delete_array
-        }
-      )
+    async UpdateData() {
+      let tmp_product = JSON.parse(JSON.stringify(this.product_data))
+      tmp_product.option_combine.forEach(item => {
+        item.status = item.status == true ? "Y" : "N"
+      })
+      let data = {
+        product_data: tmp_product,
+        delete_array: this.delete_array
+      }
+      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/update_product.php", qs.stringify({
+        post_data: data
+      }))
+      if (result != "error") {
+        console.log(JSON.parse(result.data))
+      }
     },
     CancelEdit() {
       console.log("close")
