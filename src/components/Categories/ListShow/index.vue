@@ -3,15 +3,11 @@
 <script>
 import draggable from 'vuedraggable'
 export default {
-  name: "ProductsGridShow",
+  name: "CategoryListShow",
   props: {
     filter_data: {
       require: true,
       type: Object
-    },
-    product_status_data: {
-      require: true,
-      type: Array
     },
     product_category_data: {
       require: true,
@@ -32,7 +28,18 @@ export default {
   data() {
     return {
       product_sort_array: [],
-      drag: false
+      drag: false,
+      headers: [
+        { text: '', value: '' },
+        {
+          text: '分類名稱',
+          align: 'start',
+          sortable: false,
+          value: 'name',
+        },
+        { text: '上架狀態', value: 'status' },
+        { text: '動作', value: 'action' },
+      ],
     }
   },
   methods: {
@@ -41,6 +48,8 @@ export default {
       this.value.forEach(item => {
         this.product_sort_array.push(item.sort)
       })
+      this.$emit("input", this.filter_value)
+      this.$emit("update-sort")
     },
     GetCategoryName(item) {
       let text = ""
@@ -58,7 +67,7 @@ export default {
     })
   },
   computed: {
-    filter_product_data: {
+    filter_value: {
       get() {
         {
           let data = JSON.parse(JSON.stringify(this.value))
@@ -67,9 +76,6 @@ export default {
           }
           if (this.filter_data.status != "all") {
             data = data.filter(item => item.status == this.filter_data.status)
-          }
-          if (this.filter_data.category != "all") {
-            data = data.filter(item => item.category == this.filter_data.category)
           }
           return data
         }
@@ -106,5 +112,8 @@ export default {
 <style >
 .opacity-0 {
   opacity: 0;
+}
+.page__grab-icon {
+  cursor: grab;
 }
 </style>

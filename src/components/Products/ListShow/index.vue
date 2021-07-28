@@ -43,7 +43,6 @@ export default {
         },
         { text: '產品分類', value: 'category' },
         { text: '上架狀態', value: 'status' },
-        { text: '價錢', value: 'price' },
         { text: '動作', value: 'action' },
       ],
     }
@@ -55,12 +54,16 @@ export default {
         this.product_sort_array.push(item.sort)
       })
       this.$emit("input", this.filter_value)
+      this.$emit("update-sort")
     },
     GetCategoryName(item) {
       let text = ""
       item.category.forEach((id, id_index) => {
-        text += this.product_category_data.filter(category => category.category_id == id)[0].name
-        id_index == item.category.length - 1 ? "" : text += ","
+        let category = this.product_category_data.filter(category => category.category_id == id)
+        if (category.length > 0) {
+          text += this.product_category_data.filter(category => category.category_id == id)[0].name
+          id_index == item.category.length - 1 ? "" : text += ","
+        }
       })
       return text
     },

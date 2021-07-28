@@ -2,20 +2,30 @@
 
 <script>
 export default {
-  name: "EditOptionDialog",
+  name: "CreateOptionDialog",
   data() {
     return {
       dialog: false,
       valid: false,
       index: -1,
       title: "",
-      type: "",
+      type: "model",
       edit_color: "",
       menu: -1,
       options: [],
       delete_options: [],
+      type_array: [
+        {
+          label: "顏色",
+          value: "color"
+        },
+        {
+          label: "一般",
+          value: "model"
+        }
+      ],
       Require: [
-        v => !!v || '選項內容請勿空白'
+        v => !!v || '選項內容請勿空白',
       ],
       Title: [
         v => {
@@ -31,20 +41,16 @@ export default {
     }
   },
   methods: {
-    Open(val, index) {
+    Open() {
       this.dialog = true
-      this.index = index
-      this.title = val.title
-      this.type = val.type
-      this.options = val.options
+      this.type = "model"
       this.delete_options = []
-      this.options.forEach(item => item.menu = false)
     },
-    UpdateOptions() {
+    CreateOptions() {
       this.$refs.form.validate()
       setTimeout(() => {
         if (this.valid && this.options.length > 0) {
-          this.$emit("update-options", { title: this.title, options: this.options, delete_options: this.delete_options, index: this.index })
+          this.$emit("create-options", { title: this.title, options: this.options, type: this.type })
           this.Cancel()
         }
       }, 100);
@@ -62,9 +68,6 @@ export default {
       this.options.push({ option_id: 0, title: "", color: "" })
     },
     DeleteOption(item, index) {
-      if (item.option_id != 0) {
-        this.delete_options.push(item.option_id)
-      }
       this.options.splice(index, 1)
     }
   }

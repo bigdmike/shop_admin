@@ -54,7 +54,7 @@ export default {
           if (combine.option_id_group == item.option_id_group) {
             is_exist = true
             item.price = combine.price
-            item.status = combine.status == "Y" || combine.status == true ? true : false
+            item.status = combine.status == "Y" ? true : false
             item.stock = combine.stock
             item.image = combine.image
           }
@@ -80,7 +80,6 @@ export default {
         formData.append("file", files[0]);
         let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
         if (result != "error") {
-          this.$refs.ImageUpload.value = ""
           this.option_list[this.edit_index].image = JSON.parse(result.data).link
           this.$emit("update", this.option_list)
         }

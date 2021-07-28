@@ -41,7 +41,7 @@ export default {
             },
             {
               title: "商品分類",
-              link: "/products/collections"
+              link: "/categories"
             },
             // {
             //   title: "庫存管理",

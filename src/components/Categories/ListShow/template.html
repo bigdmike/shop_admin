@@ -10,17 +10,18 @@
                         </v-icon>
                     </td>
                     <td>
-                        <router-link :to="`/product/${item.product_id}`">{{ item.name }}</router-link>
-                    </td>
-                    <td> {{GetCategoryName(item)}}
+                        <a @click="$emit('open-update',item)">{{ item.name }}</a>
                     </td>
                     <td>
-                        <v-chip :class="{'primary':item.status=='Y'}" small>
-                            {{product_status_data.filter(category=>category.value==item.status)[0].label}}
+                        <v-chip v-if="item.status=='1'" class="primary" small>
+                            已啟用
+                        </v-chip>
+                        <v-chip v-else small>
+                            已停用
                         </v-chip>
                     </td>
                     <td>
-                        <v-btn @click="$emit('delete-data',item.product_id)" small color="error">刪除</v-btn>
+                        <v-btn @click="$emit('delete-data',item.category_id)" small color="error">刪除</v-btn>
                     </td>
                 </tr>
             </draggable>

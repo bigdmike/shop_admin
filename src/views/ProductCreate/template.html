@@ -1,5 +1,5 @@
 <div id="Products">
-    <DeleteDialog ref="DeleteDialog" v-on:load-data="$router.push('/products')" />
+    <DeleteDialog ref="DeleteDialog" v-on:load-data="GetProductData" />
     <v-container v-if="product_data!=null">
         <v-row>
             <Breadcrumb :link_array="breadcrumb_data" />

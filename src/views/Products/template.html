@@ -2,18 +2,17 @@
     <v-container v-if="product_data!=null">
         <FilterDialog ref="FilterDialog" :product_status_data="product_status_data"
             :product_category_data="product_category_data" v-model="filter_data" />
+        <DeleteDialog ref="DeleteDialog" v-on:load-data="GetProductData" />
         <v-row>
             <v-col cols="12" md="12" lg="12" class="mx-auto">
                 <div class="header d-flex justify-space-between align-center">
                     <h3 class="my-0 text-h5 font-weight-bold">所有商品</h3>
                     <div class="d-flex align-center">
-                        <p class="my-0 mr-5">1 - 5 共 5 筆</p>
                         <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="mr-4 grey lighten-2 elevation-0" v-bind="attrs" v-on="on">
                                     更多
                                     <v-icon class="ml-2">mdi-menu-down</v-icon>
-
                                 </v-btn>
                             </template>
                             <v-list>
@@ -31,7 +30,7 @@
                                 </v-list-item>
                             </v-list>
                         </v-menu>
-                        <v-btn color="primary font-weight-bold">新增商品</v-btn>
+                        <v-btn @click="$router.push('/products/new/')" color="primary font-weight-bold">新增商品</v-btn>
                     </div>
                 </div>
 
@@ -71,10 +70,12 @@
                     </v-chip>
                 </div>
 
-                <GridShow v-if="show_type=='grid'" :filter_data="filter_data" :product_status_data="product_status_data"
-                    :product_category_data="product_category_data" v-model="product_data" :key_word="key_word" />
+                <GridShow v-if="show_type=='grid'" :filter_data="filter_data" v-on:delete-data="OpenDeleteDialog"
+                    :product_status_data="product_status_data" :product_category_data="product_category_data"
+                    v-model="product_data" :key_word="key_word" />
                 <ListShow v-if="show_type=='list'" :filter_data="filter_data" :product_status_data="product_status_data"
-                    :product_category_data="product_category_data" v-model="product_data" :key_word="key_word" />
+                    :product_category_data="product_category_data" v-on:update-sort="UpdateProductSort"
+                    v-on:delete-data="OpenDeleteDialog" v-model="product_data" :key_word="key_word" />
             </v-col>
         </v-row>
     </v-container>

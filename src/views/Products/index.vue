@@ -1,13 +1,16 @@
 <template src="./template.html"></template>
 
 <script>
+import qs from "qs"
 import FilterDialog from "@/components/Products/FilterDialog/index"
+import DeleteDialog from "@/components/Products/DeleteDialog/index"
 import GridShow from "@/components/Products/GridShow/index"
 import ListShow from "@/components/Products/ListShow/index"
 export default {
   name: "Products",
   components: {
     FilterDialog,
+    DeleteDialog,
     GridShow,
     ListShow
   },
@@ -42,6 +45,9 @@ export default {
     OpenFilterDialog() {
       this.$refs.FilterDialog.Open()
     },
+    OpenDeleteDialog(id) {
+      this.$refs.DeleteDialog.Open(id)
+    },
     ChangeShowType() {
       console.log(this.show_type)
       this.show_type == 'list' ? this.show_type = "grid" : this.show_type = "list"
@@ -52,8 +58,35 @@ export default {
       if (result != "error") {
         console.log(JSON.parse(result.data))
         this.product_data = JSON.parse(result.data).products
+        this.product_data == null ? this.product_data = [] : ""
         this.product_category_data.push({ category_id: "all", name: "全部" })
         this.product_category_data = this.product_category_data.concat(JSON.parse(result.data).category)
+        this.product_data.sort((a, b) => {
+          return a.position - b.position
+        })
+        this.CheckSort()
+      }
+    },
+    CheckSort() {
+      let is_sort = true
+      this.product_data.forEach((item, item_index) => {
+        item.position == item_index ? "" : is_sort = false
+      })
+      is_sort ? "" : this.UpdateProductSort()
+    },
+    async UpdateProductSort() {
+      let data = []
+      this.product_data.forEach(item => {
+        data.push(
+          {
+            product_id: item.product_id,
+            position: item.position
+          }
+        )
+      })
+      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/update_product_position.php", qs.stringify({ post_data: data }))
+      if (result.status != "error") {
+        this.GetProductData()
       }
     }
   },

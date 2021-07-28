@@ -4,12 +4,12 @@
 import qs from "qs"
 import Breadcrumb from "@/components/Breadcrumb/"
 import FroalaEditor from "@/components/FroalaEditor/"
-import ImageCard from "@/components/ProductEdit/ImageCard/"
-import OptionCard from "@/components/ProductEdit/OptionCard/"
-import OptionCombineCard from "@/components/ProductEdit/OptionCombineCard/"
+import ImageCard from "@/components/ProductCreate/ImageCard/"
+import OptionCard from "@/components/ProductCreate/OptionCard/"
+import OptionCombineCard from "@/components/ProductCreate/OptionCombineCard/"
 import DeleteDialog from "@/components/Products/DeleteDialog/index"
 export default {
-  name: "ProductEdit",
+  name: "ProductCreate",
   components: {
     Breadcrumb,
     FroalaEditor,
@@ -44,7 +44,16 @@ export default {
           value: "N"
         },
       ],
-      product_data: null,
+      product_data: {
+        product_id: 0,
+        name: "",
+        cover: "",
+        category: [],
+        options: [],
+        images: [],
+        option_combine: [],
+        status: "Y"
+      },
       category_data: [],
       delete_array: {
         options: [],
@@ -76,7 +85,7 @@ export default {
         //先傳product 資料表的內容
         //再傳product images 跟 delete_array的images部分
         //最後傳product options 跟 option_types 還有delete_array的options跟option_types
-        this.UpdateProductData()
+        this.CreateProductData()
       }
       else {
         error = "無法儲存商品請修正以下問題：<br>" + error
@@ -93,20 +102,7 @@ export default {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "products/get_product_list.php")
       if (result != "error") {
         console.log(JSON.parse(result.data))
-        this.product_data = JSON.parse(result.data).products.filter(item => item.product_id == this.$route.params.id)
-        if (this.product_data.length <= 0) {
-          this.$router.push("/products")
-        }
-        else {
-          this.product_data = this.product_data[0]
-          if (this.product_data.category.length == 1 && this.product_data.category[0] == "") {
-            this.product_data.category = []
-          }
-          this.category_data = JSON.parse(result.data).category
-          this.product_data.images.sort((a, b) => {
-            return a.position - b.position
-          })
-        }
+        this.category_data = JSON.parse(result.data).category
       }
     },
     OpenDeleteDialog() {
@@ -159,57 +155,52 @@ export default {
       }
     },
 
-    async UpdateProductData() {
+    async CreateProductData() {
       let data = {
-        product_id: this.product_data.product_id,
+        product_id: 0,
         category: this.product_data.category,
         name: this.product_data.name,
         description: this.product_data.description,
         cover: this.product_data.cover,
         status: this.product_data.status
       }
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/update_product.php", qs.stringify({
+      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/create_product.php", qs.stringify({
         post_data: { product_data: data }
       }))
       if (result.status == "success") {
-        this.UpdateProductImage()
+        this.CreateProductImage(result.msg)
       }
     },
-    async UpdateProductImage() {
-      //let delete_data = this.delete_array.images.length <= 0 ? null : this.delete_array.images
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/update_product_image.php", qs.stringify({
+    async CreateProductImage(id) {
+      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/create_product_image.php", qs.stringify({
         post_data: {
-          product_id: this.product_data.product_id,
-          image_data: this.product_data.images,
-          delete_data: this.delete_array.images
+          product_id: id,
+          image_data: this.product_data.images
         }
       }))
       if (result.status == "success") {
-        this.UpdateProductOption()
+        this.CreateProductOption(id)
       }
     },
-    async UpdateProductOption() {
+    async CreateProductOption(id) {
       let tmp_product = JSON.parse(JSON.stringify(this.product_data))
       tmp_product.option_combine.forEach(item => {
         item.status = item.status == true || item.status == "Y" ? "Y" : "N"
       })
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/update_product_options.php", qs.stringify({
+      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/create_product_options.php", qs.stringify({
         post_data: {
-          product_id: this.product_data.product_id,
+          product_id: id,
           option_type: this.product_data.options,
           option_combine: tmp_product.option_combine,
-          delete_data: {
-            option: this.delete_array.options,
-            option_type: this.delete_array.option_types
-          }
         }
       }))
       if (result.status == "success") {
         console.log("you did it !!!")
         this.$store.commit("SetSnackbar", {
-          content: "商品已更新",
+          content: "商品已建立",
           status: true
         })
+        this.$router.push("/products")
       }
     }
   },

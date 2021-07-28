@@ -37,6 +37,16 @@ const routes = [{
     component: () => import( /* webpackChunkName: "product_edit" */ '../views/ProductEdit/index.vue')
   },
   {
+    path: '/products/new/',
+    name: 'ProductCreate',
+    component: () => import( /* webpackChunkName: "product_create" */ '../views/ProductCreate/index.vue')
+  },
+  {
+    path: '/categories',
+    name: 'Categories',
+    component: () => import( /* webpackChunkName: "categories" */ '../views/Categories/index.vue')
+  },
+  {
     path: '/orders',
     name: 'Orders',
     component: () => import( /* webpackChunkName: "orders" */ '../views/Orders/index.vue')

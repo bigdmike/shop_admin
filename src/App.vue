@@ -58,7 +58,7 @@ export default {
   methods: {
     ChangeHeader() {
       console.log(this.$route.name)
-      let pages = ["ProductEdit"]
+      let pages = ["ProductEdit", "ProductCreate"]
       this.change_header = pages.filter(item => item == this.$route.name).length > 0 ? "edit" : "account"
     },
     CallCreateFunction() {

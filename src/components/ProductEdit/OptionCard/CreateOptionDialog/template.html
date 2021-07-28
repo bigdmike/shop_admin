@@ -7,6 +7,9 @@
         <v-card-text class="pt-5">
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-text-field :rules="Require" v-model="title" label="選項名稱" dense outlined></v-text-field>
+                <v-select :items="type_array" item-text="label" item-value="value" v-model="type" label="選項類型" outlined
+                    dense>
+                </v-select>
                 <div class="d-flex align-center justify-space-between">
                     <p class="text-h6 my-0 black--text">選項內容</p>
                     <v-btn elevation="0" @click="CreateOption" text color="primary">新增選項</v-btn>
@@ -71,7 +74,7 @@
             <v-btn @click="Cancel" color="primary" text>
                 取消
             </v-btn>
-            <v-btn @click="UpdateOptions" color="primary">
+            <v-btn @click="CreateOptions" color="primary">
                 儲存
             </v-btn>
         </v-card-actions>
