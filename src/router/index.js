@@ -55,6 +55,16 @@ const routes = [{
     path: '/order/:id',
     name: 'OrderEdit',
     component: () => import( /* webpackChunkName: "order_edit" */ '../views/OrderEdit/index.vue')
+  },
+  {
+    path: '/charts',
+    name: 'Charts',
+    component: () => import( /* webpackChunkName: "charts" */ '../views/Charts/index.vue')
+  },
+  {
+    path: '/home_carousel',
+    name: 'HomeCarousel',
+    component: () => import( /* webpackChunkName: "home_carousel" */ '../views/HomeCarousel/index.vue')
   }
 ]
 

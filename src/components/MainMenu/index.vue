@@ -14,6 +14,22 @@ export default {
           list: []
         },
         {
+          title: "頁面編輯",
+          icon: "mdi-pencil",
+          link: "/home_carousel",
+          group: true,
+          list: [
+            {
+              title: "首頁大圖輪播",
+              link: "/home_carousel"
+            },
+            // {
+            //   title: "遺棄的購物車",
+            //   link: "/checkout"
+            // }
+          ]
+        },
+        {
           title: "訂單管理",
           icon: "mdi-inbox",
           link: "/orders",
@@ -53,13 +69,13 @@ export default {
             // }
           ]
         },
-        {
-          title: "使用者管理",
-          icon: "mdi-account",
-          link: "/customers",
-          group: false,
-          list: []
-        },
+        // {
+        //   title: "使用者管理",
+        //   icon: "mdi-account",
+        //   link: "/customers",
+        //   group: false,
+        //   list: []
+        // },
         // {
         //   title: "促銷優惠",
         //   icon: "mdi-sale",
@@ -70,7 +86,7 @@ export default {
         {
           title: "分析報表",
           icon: "mdi-google-analytics",
-          link: "/analytics",
+          link: "/charts",
           group: false,
           list: []
         },
