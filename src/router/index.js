@@ -70,6 +70,7 @@ const routes = [{
 
 const router = new VueRouter({
   routes,
+  base: "/rerace_admin/",
   mode: "history"
 })
 

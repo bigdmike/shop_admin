@@ -210,6 +210,12 @@ export default {
           content: "商品已更新",
           status: true
         })
+        this.GetProductData()
+        this.delete_array = {
+          options: [],
+          option_types: [],
+          images: []
+        }
       }
     }
   },

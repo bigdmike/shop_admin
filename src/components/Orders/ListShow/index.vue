@@ -55,7 +55,12 @@ export default {
           label: "已出貨",
           color: "green",
           "text-color": "white"
-        }
+        },
+        N: {
+          label: "已取消",
+          color: "black",
+          "text-color": "white"
+        },
       }
     }
   },

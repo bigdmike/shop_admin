@@ -2,7 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://demo.reracesport.com/api/',
+        target: 'https://www.reracesport.com/api/',
         secure: false,
         pathRewrite: {
           '^/api': '/'
@@ -12,5 +12,7 @@ module.exports = {
   },
   transpileDependencies: [
     'vuetify'
-  ]
+  ],
+  filenameHashing: true,
+  publicPath: '/rerace_admin/',
 }

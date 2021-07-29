@@ -66,6 +66,9 @@ export default {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "orders/get_orders_admin.php")
       if (result != "error") {
         this.order_data = JSON.parse(result.data)
+        this.order_data.sort((a, b) => {
+          return new Date(b.create_time) - new Date(a.create_time)
+        })
       }
     }
   },

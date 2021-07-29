@@ -70,7 +70,7 @@ export default {
     CheckSort() {
       let is_sort = true
       this.product_data.forEach((item, item_index) => {
-        item.position == item_index ? "" : is_sort = false
+        item.position == item_index + 1 ? "" : is_sort = false
       })
       is_sort ? "" : this.UpdateProductSort()
     },
