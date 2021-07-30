@@ -1,0 +1,40 @@
+<div id="Products">
+    <v-container v-if="shop_data!=null">
+        <FilterDialog ref="FilterDialog" v-model="filter_data" />
+        <DeleteDialog ref="DeleteDialog" v-on:load-data="GetShopsData" />
+        <CreateDialog ref="CreateDialog" v-on:load-data="GetShopsData" />
+        <v-row>
+            <v-col cols="12" md="12" lg="12" class="mx-auto">
+                <div class="header d-flex justify-space-between align-center">
+                    <h3 class="my-0 text-h5 font-weight-bold">經銷據點</h3>
+                    <div class="d-flex align-center">
+                        <v-btn @click="OpenCreateDialog" color="primary font-weight-bold">新增經銷</v-btn>
+                    </div>
+                </div>
+
+                <div class="searchbar d-flex align-stretch pt-5 pb-2">
+                    <v-btn @click="OpenFilterDialog" class="ma-0 py-0 filter_btn  black--text" outlined>
+                        分類篩選
+                        <v-icon class="ml-2">mdi-menu-down</v-icon>
+                    </v-btn>
+                    <v-text-field class="searchtext" v-model="key_word" hide-details="auto" color="grey darken-2"
+                        outlined dense append-icon="mdi-magnify"></v-text-field>
+                </div>
+
+                <div class="filter_bar d-flex align-center py-0">
+                    <v-chip v-if="filter_data.status=='Y'" class="ma-2 caption" close
+                        @click:close="filter_data.status = 'all'">
+                        狀態: 已啟用
+                    </v-chip>
+                    <v-chip v-if="filter_data.status=='N'" class="ma-2 caption" close
+                        @click:close="filter_data.status = 'all'">
+                        狀態: 已停用
+                    </v-chip>
+                </div>
+
+                <ListShow :filter_data="filter_data" v-on:load-data="GetShopsData" v-on:delete-data="OpenDeleteDialog"
+                    v-model="shop_data" :key_word="key_word" />
+            </v-col>
+        </v-row>
+    </v-container>
+</div>

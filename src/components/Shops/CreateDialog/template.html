@@ -1,0 +1,46 @@
+<v-dialog v-model="dialog" width="500">
+    <v-card>
+        <v-container>
+            <v-form ref="form" v-model="valid" lazy-validation>
+                <v-row>
+                    <v-col class="d-flex" cols="12">
+                        <h4>經銷資訊新增</h4>
+                    </v-col>
+                    <v-col class="d-flex" cols="12">
+                        <v-text-field :rules="Require" v-model="name" label="店家名稱" dense outlined></v-text-field>
+                    </v-col>
+                    <v-col class="d-flex" cols="12">
+                        <v-text-field :rules="Require" v-model="phone" label="店家電話" dense outlined></v-text-field>
+                    </v-col>
+                    <v-col class="d-flex" cols="12">
+                        <v-text-field :rules="Require" v-model="address" label="店家地址" dense outlined></v-text-field>
+                    </v-col>
+
+                    <v-col class="d-flex" cols="12" sm="6">
+                        <v-text-field :rules="Require" v-model="coordinatesX" label="緯度" dense outlined></v-text-field>
+                    </v-col>
+                    <v-col class="d-flex" cols="12" sm="6">
+                        <v-text-field :rules="Require" v-model="coordinatesY" label="經度" dense outlined></v-text-field>
+                    </v-col>
+
+                    <v-col class="d-flex" cols="12">
+                        <v-select :rules="Require" v-model="status" hide-details="auto" dense :items="status_array"
+                            item-text="label" item-value="value" label="啟用狀態" outlined></v-select>
+                    </v-col>
+                </v-row>
+            </v-form>
+        </v-container>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn class="elevation-0" color="grey lighten-2" @click="Cancel">
+                取消
+            </v-btn>
+            <v-btn class="elevation-0" color="primary" @click="UpdateCategory">
+                新增
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>

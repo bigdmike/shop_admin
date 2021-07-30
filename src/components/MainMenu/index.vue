@@ -23,10 +23,34 @@ export default {
               title: "首頁大圖輪播",
               link: "/home_carousel"
             },
-            // {
-            //   title: "遺棄的購物車",
-            //   link: "/checkout"
-            // }
+            {
+              title: "首頁主打商品",
+              link: "/home_product"
+            },
+            {
+              title: "首頁影片＆社群連結",
+              link: "/home_video_social"
+            },
+            {
+              title: "關於我們",
+              link: "/about"
+            },
+            {
+              title: "影音專區",
+              link: "/videos"
+            },
+            {
+              title: "最新消息",
+              link: "/news"
+            },
+            {
+              title: "常見問題",
+              link: "/questions"
+            },
+            {
+              title: "經銷據點",
+              link: "/shops"
+            }
           ]
         },
         {

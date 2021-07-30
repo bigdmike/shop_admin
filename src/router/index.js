@@ -22,11 +22,6 @@ const routes = [{
     component: () => import( /* webpackChunkName: "login" */ '../views/Login/index.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import( /* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  {
     path: '/products',
     name: 'Products',
     component: () => import( /* webpackChunkName: "products" */ '../views/Products/index.vue')
@@ -65,7 +60,73 @@ const routes = [{
     path: '/home_carousel',
     name: 'HomeCarousel',
     component: () => import( /* webpackChunkName: "home_carousel" */ '../views/HomeCarousel/index.vue')
-  }
+  },
+  {
+    path: '/home_product',
+    name: 'HomeProduct',
+    component: () => import( /* webpackChunkName: "home_product" */ '../views/HomeProduct/index.vue')
+  },
+  {
+    path: '/home_video_social',
+    name: 'HomeVideoSocial',
+    component: () => import( /* webpackChunkName: "home_video_social" */ '../views/HomeVideoSocial/index.vue')
+  },
+
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import( /* webpackChunkName: "about" */ '../views/About/index.vue')
+  },
+  {
+    path: '/videos',
+    name: 'Videos',
+    component: () => import( /* webpackChunkName: "videos" */ '../views/Videos/index.vue')
+  },
+  {
+    path: '/video/:id',
+    name: 'VideoEdit',
+    component: () => import( /* webpackChunkName: "video_edit" */ '../views/VideoEdit/index.vue')
+  },
+  {
+    path: '/videos/create',
+    name: 'VideoCreate',
+    component: () => import( /* webpackChunkName: "video_create" */ '../views/VideoCreate/index.vue')
+  },
+  {
+    path: '/news',
+    name: 'News',
+    component: () => import( /* webpackChunkName: "news" */ '../views/News/index.vue')
+  },
+  {
+    path: '/article/:id',
+    name: 'NewsEdit',
+    component: () => import( /* webpackChunkName: "news_edit" */ '../views/NewsEdit/index.vue')
+  },
+  {
+    path: '/articles/create',
+    name: 'NewsCreate',
+    component: () => import( /* webpackChunkName: "news_create" */ '../views/NewsCreate/index.vue')
+  },
+  {
+    path: '/questions',
+    name: 'Questions',
+    component: () => import( /* webpackChunkName: "questions" */ '../views/Questions/index.vue')
+  },
+  {
+    path: '/question/:id',
+    name: 'QuestionEdit',
+    component: () => import( /* webpackChunkName: "question_edit" */ '../views/QuestionEdit/index.vue')
+  },
+  {
+    path: '/questions/create',
+    name: 'QuestionCreate',
+    component: () => import( /* webpackChunkName: "question_create" */ '../views/QuestionCreate/index.vue')
+  },
+  {
+    path: '/shops',
+    name: 'Shops',
+    component: () => import( /* webpackChunkName: "shops" */ '../views/Shops/index.vue')
+  },
 ]
 
 const router = new VueRouter({

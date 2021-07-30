@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home d-flex justify-center align-center" style="min-height: 100%">
     <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>

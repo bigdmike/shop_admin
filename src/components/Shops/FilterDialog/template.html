@@ -1,0 +1,27 @@
+<v-dialog v-model="dialog" width="500">
+    <v-card>
+        <v-container>
+            <v-row>
+                <v-col class="d-flex" cols="12">
+                    <h4>經銷篩選</h4>
+                </v-col>
+                <v-col class="d-flex" cols="12">
+                    <v-select v-model="status" hide-details="auto" dense :items="status_array" item-text="label"
+                        item-value="value" label="經銷狀態" outlined></v-select>
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn class="elevation-0" color="grey lighten-2" @click="dialog = false">
+                取消
+            </v-btn>
+            <v-btn class="elevation-0" color="primary" @click="ChangeValue">
+                篩選
+            </v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>

@@ -1,0 +1,61 @@
+<div id="Products">
+    <v-container v-if="video_data!=null">
+        <v-row>
+            <Breadcrumb :link_array="breadcrumb_data" />
+            <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+                <div class="header d-flex justify-space-between align-center">
+                    <h3 class="my-0 text-h5 font-weight-black">影片 / {{video_data.name}}
+
+                    </h3>
+                </div>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="8">
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <p class="mt-0 mb-2">影片標題*</p>
+                    <v-text-field v-model="video_data.title" dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">Youtube連結*</p>
+                    <v-text-field v-model="video_data.video" dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">影片描述</p>
+                    <FroalaEditor v-model="video_data.description" />
+                </v-card>
+            </v-col>
+            <v-col cols="4">
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <h3 class="d-flex align-center mb-4">
+                        <v-icon class="mr-2">mdi-list-status</v-icon>影片狀態
+                    </h3>
+                    <v-select v-model="video_data.status" :items="status_data" item-text="label" item-value="value"
+                        hide-details dense outlined single-line></v-select>
+                </v-card>
+
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <h3 class="d-flex align-center mb-4">
+                        <v-icon class="mr-2">mdi-image</v-icon>影片封面圖
+                    </h3>
+                    <input style="display: none;" type="file" ref="ImageUpload"
+                        @change="UpdateCoverImage($event.target.files)" />
+                    <v-hover v-slot="{ hover }">
+                        <v-card class="image_card" elevation="0" :class="{ 'on-hover': hover }">
+                            <v-img :src="video_data.cover" aspect-ratio="1.77">
+                                <v-card-title :class="{'show':hover}"
+                                    class="text-h6 white--text fill-height img_card_control">
+                                    <div class="d-flex justify-space-between align-center my-auto mx-auto">
+                                        <v-btn @click="OpenUploadImage()" :class="{ 'show-btns': hover }"
+                                            color="rgba(255, 255, 255, 0)" icon>
+                                            <v-icon :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)">
+                                                mdi-pencil-outline
+                                            </v-icon>
+                                        </v-btn>
+                                    </div>
+                                </v-card-title>
+                            </v-img>
+                        </v-card>
+                    </v-hover>
+                </v-card>
+
+            </v-col>
+        </v-row>
+    </v-container>
+</div>

@@ -1,0 +1,63 @@
+<div id="Products">
+
+    <v-container v-if="page_data.length>0">
+        <input style="display: none;" type="file" ref="ImageUpload" @change="UpdateCoverImage($event.target.files)" />
+        <v-row>
+            <v-col cols="12" md="12">
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <p class="mt-0 mb-2">Youtube影片連結</p>
+                    <v-text-field v-model="page_data[0].link" dense outlined></v-text-field>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="6">
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <p class="mt-0 mb-2">FACEBOOK</p>
+                    <v-text-field v-model="page_data[1].link" dense outlined></v-text-field>
+                    <v-hover v-slot="{ hover }">
+                        <v-card class="image_card" elevation="0" :class="{ 'on-hover': hover }">
+                            <v-img :src="page_data[1].image">
+                                <v-card-title :class="{'show':hover}"
+                                    class="text-h6 white--text fill-height img_card_control">
+                                    <div class="d-flex justify-space-between align-center my-auto mx-auto">
+                                        <v-btn @click="OpenUploadImage(page_data[1])" :class="{ 'show-btns': hover }"
+                                            color="rgba(255, 255, 255, 0)" icon>
+                                            <v-icon :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)">
+                                                mdi-pencil-outline
+                                            </v-icon>
+                                        </v-btn>
+                                    </div>
+                                </v-card-title>
+                            </v-img>
+                        </v-card>
+                    </v-hover>
+                </v-card>
+            </v-col>
+            <v-col cols="6">
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <p class="mt-0 mb-2">INSTAGRAM</p>
+                    <v-text-field v-model="page_data[2].link" dense outlined></v-text-field>
+
+                    <v-hover v-slot="{ hover }">
+                        <v-card class="image_card" elevation="0" :class="{ 'on-hover': hover }">
+                            <v-img :src="page_data[2].image">
+                                <v-card-title :class="{'show':hover}"
+                                    class="text-h6 white--text fill-height img_card_control">
+                                    <div class="d-flex justify-space-between align-center my-auto mx-auto">
+                                        <v-btn @click="OpenUploadImage(page_data[2])" :class="{ 'show-btns': hover }"
+                                            color="rgba(255, 255, 255, 0)" icon>
+                                            <v-icon :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)">
+                                                mdi-pencil-outline
+                                            </v-icon>
+                                        </v-btn>
+                                    </div>
+                                </v-card-title>
+                            </v-img>
+                        </v-card>
+                    </v-hover>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
+</div>

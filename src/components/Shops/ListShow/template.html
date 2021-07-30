@@ -1,0 +1,29 @@
+<v-container class="product_list px-0">
+    <EditDialog ref="EditDialog" v-on:load-data="$emit('load-data')" />
+    <v-data-table :headers="headers" :items="filter_value" :disable-pagination="true" :hide-default-footer="true"
+        sort-by="calories" class="elevation-1 pb-10">
+
+        <template v-slot:item.name="{ item }">
+            <a @click="OpenEdit(item)">{{item.name}}</a>
+        </template>
+        <template v-slot:item.status="{ item }">
+            <v-chip v-if="item.status=='Y'" class="primary" small>
+                {{status_array[item.status]}}
+            </v-chip>
+            <v-chip v-else small>
+                {{status_array[item.status]}}
+            </v-chip>
+
+        </template>
+
+        <template v-slot:item.action="{ item }">
+            <v-btn @click="$emit('delete-data',item.shop_id)" small color="error">刪除</v-btn>
+        </template>
+
+        <template v-slot:no-data>
+            <v-btn color="primary">
+                Reset
+            </v-btn>
+        </template>
+    </v-data-table>
+</v-container>
