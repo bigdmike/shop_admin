@@ -1,0 +1,13 @@
+<v-card>
+    <h3 class="d-flex align-center mb-2">商品銷售額</h3>
+    <v-data-table dense elevation="0" :headers="headers" :items="product_data" item-key="name" :footer-props="{
+           'items-per-page-text':'每頁顯示'
+      }">
+        <template v-slot:item.index="{ item }">
+            {{product_data.indexOf(item)+1}}
+        </template>
+        <template v-slot:item.price="{ item }">
+            NT$ {{item.price | formatPrice}}
+        </template>
+    </v-data-table>
+</v-card>

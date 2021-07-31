@@ -5,16 +5,28 @@ import FilterDialog from "@/components/Shops/FilterDialog/index"
 import DeleteDialog from "@/components/Shops/DeleteDialog/index"
 import ListShow from "@/components/Shops/ListShow/index"
 import CreateDialog from "@/components/Shops/CreateDialog/"
+import Breadcrumb from "@/components/Breadcrumb/"
 export default {
   name: "Shops",
   components: {
     FilterDialog,
     DeleteDialog,
     ListShow,
-    CreateDialog
+    CreateDialog,
+    Breadcrumb
   },
   data() {
     return {
+      breadcrumb_data: [
+        {
+          title: "頁面編輯",
+          link: ""
+        },
+        {
+          title: "經銷據點",
+          link: ""
+        }
+      ],
       filter_data: {
         status: "all"
       },
@@ -35,7 +47,6 @@ export default {
     async GetShopsData() {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "shop/get_shop_list.php")
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.shop_data = JSON.parse(result.data)
         this.shop_data == null ? this.shop_data = [] : ""
       }

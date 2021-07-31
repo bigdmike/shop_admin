@@ -5,15 +5,27 @@ import qs from "qs"
 import FilterDialog from "@/components/Questions/FilterDialog/index"
 import DeleteDialog from "@/components/Questions/DeleteDialog/index"
 import ListShow from "@/components/Questions/ListShow/index"
+import Breadcrumb from "@/components/Breadcrumb/"
 export default {
   name: "Questions",
   components: {
     FilterDialog,
     DeleteDialog,
     ListShow,
+    Breadcrumb
   },
   data() {
     return {
+      breadcrumb_data: [
+        {
+          title: "頁面編輯",
+          link: ""
+        },
+        {
+          title: "常見問題",
+          link: ""
+        }
+      ],
       filter_data: {
         status: "all"
       },
@@ -31,7 +43,6 @@ export default {
     async GetQuestionsData() {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "questions/get_questions_list.php")
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.questions_data = JSON.parse(result.data)
         this.questions_data == null ? this.questions_data = [] : ""
         this.questions_data.sort((a, b) => {

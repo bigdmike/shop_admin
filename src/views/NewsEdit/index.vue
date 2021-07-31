@@ -60,13 +60,11 @@ export default {
       }
     },
     CancelEdit() {
-      console.log("close")
       this.$router.push("/news")
     },
     async GetNewsData() {
       let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "news/get_news.php", qs.stringify({ id: this.$route.params.id }))
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.news_data = JSON.parse(result.data)
         if (this.news_data.length <= 0) {
           this.$router.push("/news")

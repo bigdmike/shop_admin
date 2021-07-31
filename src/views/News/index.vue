@@ -5,15 +5,27 @@ import qs from "qs"
 import FilterDialog from "@/components/News/FilterDialog/index"
 import DeleteDialog from "@/components/News/DeleteDialog/index"
 import ListShow from "@/components/News/ListShow/index"
+import Breadcrumb from "@/components/Breadcrumb/"
 export default {
   name: "News",
   components: {
     FilterDialog,
     DeleteDialog,
     ListShow,
+    Breadcrumb
   },
   data() {
     return {
+      breadcrumb_data: [
+        {
+          title: "頁面編輯",
+          link: ""
+        },
+        {
+          title: "最新消息",
+          link: ""
+        }
+      ],
       filter_data: {
         status: "all"
       },
@@ -31,7 +43,6 @@ export default {
     async GetNewsData() {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "news/get_news_list.php")
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.news_data = JSON.parse(result.data)
         this.news_data == null ? this.news_data = [] : ""
         this.news_data.sort((a, b) => {

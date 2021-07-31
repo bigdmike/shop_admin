@@ -1,12 +1,12 @@
 <div id="Products">
+    <Breadcrumb :link_array="breadcrumb_data" />
     <v-container v-if="shop_data!=null">
         <FilterDialog ref="FilterDialog" v-model="filter_data" />
         <DeleteDialog ref="DeleteDialog" v-on:load-data="GetShopsData" />
         <CreateDialog ref="CreateDialog" v-on:load-data="GetShopsData" />
         <v-row>
             <v-col cols="12" md="12" lg="12" class="mx-auto">
-                <div class="header d-flex justify-space-between align-center">
-                    <h3 class="my-0 text-h5 font-weight-bold">經銷據點</h3>
+                <div class="header d-flex justify-end align-center">
                     <div class="d-flex align-center">
                         <v-btn @click="OpenCreateDialog" color="primary font-weight-bold">新增經銷</v-btn>
                     </div>

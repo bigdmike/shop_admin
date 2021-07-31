@@ -49,14 +49,11 @@ export default {
       this.$refs.DeleteDialog.Open(id)
     },
     ChangeShowType() {
-      console.log(this.show_type)
       this.show_type == 'list' ? this.show_type = "grid" : this.show_type = "list"
-      console.log(this.show_type)
     },
     async GetProductData() {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "products/get_product_list.php")
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.product_data = JSON.parse(result.data).products
         this.product_data == null ? this.product_data = [] : ""
         this.product_category_data.push({ category_id: "all", name: "全部" })

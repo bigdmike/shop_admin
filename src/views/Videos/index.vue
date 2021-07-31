@@ -5,15 +5,28 @@ import qs from "qs"
 import FilterDialog from "@/components/Videos/FilterDialog/index"
 import DeleteDialog from "@/components/Videos/DeleteDialog/index"
 import ListShow from "@/components/Videos/ListShow/index"
+import Breadcrumb from "@/components/Breadcrumb/"
 export default {
   name: "Videos",
   components: {
     FilterDialog,
     DeleteDialog,
     ListShow,
+    Breadcrumb
   },
   data() {
     return {
+
+      breadcrumb_data: [
+        {
+          title: "頁面編輯",
+          link: ""
+        },
+        {
+          title: "影音專區",
+          link: ""
+        }
+      ],
       filter_data: {
         status: "all"
       },
@@ -31,7 +44,6 @@ export default {
     async GetVideoData() {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "videos/get_video_list.php")
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.video_data = JSON.parse(result.data)
         this.video_data == null ? this.video_data = [] : ""
         this.video_data.sort((a, b) => {

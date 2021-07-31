@@ -3,13 +3,25 @@
 <script>
 import qs from "qs"
 import FroalaEditor from "@/components/FroalaEditor/"
+import Breadcrumb from "@/components/Breadcrumb/"
 export default {
   name: "HomeProduct",
   components: {
-    FroalaEditor
+    FroalaEditor,
+    Breadcrumb
   },
   data() {
     return {
+      breadcrumb_data: [
+        {
+          title: "頁面編輯",
+          link: ""
+        },
+        {
+          title: "首頁主打商品",
+          link: ""
+        }
+      ],
       page_data: [],
       edit_item: null
     }
@@ -26,7 +38,6 @@ export default {
       }
     },
     CancelEdit() {
-      console.log("close")
       this.GetPageData()
     },
     async GetPageData() {
@@ -41,7 +52,6 @@ export default {
         formData.append("file", files[0]);
         let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
         if (result != "error") {
-          console.log(JSON.parse(result.data).link)
           this.edit_item.image = JSON.parse(result.data).link
         }
       }

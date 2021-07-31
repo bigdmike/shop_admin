@@ -127,6 +127,26 @@ const routes = [{
     name: 'Shops',
     component: () => import( /* webpackChunkName: "shops" */ '../views/Shops/index.vue')
   },
+  {
+    path: '/company_info',
+    name: 'CompanyInfo',
+    component: () => import( /* webpackChunkName: "company_info" */ '../views/CompanyInfo/index.vue')
+  },
+  {
+    path: '/ship_doc',
+    name: 'ShipDoc',
+    component: () => import( /* webpackChunkName: "ship_doc" */ '../views/ShipDoc/index.vue')
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import( /* webpackChunkName: "settings" */ '../views/Setting/index.vue')
+  },
+  {
+    path: '/seo_setting',
+    name: 'SeoSetting',
+    component: () => import( /* webpackChunkName: "seo_setting" */ '../views/SeoMetaSetting/index.vue')
+  },
 ]
 
 const router = new VueRouter({

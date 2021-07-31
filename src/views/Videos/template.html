@@ -1,11 +1,11 @@
 <div id="Products">
+    <Breadcrumb :link_array="breadcrumb_data" />
     <v-container v-if="video_data!=null">
         <FilterDialog ref="FilterDialog" v-model="filter_data" />
         <DeleteDialog ref="DeleteDialog" v-on:load-data="GetVideoData" />
         <v-row>
             <v-col cols="12" md="12" lg="12" class="mx-auto">
-                <div class="header d-flex justify-space-between align-center">
-                    <h3 class="my-0 text-h5 font-weight-bold">影音專區</h3>
+                <div class="header d-flex justify-end align-center">
                     <div class="d-flex align-center">
                         <v-btn @click="$router.push('/videos/create')" color="primary font-weight-bold">新增影片</v-btn>
                     </div>

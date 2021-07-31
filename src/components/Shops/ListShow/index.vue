@@ -52,14 +52,12 @@ export default {
       get() {
         {
           let data = JSON.parse(JSON.stringify(this.value))
-          console.log(data)
           if (this.key_word != "") {
             data = data.filter(item => item.name.indexOf(this.key_word) != -1 || item.address.indexOf(this.key_word) != -1 || item.phone.indexOf(this.key_word) != -1)
           }
           if (this.filter_data.status != "all") {
             data = data.filter(item => item.status == this.filter_data.status)
           }
-          console.log(data)
           return data
         }
       },

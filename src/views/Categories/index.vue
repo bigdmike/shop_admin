@@ -43,7 +43,6 @@ export default {
     async GetProductData() {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "products/get_product_list.php")
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.product_data = JSON.parse(result.data).products
         this.product_data == null ? this.product_data = [] : ""
         this.product_category_data = JSON.parse(result.data).category

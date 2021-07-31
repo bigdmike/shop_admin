@@ -47,7 +47,6 @@ export default {
       });
 
 
-      console.log(option_list)
       option_list.forEach(item => {
         let is_exist = false
         this.option_combine.forEach(combine => {
@@ -66,7 +65,6 @@ export default {
           item.image = ""
         }
       })
-      console.log(option_list)
       this.option_list = option_list
     },
     OpenImageDialog(index) {
@@ -74,7 +72,6 @@ export default {
       this.$refs.ImageUpload.click()
     },
     async ChangeImageFile(files) {
-      console.log(files)
       if (files.length > 0) {
         let formData = new FormData();
         formData.append("file", files[0]);
@@ -96,7 +93,6 @@ export default {
     }
   },
   created() {
-    console.log(this.option_combine)
     this.SetData()
   }
 }

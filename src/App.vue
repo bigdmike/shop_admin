@@ -18,6 +18,7 @@
       v-if="$route.name != 'Login'"
       style="z-index: 99"
     >
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <AccountMenu v-if="change_header == 'account'" />
       <EditButtonGroup
         v-on:CallCancelFunction="CallCancelFunction"
@@ -57,7 +58,7 @@ export default {
   },
   methods: {
     ChangeHeader() {
-      let pages = ["ProductEdit", "ProductCreate", "HomeProduct", "HomeVideoSocial", "About", "VideoEdit", "VideoCreate", "NewsEdit", "NewsCreate", "QuestionCreate", "QuestionEdit"]
+      let pages = ["ProductEdit", "ProductCreate", "HomeProduct", "HomeVideoSocial", "About", "VideoEdit", "VideoCreate", "NewsEdit", "NewsCreate", "QuestionCreate", "QuestionEdit", "CompanyInfo", "ShipDoc", "SeoSetting"]
       this.change_header = pages.filter(item => item == this.$route.name).length > 0 ? "edit" : "account"
     },
     CallCreateFunction() {

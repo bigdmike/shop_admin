@@ -7,8 +7,8 @@ export default {
 
   data() {
     return {
-      account: "piggy5272",
-      password: "piggy01478963",
+      account: "",
+      password: "",
       error_msg: ""
     }
   },
@@ -18,7 +18,6 @@ export default {
         let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "admin/login.php", qs.stringify({ account: this.account, password: this.password }))
         if (result != "error") {
           let data = JSON.parse(result.data)
-          console.log(data)
           this.$cookie.set("account_token", data.token)
           this.$cookie.set("account_data", JSON.stringify({
             admin_id: data.admin_id,

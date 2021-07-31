@@ -67,13 +67,11 @@ export default {
       }
     },
     CancelEdit() {
-      console.log("close")
       this.$router.push("/products")
     },
     async GetVideoData() {
       let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "videos/get_video.php", qs.stringify({ id: this.$route.params.id }))
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.video_data = JSON.parse(result.data)
         if (this.video_data.length <= 0) {
           this.$router.push("/videos")
@@ -93,7 +91,6 @@ export default {
         let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
         if (result != "error") {
           this.$refs.ImageUpload.value = ""
-          console.log(JSON.parse(result.data).link)
           this.video_data.cover = JSON.parse(result.data).link
         }
       }

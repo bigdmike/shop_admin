@@ -41,6 +41,11 @@ export default {
           label: "已出貨",
           color: "green",
           "text-color": "white"
+        },
+        N: {
+          label: "已取消",
+          color: "black",
+          "text-color": "white"
         }
       },
       order_data: null,
@@ -50,7 +55,6 @@ export default {
     async GetOrders() {
       let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "orders/get_order_admin.php", qs.stringify({ order_id: this.$route.params.id }))
       if (result != "error") {
-        console.log(result)
         this.order_data = JSON.parse(result.data)
       }
     },
@@ -67,7 +71,6 @@ export default {
       if (index != this.order_data.status) {
         let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "orders/update_order_status.php", qs.stringify({ order_id: this.$route.params.id, status: index }))
         if (result != "error") {
-          console.log(result)
           this.GetOrders()
         }
       }

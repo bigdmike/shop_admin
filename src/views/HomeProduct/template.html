@@ -1,5 +1,5 @@
 <div id="Products">
-
+    <Breadcrumb :link_array="breadcrumb_data" />
     <v-container v-if="page_data.length>0">
         <input style="display: none;" type="file" ref="ImageUpload" @change="UpdateCoverImage($event.target.files)" />
         <v-row v-for="item in page_data">
@@ -30,6 +30,8 @@
                 <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
                     <p class="mt-0 mb-2">標題</p>
                     <v-text-field v-model="item.title" dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">連結</p>
+                    <v-text-field v-model="item.link" dense outlined></v-text-field>
                     <p class="mt-0 mb-2">描述</p>
                     <FroalaEditor v-model="item.content" />
                 </v-card>

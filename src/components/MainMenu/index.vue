@@ -50,6 +50,14 @@ export default {
             {
               title: "經銷據點",
               link: "/shops"
+            },
+            {
+              title: "公司資訊",
+              link: "/company_info"
+            },
+            {
+              title: "退換貨政策",
+              link: "/ship_doc"
             }
           ]
         },

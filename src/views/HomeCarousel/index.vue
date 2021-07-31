@@ -5,15 +5,27 @@ import qs from "qs"
 import draggable from 'vuedraggable'
 import ImageShow from "@/components/HomeCarousel/ImageShowDialog/"
 import DeleteDialog from "@/components/HomeCarousel/DeleteDialog/"
+import Breadcrumb from "@/components/Breadcrumb/"
 export default {
   name: "HomeCarousel",
   components: {
     draggable,
     ImageShow,
-    DeleteDialog
+    DeleteDialog,
+    Breadcrumb
   },
   data() {
     return {
+      breadcrumb_data: [
+        {
+          title: "頁面編輯",
+          link: ""
+        },
+        {
+          title: "首頁大圖輪播",
+          link: ""
+        }
+      ],
       carousels: [],
       edit_item: null
     }
@@ -22,7 +34,6 @@ export default {
     async GetCarouselData() {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "web_edit/get_home_carousel.php")
       if (result != "error") {
-        console.log(result)
         this.carousels = JSON.parse(result.data)
         this.carousels.sort((a, b) => {
           return a.position - b.position

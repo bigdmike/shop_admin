@@ -65,7 +65,6 @@ export default {
       }
     },
     CancelEdit() {
-      console.log("close")
       this.$router.push("/videos")
     },
     GetVideoData() {
@@ -87,7 +86,6 @@ export default {
         let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
         if (result != "error") {
           this.$refs.ImageUpload.value = ""
-          console.log(JSON.parse(result.data).link)
           this.video_data.cover = JSON.parse(result.data).link
         }
       }

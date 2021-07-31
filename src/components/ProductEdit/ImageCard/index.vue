@@ -37,27 +37,21 @@ export default {
       this.$refs.ImageUrlDialog.Open()
     },
     OpenImageInfoDialog(item, item_index) {
-      console.log(item.alt)
       this.$refs.ImageInfoDialog.Open({ title: item.title, alt: item.alt, index: item_index })
     },
     ChangePosition(val) {
       let value = JSON.parse(JSON.stringify(this.value))
       let tmp_data = value[val.moved.oldIndex]
-      console.log(value)
-      console.log(val)
       value.splice(val.moved.oldIndex, 1)
       value.splice(val.moved.newIndex, 0, tmp_data)
-      console.log(value)
       this.$emit("input", value)
     },
     async ChangeImageFile(files) {
-      console.log(files)
       if (files.length > 0) {
         let formData = new FormData();
         formData.append("file", files[0]);
         let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
         if (result != "error") {
-          console.log(JSON.parse(result.data).link)
           let value = JSON.parse(JSON.stringify(this.value))
           value.push(
             {
@@ -73,7 +67,6 @@ export default {
       }
     },
     CreateUrlImage(val) {
-      console.log(val)
       if (val != "") {
         let value = JSON.parse(JSON.stringify(this.value))
         value.push(

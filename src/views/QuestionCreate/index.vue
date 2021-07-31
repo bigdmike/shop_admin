@@ -63,7 +63,6 @@ export default {
       }
     },
     CancelEdit() {
-      console.log("close")
       this.$router.push("/news")
     },
     async GetQuestionsData() {

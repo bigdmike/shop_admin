@@ -59,7 +59,6 @@ export default {
   },
   created() {
     this.product_sort_array = []
-    console.log(this.value)
     this.value.forEach(item => {
       this.product_sort_array.push(item.sort)
     })
@@ -69,14 +68,12 @@ export default {
       get() {
         {
           let data = JSON.parse(JSON.stringify(this.value))
-          console.log(data)
           if (this.key_word != "") {
             data = data.filter(item => item.title.indexOf(this.key_word) != -1)
           }
           if (this.filter_data.status != "all") {
             data = data.filter(item => item.status == this.filter_data.status)
           }
-          console.log(data)
           return data
         }
       },

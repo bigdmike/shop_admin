@@ -124,7 +124,7 @@ export default {
                         Authorization: `${this.$cookie.get("account_token")}`
                     }
                 }
-                this.axios.get(process.env.VUE_APP_BASE_API + "admin/check_token.php", config)
+                this.axios.get(process.env.VUE_APP_BASE_API + "https://www.reracesport.com/api/admin/check_token.php", config)
                     .then((response) => {
                         this.$store.commit("SetPageLoading", false)
                         if (response.data.status != 'success') {

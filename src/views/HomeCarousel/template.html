@@ -1,9 +1,9 @@
 <div id="Products">
     <v-container>
         <v-row>
+            <Breadcrumb :link_array="breadcrumb_data" />
             <v-col cols="12" md="12" lg="12" xl="10" class="mx-auto">
-                <div class="header d-flex justify-space-between align-center mb-5">
-                    <h3 class="my-0 text-h5 font-weight-bold">首頁輪播圖</h3>
+                <div class="header d-flex justify-end align-center mb-5">
                     <div class="d-flex align-center">
                         <v-btn @click="OpenUpload" color="primary font-weight-bold">新增圖片</v-btn>
                     </div>

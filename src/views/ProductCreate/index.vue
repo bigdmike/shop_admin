@@ -95,13 +95,11 @@ export default {
 
     },
     CancelEdit() {
-      console.log("close")
       this.$router.push("/products")
     },
     async GetProductData() {
       let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "products/get_product_list.php")
       if (result != "error") {
-        console.log(JSON.parse(result.data))
         this.category_data = JSON.parse(result.data).category
       }
     },
@@ -112,13 +110,11 @@ export default {
       this.$refs.ImageUpload.click()
     },
     async ChangeImageFile(files) {
-      console.log(files)
       if (files.length > 0) {
         let formData = new FormData();
         formData.append("file", files[0]);
         let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
         if (result != "error") {
-          console.log(JSON.parse(result.data).link)
           this.product_data.images.push(
             {
               image_id: 0,
@@ -149,7 +145,6 @@ export default {
         formData.append("file", files[0]);
         let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
         if (result != "error") {
-          console.log(JSON.parse(result.data).link)
           this.product_data.cover = JSON.parse(result.data).link
         }
       }
@@ -195,7 +190,6 @@ export default {
         }
       }))
       if (result.status == "success") {
-        console.log("you did it !!!")
         this.$store.commit("SetSnackbar", {
           content: "商品已建立",
           status: true
