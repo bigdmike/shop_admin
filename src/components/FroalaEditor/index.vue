@@ -33,6 +33,10 @@ export default {
         heightMin: 200,
         heightMax: 300,
         imageUploadURL: process.env.VUE_APP_BASE_API + 'admin/create_froala_image.php',
+        imageStyles: {
+          class1: 'Class 1',
+          class2: 'Class 2'
+        },
         requestHeaders: {
           Authorization: `${this.$cookie.get("account_token")}`
         }
@@ -83,5 +87,13 @@ export default {
 }
 .fr-btn-grp .fr-float-left {
   margin: 0;
+}
+
+.fr-popup.fr-hidden.fr-active {
+  opacity: 1;
+}
+
+.fr-fic {
+  width: 100% !important;
 }
 </style>
