@@ -33,7 +33,7 @@ export default {
             return '選項內容請勿空白'
           }
           else {
-            var spec = /[,.<>{}@#$%^&*!]/;
+            var spec = /[,<>{}@#$%^&*!]/;
             return spec.test(v) ? "選項內容請勿包含符號" : true
           }
         }
