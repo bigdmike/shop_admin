@@ -33,8 +33,11 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
-                <v-btn class="px-0" color="primary" small text @click="Print">
+                <v-btn class="px-0 mr-4" color="primary" small text @click="Print">
                     <v-icon small class="mr-1">mdi-printer</v-icon>出貨單
+                </v-btn>
+                <v-btn v-if="order_data.payment == 'zero_card'" class="px-0" color="error" small text @click="Refund">
+                    <v-icon small class="mr-1">mdi-printer</v-icon>退款
                 </v-btn>
             </v-col>
         </v-row>
@@ -45,10 +48,9 @@
                         <v-col cols="12" md="6">
                             <p class="mb-0">訂單總金額</p>
                             <h3 class="text-h4 font-weight-bold">{{order_data.total_price | money_format}} TWD</h3>
-                            <p class="caption" v-if="order_data.ec_pay.return_code !=1 && order_data.status!='P'">尚未付款
+                            <p class="caption" v-if="order_data.status!='P'">尚未付款
                             </p>
-                            <p class="caption"
-                                v-if="order_data.ec_pay.return_code ==1 || order_data.status=='P' || order_data.status=='S'">
+                            <p class="caption" v-if="order_data.status=='P' || order_data.status=='S'">
                                 已完成付款
                             </p>
                         </v-col>
@@ -88,7 +90,7 @@
                             <v-divider class="mt-5 "></v-divider>
                         </v-col>
                         <v-col cols="12">
-                            <v-row>
+                            <v-row v-if="order_data.payment!='zero_card'">
                                 <v-col cols="6">
                                     <p class="mb-1 font-weight-bold">綠界編號</p>
                                     <p class="mb-0 body-2 grey--text text--darken-1">{{order_data.ec_pay.trade_no}}</p>
@@ -96,6 +98,48 @@
                                 <v-col cols="6">
                                     <p class="mb-1 font-weight-bold">綠界狀態</p>
                                     <p class="mb-0 body-2 grey--text text--darken-1">{{order_data.ec_pay.return_msg}}
+                                    </p>
+                                </v-col>
+                                <v-col cols="12">
+                                    <p class="mb-1 font-weight-bold">客戶備註</p>
+                                    <p class="mb-0 body-2 grey--text text--darken-1">{{order_data.comment}}
+                                    </p>
+                                </v-col>
+                            </v-row>
+                            <v-row v-if="order_data.payment=='zero_card'">
+                                <v-col cols="6">
+                                    <p class="mb-1 font-weight-bold">零卡分期APP編號</p>
+                                    <p class="mb-0 body-2 grey--text text--darken-1">{{order_data.zc_pay.spanapp_id}}
+                                    </p>
+                                </v-col>
+                                <v-col cols="6">
+                                    <p class="mb-1 font-weight-bold">交易狀態</p>
+                                    <p class="mb-0 body-2 grey--text text--darken-1">
+                                        {{order_data.zc_pay.transaction_state}}
+                                    </p>
+                                </v-col>
+                                <v-col cols="6">
+                                    <p class="mb-1 font-weight-bold">核准授權日</p>
+                                    <p class="mb-0 body-2 grey--text text--darken-1">
+                                        {{order_data.zc_pay.auth_day}}
+                                    </p>
+                                </v-col>
+                                <v-col cols="6">
+                                    <p class="mb-1 font-weight-bold">分期期數</p>
+                                    <p class="mb-0 body-2 grey--text text--darken-1">
+                                        {{order_data.zc_pay.installment}}
+                                    </p>
+                                </v-col>
+                                <v-col cols="6">
+                                    <p class="mb-1 font-weight-bold">第一期金額</p>
+                                    <p class="mb-0 body-2 grey--text text--darken-1">
+                                        {{order_data.zc_pay.first_payment | money_format}} TWD
+                                    </p>
+                                </v-col>
+                                <v-col cols="6">
+                                    <p class="mb-1 font-weight-bold">每期金額</p>
+                                    <p class="mb-0 body-2 grey--text text--darken-1">
+                                        {{order_data.zc_pay.each_payment | money_format}} TWD
                                     </p>
                                 </v-col>
                                 <v-col cols="12">

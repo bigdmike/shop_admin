@@ -74,6 +74,13 @@ export default {
           this.GetOrders()
         }
       }
+    },
+    async Refund() {
+      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "orders/refund_order.php", qs.stringify({ order_data: { type: 'zero_card', id: this.$route.params.id } }))
+      if (result != "error") {
+        this.$store.commit("SetDialog", { title: "已成功申請退款", content: "提醒您，零卡分期退款需要幾個工作天確認後才會將額度退還給消費者，有任何疑問請與零卡分期客服聯絡。", status: true })
+        this.GetOrders()
+      }
     }
   },
   computed: {},

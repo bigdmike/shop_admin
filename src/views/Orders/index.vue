@@ -39,6 +39,10 @@ export default {
           value: "all"
         },
         {
+          label: "零卡分期",
+          value: "zero_card"
+        },
+        {
           label: "信用卡",
           value: "Credit"
         },
