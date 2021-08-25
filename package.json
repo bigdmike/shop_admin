@@ -10,6 +10,7 @@
   "dependencies": {
     "apexcharts": "^3.27.3",
     "axios": "^0.21.1",
+    "compression-webpack-plugin": "^1.1.12",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.1",

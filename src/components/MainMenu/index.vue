@@ -9,62 +9,65 @@ export default {
         {
           title: "首頁",
           icon: "mdi-home",
+          type: "U",
           link: "/",
           group: false,
           list: []
         },
-        // {
-        //   title: "頁面編輯",
-        //   icon: "mdi-pencil",
-        //   link: "/home_carousel",
-        //   group: true,
-        //   list: [
-        //     {
-        //       title: "首頁大圖輪播",
-        //       link: "/home_carousel"
-        //     },
-        //     {
-        //       title: "首頁主打商品",
-        //       link: "/home_product"
-        //     },
-        //     {
-        //       title: "首頁影片＆社群連結",
-        //       link: "/home_video_social"
-        //     },
-        //     {
-        //       title: "關於我們",
-        //       link: "/about"
-        //     },
-        //     {
-        //       title: "影音專區",
-        //       link: "/videos"
-        //     },
-        //     {
-        //       title: "最新消息",
-        //       link: "/news"
-        //     },
-        //     {
-        //       title: "常見問題",
-        //       link: "/questions"
-        //     },
-        //     {
-        //       title: "經銷據點",
-        //       link: "/shops"
-        //     },
-        //     {
-        //       title: "公司資訊",
-        //       link: "/company_info"
-        //     },
-        //     {
-        //       title: "退換貨政策",
-        //       link: "/ship_doc"
-        //     }
-        //   ]
-        // },
+        {
+          title: "頁面編輯",
+          icon: "mdi-pencil",
+          link: "/home_carousel",
+          type: "A",
+          group: true,
+          list: [
+            {
+              title: "首頁大圖輪播",
+              link: "/home_carousel"
+            },
+            {
+              title: "首頁主打商品",
+              link: "/home_product"
+            },
+            {
+              title: "首頁影片＆社群連結",
+              link: "/home_video_social"
+            },
+            {
+              title: "關於我們",
+              link: "/about"
+            },
+            {
+              title: "影音專區",
+              link: "/videos"
+            },
+            {
+              title: "最新消息",
+              link: "/news"
+            },
+            {
+              title: "常見問題",
+              link: "/questions"
+            },
+            {
+              title: "經銷據點",
+              link: "/shops"
+            },
+            {
+              title: "公司資訊",
+              link: "/company_info"
+            },
+            {
+              title: "退換貨政策",
+              link: "/ship_doc"
+            }
+          ]
+        },
         {
           title: "訂單管理",
           icon: "mdi-inbox",
           link: "/orders",
+          type: "U",
           group: true,
           list: [
             {
@@ -77,30 +80,31 @@ export default {
             // }
           ]
         },
-        // {
-        //   title: "商品管理",
-        //   icon: "mdi-tag-text",
-        //   link: "/products",
-        //   group: true,
-        //   list: [
-        //     {
-        //       title: "所有商品",
-        //       link: "/products"
-        //     },
-        //     {
-        //       title: "商品分類",
-        //       link: "/categories"
-        //     },
-        //     // {
-        //     //   title: "庫存管理",
-        //     //   link: "/products/inventories"
-        //     // },
-        //     // {
-        //     //   title: "商品描述模板",
-        //     //   link: "/products/templates"
-        //     // }
-        //   ]
-        // },
+        {
+          title: "商品管理",
+          icon: "mdi-tag-text",
+          link: "/products",
+          type: "A",
+          group: true,
+          list: [
+            {
+              title: "所有商品",
+              link: "/products"
+            },
+            {
+              title: "商品分類",
+              link: "/categories"
+            },
+            // {
+            //   title: "庫存管理",
+            //   link: "/products/inventories"
+            // },
+            // {
+            //   title: "商品描述模板",
+            //   link: "/products/templates"
+            // }
+          ]
+        },
         // {
         //   title: "使用者管理",
         //   icon: "mdi-account",
@@ -118,6 +122,7 @@ export default {
         {
           title: "分析報表",
           icon: "mdi-google-analytics",
+          type: "U",
           link: "/charts",
           group: false,
           list: []
@@ -139,6 +144,16 @@ export default {
         this.$route.path == item.link ? result = true : ""
       });
       return result
+    }
+  },
+  computed: {
+    user_data() {
+      if (this.$cookie.get("account_data")) {
+        return JSON.parse(this.$cookie.get("account_data"))
+      }
+      else {
+        return { name: "", admin_id: -1 }
+      }
     }
   }
 }

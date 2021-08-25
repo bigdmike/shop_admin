@@ -22,7 +22,8 @@ export default {
           this.$cookie.set("account_data", JSON.stringify({
             admin_id: data.admin_id,
             name: data.name,
-            account: data.account
+            account: data.account,
+            promission: data.promission
           }))
           this.$router.push("/")
         }

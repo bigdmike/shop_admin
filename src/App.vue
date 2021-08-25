@@ -78,6 +78,19 @@ export default {
   watch: {
     "$route"() {
       this.ChangeHeader()
+      if (this.$route.meta.promission == "A" && this.user_data.promission != "A") {
+        this.$router.push("/")
+      }
+    }
+  },
+  computed: {
+    user_data() {
+      if (this.$cookie.get("account_data")) {
+        return JSON.parse(this.$cookie.get("account_data"))
+      }
+      else {
+        return { name: "", admin_id: -1 }
+      }
     }
   }
 }
