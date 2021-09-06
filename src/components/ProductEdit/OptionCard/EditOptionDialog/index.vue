@@ -1,8 +1,12 @@
 <template src="./template.html"></template>
 
 <script>
+import draggable from 'vuedraggable'
 export default {
   name: "EditOptionDialog",
+  components: {
+    draggable
+  },
   data() {
     return {
       dialog: false,
@@ -31,12 +35,17 @@ export default {
     }
   },
   methods: {
+
+    ChangeSort() {
+      console.log(this.options)
+    },
     Open(val, index) {
       this.dialog = true
       this.index = index
       this.title = val.title
       this.type = val.type
       this.options = val.options
+      console.log(this.options)
       this.delete_options = []
       this.options.forEach(item => item.menu = false)
     },

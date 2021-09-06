@@ -97,6 +97,15 @@ export default {
         }
         else {
           this.product_data = this.product_data[0]
+          this.product_data.options.forEach(item => {
+            item.options.sort((a, b) => {
+              return a.location - b.location
+            })
+          })
+          this.product_data.option_combine.sort((a, b) => {
+            return a.location - b.location
+          })
+          console.log(this.product_data.option_combine)
           if (this.product_data.category.length == 1 && this.product_data.category[0] == "") {
             this.product_data.category = []
           }

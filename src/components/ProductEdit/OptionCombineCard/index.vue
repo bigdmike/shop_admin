@@ -1,6 +1,7 @@
 <template src="./template.html"></template>
 
 <script>
+import draggable from 'vuedraggable'
 export default {
   name: "OptionCombineCard",
   props: {
@@ -11,6 +12,9 @@ export default {
       require: true
     }
   },
+  components: {
+    draggable
+  },
   data() {
     return {
       option_list: [],
@@ -18,6 +22,9 @@ export default {
     }
   },
   methods: {
+    ChangeSort() {
+      this.$emit("update", this.option_list)
+    },
     SetData() {
       let option_list = []
 
@@ -56,6 +63,7 @@ export default {
             item.status = combine.status == "Y" || combine.status == true ? true : false
             item.stock = combine.stock
             item.image = combine.image
+            item.location = combine.location
           }
         })
         if (is_exist == false) {
@@ -63,9 +71,13 @@ export default {
           item.status = false
           item.stock = 0
           item.image = ""
+          item.location = 0
         }
       })
       this.option_list = option_list
+      this.option_list.sort((a, b) => {
+        return a.location - b.location
+      })
     },
     OpenImageDialog(index) {
       this.edit_index = index

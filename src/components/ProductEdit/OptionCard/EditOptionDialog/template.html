@@ -1,4 +1,4 @@
-<v-dialog v-model="dialog" width="600">
+<v-dialog v-model="dialog" width="800">
     <v-card>
         <v-card-title class="text-h6 d-flex align-center justify-space-between">
             選項標題
@@ -14,14 +14,38 @@
                 <v-divider class="mb-8 mt-3"></v-divider>
                 <p v-if="options.length<=0" class="red--text text-center py-0">請至少加入一個選項</p>
                 <v-row v-if="type!='color'" style="max-height: 300px;overflow-y: auto;">
-                    <v-col cols="12" v-for="(item,item_index) in options" :key="`options_${item_index}`" class="d-flex">
-                        <v-text-field :rules="Title" v-model="item.title" :label="`選項${item_index+1}`" dense outlined>
-                        </v-text-field>
-                        <v-btn @click=" DeleteOption(item, item_index)" class="mx-2" fab text small color="error">
-                            <v-icon dark>
-                                mdi-delete
-                            </v-icon>
-                        </v-btn>
+                    <v-col cols="12">
+                        <v-simple-table>
+                            <template v-slot:default>
+
+
+
+
+                                <draggable :list="options" tag="tbody" handle=".page__grab-icon"
+                                    @end="drag=false,ChangeSort()">
+                                    <tr v-for="(item,item_index) in options" :key="`options_${item_index}`">
+                                        <td width="100" class="py-6">
+                                            <v-icon small class="page__grab-icon">
+                                                mdi-dots-grid
+                                            </v-icon>
+                                        </td>
+                                        <td width="">
+                                            <v-text-field :rules="Title" v-model="item.title" :hide-details="true"
+                                                :label="`選項${item_index+1}`" dense outlined>
+                                            </v-text-field>
+                                        </td>
+                                        <td width="100">
+                                            <v-btn @click=" DeleteOption(item, item_index)" class="mx-2" fab text small
+                                                color="error">
+                                                <v-icon dark>
+                                                    mdi-delete
+                                                </v-icon>
+                                            </v-btn>
+                                        </td>
+                                    </tr>
+                                </draggable>
+                            </template>
+                        </v-simple-table>
                     </v-col>
                 </v-row>
 

@@ -9,6 +9,9 @@
             <thead>
                 <tr>
                     <th class="text-left">
+                        移動
+                    </th>
+                    <th class="text-left">
                         選項名稱
                     </th>
                     <th class="text-left">
@@ -25,8 +28,15 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+
+
+            <draggable :list="option_list" tag="tbody" handle=".page__grab-icon" @end="drag=false,ChangeSort()">
                 <tr v-for="(item,item_index) in option_list" :key="item.title">
+                    <td width="100">
+                        <v-icon small class="page__grab-icon">
+                            mdi-dots-grid
+                        </v-icon>
+                    </td>
                     <td width="">{{ item.option_text_group }}</td>
                     <td width="100">
                         <v-hover v-slot="{ hover }">
@@ -65,7 +75,7 @@
                         <v-switch @change="ChangeData" v-model="item.status"></v-switch>
                     </td>
                 </tr>
-            </tbody>
+            </draggable>
         </template>
     </v-simple-table>
 </v-card>
