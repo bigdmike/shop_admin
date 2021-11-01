@@ -4,7 +4,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://mjp.yongxin-demo.com/php/',
+        target: 'https://mjp.yongxin-demo.com/api/',
         secure: false,
         pathRewrite: {
           '^/api': '/'

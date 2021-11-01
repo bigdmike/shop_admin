@@ -48,6 +48,7 @@ export default {
         product_id: 0,
         name: "",
         cover: "",
+        thumbnail: "",
         category: [],
         options: [],
         images: [],
@@ -106,8 +107,8 @@ export default {
     OpenDeleteDialog() {
       this.$refs.DeleteDialog.Open(this.$route.params.id)
     },
-    OpenUploadImage() {
-      this.$refs.ImageUpload.click()
+    OpenUploadImage(id) {
+      this.$refs[id].click()
     },
     async ChangeImageFile(files) {
       if (files.length > 0) {
@@ -139,13 +140,13 @@ export default {
     UpdateOptionCombine(array) {
       this.product_data.option_combine = array
     },
-    async UpdateCoverImage(files) {
+    async UpdateCoverImage(files, id) {
       if (files.length > 0) {
         let formData = new FormData();
         formData.append("file", files[0]);
         let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
         if (result != "error") {
-          this.product_data.cover = JSON.parse(result.data).link
+          this.product_data[id] = JSON.parse(result.data).link
         }
       }
     },

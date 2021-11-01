@@ -64,18 +64,43 @@
 
                 <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
                     <h3 class="d-flex align-center mb-4">
+                        <v-icon class="mr-2">mdi-image</v-icon>商品列表圖片
+                    </h3>
+                    <input style="display: none;" type="file" ref="ThumnailImageUpload"
+                        @change="UpdateCoverImage($event.target.files,'thumbnail')" />
+                    <v-hover v-slot="{ hover }">
+                        <v-card class="image_card" elevation="0" :class="{ 'on-hover': hover }">
+                            <v-img :src="product_data.thumbnail" aspect-ratio="1">
+                                <v-card-title :class="{'show':hover}"
+                                    class="text-h6 white--text fill-height img_card_control">
+                                    <div class="d-flex justify-space-between align-center my-auto mx-auto">
+                                        <v-btn @click="OpenUploadImage('ThumnailImageUpload')"
+                                            :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)" icon>
+                                            <v-icon :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)">
+                                                mdi-pencil-outline
+                                            </v-icon>
+                                        </v-btn>
+                                    </div>
+                                </v-card-title>
+                            </v-img>
+                        </v-card>
+                    </v-hover>
+                </v-card>
+
+                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+                    <h3 class="d-flex align-center mb-4">
                         <v-icon class="mr-2">mdi-image</v-icon>商品封面圖
                     </h3>
-                    <input style="display: none;" type="file" ref="ImageUpload"
-                        @change="UpdateCoverImage($event.target.files)" />
+                    <input style="display: none;" type="file" ref="CoverImageUpload"
+                        @change="UpdateCoverImage($event.target.files,'cover')" />
                     <v-hover v-slot="{ hover }">
                         <v-card class="image_card" elevation="0" :class="{ 'on-hover': hover }">
                             <v-img :src="product_data.cover" aspect-ratio="1">
                                 <v-card-title :class="{'show':hover}"
                                     class="text-h6 white--text fill-height img_card_control">
                                     <div class="d-flex justify-space-between align-center my-auto mx-auto">
-                                        <v-btn @click="OpenUploadImage()" :class="{ 'show-btns': hover }"
-                                            color="rgba(255, 255, 255, 0)" icon>
+                                        <v-btn @click="OpenUploadImage('CoverImageUpload')"
+                                            :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)" icon>
                                             <v-icon :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)">
                                                 mdi-pencil-outline
                                             </v-icon>
