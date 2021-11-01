@@ -4,7 +4,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://www.reracesport.com/api/',
+        target: 'https://mjp.yongxin-demo.com/php/',
         secure: false,
         pathRewrite: {
           '^/api': '/'
@@ -16,7 +16,7 @@ module.exports = {
     'vuetify'
   ],
   filenameHashing: true,
-  publicPath: '/rerace_admin/',
+  publicPath: '/mjp_admin/',
   configureWebpack: () => {
     if (process.env.NODE_ENV === 'production') {
       return {
