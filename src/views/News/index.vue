@@ -1,101 +1,59 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs"
-import FilterDialog from "@/components/News/FilterDialog/index"
-import DeleteDialog from "@/components/News/DeleteDialog/index"
-import ListShow from "@/components/News/ListShow/index"
-import Breadcrumb from "@/components/Breadcrumb/"
+import { get_all_data } from "@/api/news";
+import ListShow from "@/components/News/ListShow/index";
+import Breadcrumb from "@/components/Breadcrumb/";
+import category_components from "@/components/News/category_components.js";
+import news_components from "@/components/News/news_components.js";
 export default {
   name: "News",
+  mixins: [category_components, news_components],
   components: {
-    FilterDialog,
-    DeleteDialog,
     ListShow,
-    Breadcrumb
+    Breadcrumb,
   },
   data() {
     return {
       breadcrumb_data: [
         {
           title: "頁面編輯",
-          link: ""
+          link: "",
         },
         {
           title: "最新消息",
-          link: ""
-        }
+          link: "",
+        },
       ],
-      filter_data: {
-        status: "all"
-      },
-      news_data: null,
-      key_word: "",
-    }
+      news_categories: [],
+      news_data: [],
+    };
   },
   methods: {
-    OpenFilterDialog() {
-      this.$refs.FilterDialog.Open()
-    },
-    OpenDeleteDialog(id) {
-      this.$refs.DeleteDialog.Open(id)
-    },
     async GetNewsData() {
-      let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "news/get_news_list.php")
-      if (result != "error") {
-        this.news_data = JSON.parse(result.data)
-        this.news_data == null ? this.news_data = [] : ""
-        this.news_data.sort((a, b) => {
-          return a.position - b.position
-        })
-        this.CheckSort()
-      }
+      get_all_data().then((res) => {
+        console.log(res);
+        this.news_categories = res[0].data;
+        this.news_data = res[1].data;
+        this.CheckSort();
+      });
     },
     CheckSort() {
-      let is_sort = true
+      let is_sort = true;
+      this.news_categories.forEach((item, item_index) => {
+        item.Seq == item_index + 1 ? "" : (is_sort = false);
+      });
+      is_sort ? "" : this.UpdateNewsCategorySort();
+
+      is_sort = true;
       this.news_data.forEach((item, item_index) => {
-        item.position == item_index + 1 ? "" : is_sort = false
-      })
-      is_sort ? "" : this.UpdateVideoSort()
+        item.Seq == item_index + 1 ? "" : (is_sort = false);
+      });
+      is_sort ? "" : this.UpdateNewsSort();
     },
-    async UpdateVideoSort() {
-      let data = []
-      this.news_data.forEach(item => {
-        data.push(
-          {
-            news_id: item.news_id,
-            position: item.position
-          }
-        )
-      })
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "news/update_news_position.php", qs.stringify({ news_data: data }))
-      if (result.status != "error") {
-        this.GetNewsData()
-      }
-    }
   },
   created() {
-    this.GetNewsData()
+    this.GetNewsData();
   },
-  computed: {
-  }
-}
+};
 </script>
-
-<style >
-.searchbar .filter_btn {
-  height: 40px !important;
-  border-radius: 5px 0 0 5px;
-  border-right: 0px;
-  border-color: #888;
-}
-.searchbar .searchtext .v-input__control .v-input__slot {
-  border-radius: 0px 5px 5px 0px;
-}
-.searchbar .display_btn {
-  height: 40px !important;
-}
-.opacity-0 {
-  opacity: 0;
-}
-</style>

@@ -1,98 +1,92 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs"
-import FilterDialog from "@/components/Products/FilterDialog/index"
-import DeleteDialog from "@/components/Products/DeleteDialog/index"
-import GridShow from "@/components/Products/GridShow/index"
-import ListShow from "@/components/Products/ListShow/index"
+import FilterDialog from "@/components/Products/FilterDialog/index";
+import DeleteDialog from "@/components/Products/DeleteDialog/index";
+import GridShow from "@/components/Products/GridShow/index";
+import ListShow from "@/components/Products/ListShow/index";
+import OptionDialog from "@/components/Products/OptionDialog/index";
+import {
+  getGoodsAndCategory,
+  // create_good,
+  // update_good,
+  // delete_good,
+  // update_good_sort,
+  // update_good_image,
+} from "@/api/products";
 export default {
   name: "Products",
   components: {
     FilterDialog,
     DeleteDialog,
     GridShow,
-    ListShow
+    ListShow,
+    OptionDialog,
   },
   data() {
     return {
       filter_data: {
         status: "all",
-        category: "all"
+        category: "all",
       },
       product_status_data: [
         {
           label: "全部",
-          value: "all"
+          value: "all",
         },
         {
           label: "未上架",
-          value: "N"
+          value: "N",
         },
         {
           label: "已上架",
-          value: "Y"
-        }
+          value: "Y",
+        },
       ],
-      product_category_data: [
-      ],
+      product_category_data: [],
       product_data: null,
       key_word: "",
-      show_type: "list"
-    }
+      show_type: "list",
+    };
   },
   methods: {
     OpenFilterDialog() {
-      this.$refs.FilterDialog.Open()
+      this.$refs.FilterDialog.Open();
     },
     OpenDeleteDialog(id) {
-      this.$refs.DeleteDialog.Open(id)
+      this.$refs.DeleteDialog.Open(id);
     },
     ChangeShowType() {
-      this.show_type == 'list' ? this.show_type = "grid" : this.show_type = "list"
+      this.show_type == "list"
+        ? (this.show_type = "grid")
+        : (this.show_type = "list");
     },
     async GetProductData() {
-      let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "products/get_product_list.php")
-      if (result != "error") {
-        this.product_data = JSON.parse(result.data).products
-        this.product_data == null ? this.product_data = [] : ""
-        this.product_category_data.push({ category_id: "all", name: "全部" })
-        this.product_category_data = this.product_category_data.concat(JSON.parse(result.data).category)
-        this.product_data.sort((a, b) => {
-          return a.position - b.position
-        })
-        this.CheckSort()
-      }
+      getGoodsAndCategory().then((res) => {
+        console.log(res);
+        this.product_category_data = res[0].data;
+        res[1].data.forEach((item) => {
+          item.Status = item.Status == "Y" ? true : false;
+        });
+        this.product_data = res[1].data;
+      });
     },
     CheckSort() {
-      let is_sort = true
+      let is_sort = true;
       this.product_data.forEach((item, item_index) => {
-        item.position == item_index + 1 ? "" : is_sort = false
-      })
-      is_sort ? "" : this.UpdateProductSort()
+        item.position == item_index + 1 ? "" : (is_sort = false);
+      });
+      is_sort ? "" : this.UpdateProductSort();
     },
     async UpdateProductSort() {
-      let data = []
-      this.product_data.forEach(item => {
-        data.push(
-          {
-            product_id: item.product_id,
-            position: item.position
-          }
-        )
-      })
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "products/update_product_position.php", qs.stringify({ post_data: data }))
-      if (result.status != "error") {
-        this.GetProductData()
-      }
-    }
+      //
+    },
   },
   created() {
-    this.GetProductData()
+    this.GetProductData();
   },
-  computed: {
-  }
-}
+  computed: {},
+};
 </script>
 
 <style >

@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    loading: false,
+    loading: 0,
     dialog: {
       title: "發生錯誤",
       content: "帳號不存在，請重新輸入",
@@ -18,7 +18,7 @@ export default new Vuex.Store({
   },
   mutations: {
     SetPageLoading(state, action) {
-      state.loading = action
+      state.loading += action
     },
     SetDialog(state, {
       title,

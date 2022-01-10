@@ -1,38 +1,38 @@
 <div id="Products">
+    <template>
+        <!-- CATEGORY DIALOG -->
+        <CategoryCreateDialog ref="CategoryCreateDialog" v-on:create-category="SendCreateCategoryData" />
+        <CategoryEditDialog ref="CategoryEditDialog" v-on:update-category="SendUpdateCategoryData" />
+        <CategoryDeleteDialog ref="CategoryDeleteDialog" v-on:delete-category="SendDeleteCategoryData" />
+    </template>
+    <template>
+        <!-- QUESTION DIALOG -->
+        <CreateDialog ref="CreateDialog" :category_list="news_categories" v-on:create-news="SendCreateData" />
+        <EditDialog ref="EditDialog" :category_list="news_categories" v-on:update-news="SendUpdateData" />
+        <DeleteDialog ref="DeleteDialog" v-on:delete-news="SendDeleteData" />
+    </template>
     <Breadcrumb :link_array="breadcrumb_data" />
     <v-container v-if="news_data!=null">
-        <FilterDialog ref="FilterDialog" v-model="filter_data" />
-        <DeleteDialog ref="DeleteDialog" v-on:load-data="GetNewsData" />
         <v-row>
-            <v-col cols="12" md="12" lg="12" class="mx-auto">
-                <div class="header d-flex justify-end align-center">
-                    <div class="d-flex align-center">
-                        <v-btn @click="$router.push('/articles/create')" color="primary font-weight-bold">新增文章</v-btn>
-                    </div>
-                </div>
-
-                <div class="searchbar d-flex align-stretch pt-5 pb-2">
-                    <v-btn @click="OpenFilterDialog" class="ma-0 py-0 filter_btn  black--text" outlined>
-                        分類篩選
-                        <v-icon class="ml-2">mdi-menu-down</v-icon>
-                    </v-btn>
-                    <v-text-field class="searchtext" v-model="key_word" hide-details="auto" color="grey darken-2"
-                        outlined dense append-icon="mdi-magnify"></v-text-field>
-                </div>
-
-                <div class="filter_bar d-flex align-center py-0">
-                    <v-chip v-if="filter_data.status=='Y'" class="ma-2 caption" close
-                        @click:close="filter_data.status = 'all'">
-                        狀態: 已啟用
-                    </v-chip>
-                    <v-chip v-if="filter_data.status=='N'" class="ma-2 caption" close
-                        @click:close="filter_data.status = 'all'">
-                        狀態: 已停用
-                    </v-chip>
-                </div>
-
-                <ListShow :filter_data="filter_data" v-on:update-sort="UpdateVideoSort"
-                    v-on:delete-data="OpenDeleteDialog" v-model="news_data" :key_word="key_word" />
+            <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-8 px-4">
+                <v-row>
+                    <v-col cols="12" md="12" lg="6">
+                        <div class="d-flex justify-space-between align-center">
+                            <h3>文章分類</h3>
+                            <v-btn @click="OpenCreateCategoryDialog" color="primary font-weight-bold">新增</v-btn>
+                        </div>
+                        <ListShow v-on:update-sort="UpdateNewsCategorySort" v-on:set-edit="OpenEditCategoryDialog"
+                            v-on:delete-data="OpenDeleteCategoryDialog" v-model="news_categories" />
+                    </v-col>
+                    <v-col cols="12" md="12" lg="6">
+                        <div class="d-flex justify-space-between align-center">
+                            <h3>文章列表</h3>
+                            <v-btn @click="OpenCreateDialog" color="primary font-weight-bold">新增</v-btn>
+                        </div>
+                        <ListShow v-on:update-sort="UpdateNewsSort" v-on:delete-data="OpenDeleteDialog"
+                            v-on:set-edit="OpenEditDialog" v-model="news_data" />
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
     </v-container>

@@ -1,101 +1,61 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs"
-import FilterDialog from "@/components/Questions/FilterDialog/index"
-import DeleteDialog from "@/components/Questions/DeleteDialog/index"
-import ListShow from "@/components/Questions/ListShow/index"
-import Breadcrumb from "@/components/Breadcrumb/"
+import { getQuestionAndCategory } from "@/api/question";
+import ListShow from "@/components/Questions/ListShow/index";
+import CategoryListShow from "@/components/Questions/CategoryListShow/index";
+import Breadcrumb from "@/components/Breadcrumb/";
+import category_components from "@/components/Questions/category_components.js";
+import question_components from "@/components/Questions/question_components.js";
 export default {
   name: "Questions",
+  mixins: [category_components, question_components],
   components: {
-    FilterDialog,
-    DeleteDialog,
     ListShow,
-    Breadcrumb
+    CategoryListShow,
+    Breadcrumb,
   },
   data() {
     return {
       breadcrumb_data: [
         {
           title: "頁面編輯",
-          link: ""
+          link: "",
         },
         {
           title: "常見問題",
-          link: ""
-        }
+          link: "",
+        },
       ],
-      filter_data: {
-        status: "all"
-      },
-      questions_data: null,
-      key_word: "",
-    }
+      question_categories: [],
+      questions_data: [],
+    };
   },
   methods: {
-    OpenFilterDialog() {
-      this.$refs.FilterDialog.Open()
-    },
-    OpenDeleteDialog(id) {
-      this.$refs.DeleteDialog.Open(id)
-    },
     async GetQuestionsData() {
-      let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "questions/get_questions_list.php")
-      if (result != "error") {
-        this.questions_data = JSON.parse(result.data)
-        this.questions_data == null ? this.questions_data = [] : ""
-        this.questions_data.sort((a, b) => {
-          return a.position - b.position
-        })
-        this.CheckSort()
-      }
+      getQuestionAndCategory().then((res) => {
+        console.log(res);
+        this.question_categories = res[0].data;
+        this.questions_data = res[1].data;
+        this.CheckSort();
+      });
     },
     CheckSort() {
-      let is_sort = true
+      let is_sort = true;
+      this.question_categories.forEach((item, item_index) => {
+        item.Seq == item_index + 1 ? "" : (is_sort = false);
+      });
+      is_sort ? "" : this.UpdateQuestionsCategorySort();
+
+      is_sort = true;
       this.questions_data.forEach((item, item_index) => {
-        item.position == item_index + 1 ? "" : is_sort = false
-      })
-      is_sort ? "" : this.UpdateQuestionsSort()
+        item.Seq == item_index + 1 ? "" : (is_sort = false);
+      });
+      is_sort ? "" : this.UpdateQuestionsSort();
     },
-    async UpdateQuestionsSort() {
-      let data = []
-      this.questions_data.forEach(item => {
-        data.push(
-          {
-            question_id: item.question_id,
-            position: item.position
-          }
-        )
-      })
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "questions/update_questions_position.php", qs.stringify({ questions_data: data }))
-      if (result.status != "error") {
-        this.GetQuestionsData()
-      }
-    }
   },
   created() {
-    this.GetQuestionsData()
+    this.GetQuestionsData();
   },
-  computed: {
-  }
-}
+};
 </script>
-
-<style >
-.searchbar .filter_btn {
-  height: 40px !important;
-  border-radius: 5px 0 0 5px;
-  border-right: 0px;
-  border-color: #888;
-}
-.searchbar .searchtext .v-input__control .v-input__slot {
-  border-radius: 0px 5px 5px 0px;
-}
-.searchbar .display_btn {
-  height: 40px !important;
-}
-.opacity-0 {
-  opacity: 0;
-}
-</style>

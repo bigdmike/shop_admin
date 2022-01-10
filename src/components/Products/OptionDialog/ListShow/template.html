@@ -1,0 +1,31 @@
+<v-container class="product_list px-0">
+    <v-data-table :disable-sort="true" :headers="headers" :items="value" :disable-pagination="true"
+        :hide-default-footer="true" sort-by="calories" class="elevation-1 pb-10">
+        <template v-slot:body="props">
+            <draggable :list="value" @change="ChangeSort" tag="tbody" handle=".page__grab-icon" @end="drag=false">
+                <tr v-for="(item, index) in value" :key="index">
+                    <td>
+                        <a v-if="item[`${type}Title`]!='無' && item[`${type}Title`]!='F'"
+                            @click="$emit('set-edit', item[`${type}ID`],type,item[`${type}Title`] )">{{ item[`${type}Title`] }}</a>
+
+                        <p class="pa-0 ma-0" v-else>{{ item[`${type}Title`] }}</p>
+                    </td>
+                    <td>
+                        {{item.created_at}}
+                    </td>
+                    <td>
+                        <template v-if="item[`${type}Title`]!='無' && item[`${type}Title`]!='F'">
+                            <v-btn @click="$emit('delete-option',item)" small color="error">刪除</v-btn>
+                        </template>
+                    </td>
+                </tr>
+            </draggable>
+        </template>
+
+        <template v-slot:no-data>
+            <v-btn color="primary">
+                Reset
+            </v-btn>
+        </template>
+    </v-data-table>
+</v-container>

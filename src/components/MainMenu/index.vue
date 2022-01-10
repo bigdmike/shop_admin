@@ -12,56 +12,60 @@ export default {
           type: "U",
           link: "/",
           group: false,
-          list: []
+          list: [],
         },
         {
           title: "頁面編輯",
           icon: "mdi-pencil",
-          link: "/home_carousel",
-          type: "A",
+          link: "/questions",
+          type: "U",
           group: true,
           list: [
             {
+              title: "廣告設定",
+              link: "/advertisement",
+            },
+            {
               title: "首頁大圖輪播",
-              link: "/home_carousel"
+              link: "/home_carousel",
             },
             {
-              title: "首頁主打商品",
-              link: "/home_product"
+              title: "首頁網紅介紹",
+              link: "/home_kol",
             },
             {
-              title: "首頁影片＆社群連結",
-              link: "/home_video_social"
+              title: "首頁底部連結",
+              link: "/home_promote",
             },
             {
               title: "關於我們",
-              link: "/about"
-            },
-            {
-              title: "影音專區",
-              link: "/videos"
+              link: "/about",
             },
             {
               title: "最新消息",
-              link: "/news"
+              link: "/news",
             },
             {
               title: "常見問題",
-              link: "/questions"
+              link: "/questions",
             },
             {
-              title: "經銷據點",
-              link: "/shops"
+              title: "角色館",
+              link: "/mascot",
             },
             {
               title: "公司資訊",
-              link: "/company_info"
+              link: "/company_info",
             },
             {
-              title: "退換貨政策",
-              link: "/ship_doc"
-            }
-          ]
+              title: "隱私權政策",
+              link: "/privacy_page",
+            },
+            {
+              title: "會員責任規範條款",
+              link: "/terms_of_customer",
+            },
+          ],
         },
         {
           title: "訂單管理",
@@ -72,28 +76,32 @@ export default {
           list: [
             {
               title: "所有訂單",
-              link: "/orders"
+              link: "/orders",
             },
             // {
             //   title: "遺棄的購物車",
             //   link: "/checkout"
             // }
-          ]
+          ],
         },
         {
           title: "商品管理",
           icon: "mdi-tag-text",
           link: "/products",
-          type: "A",
+          type: "U",
           group: true,
           list: [
             {
               title: "所有商品",
-              link: "/products"
+              link: "/products",
             },
             {
               title: "商品分類",
-              link: "/categories"
+              link: "/categories",
+            },
+            {
+              title: "商品目錄",
+              link: "/menu_categories",
             },
             // {
             //   title: "庫存管理",
@@ -103,7 +111,7 @@ export default {
             //   title: "商品描述模板",
             //   link: "/products/templates"
             // }
-          ]
+          ],
         },
         // {
         //   title: "使用者管理",
@@ -112,20 +120,26 @@ export default {
         //   group: false,
         //   list: []
         // },
-        // {
-        //   title: "促銷優惠",
-        //   icon: "mdi-sale",
-        //   link: "/promotions",
-        //   group: false,
-        //   list: []
-        // },
+        {
+          title: "促銷優惠",
+          icon: "mdi-sale",
+          type: "U",
+          link: "/promotions",
+          group: true,
+          list: [
+            {
+              title: "優惠券代碼",
+              link: "/coupon",
+            },
+          ],
+        },
         {
           title: "分析報表",
           icon: "mdi-google-analytics",
           type: "U",
           link: "/charts",
           group: false,
-          list: []
+          list: [],
         },
         // {
         //   title: "銷售管道",
@@ -134,29 +148,28 @@ export default {
         //   group: false,
         //   list: []
         // }
-      ]
-    }
+      ],
+    };
   },
   methods: {
     GroupOpenFilter(menu_item) {
-      let result = false
-      menu_item.list.forEach(item => {
-        this.$route.path == item.link ? result = true : ""
+      let result = false;
+      menu_item.list.forEach((item) => {
+        this.$route.path == item.link ? (result = true) : "";
       });
-      return result
-    }
+      return result;
+    },
   },
   computed: {
     user_data() {
       if (this.$cookie.get("account_data")) {
-        return JSON.parse(this.$cookie.get("account_data"))
+        return JSON.parse(this.$cookie.get("account_data"));
+      } else {
+        return { name: "", admin_id: -1 };
       }
-      else {
-        return { name: "", admin_id: -1 }
-      }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import MainMenu from "@/components/MainMenu/index"
-import AccountMenu from "@/components/MainHeader/AccountMenu"
-import EditButtonGroup from "@/components/MainHeader/EditButtonGroup"
-import MainLoading from "@/components/MainLoading"
-import MainDialog from "@/components/MainDialog"
-import MainSnackbar from "@/components/MainSnackbar"
+import MainMenu from "@/components/MainMenu/index";
+import AccountMenu from "@/components/MainHeader/AccountMenu";
+import EditButtonGroup from "@/components/MainHeader/EditButtonGroup";
+import MainLoading from "@/components/MainLoading";
+import MainDialog from "@/components/MainDialog";
+import MainSnackbar from "@/components/MainSnackbar";
 export default {
   name: "App",
   components: {
@@ -48,52 +48,65 @@ export default {
     EditButtonGroup,
     MainLoading,
     MainDialog,
-    MainSnackbar
+    MainSnackbar,
   },
   data() {
     return {
       drawer: true,
-      change_header: "account"
-    }
+      change_header: "account",
+    };
   },
   methods: {
     ChangeHeader() {
-      let pages = ["ProductEdit", "ProductCreate", "HomeProduct", "HomeVideoSocial", "About", "VideoEdit", "VideoCreate", "NewsEdit", "NewsCreate", "QuestionCreate", "QuestionEdit", "CompanyInfo", "ShipDoc", "SeoSetting"]
-      this.change_header = pages.filter(item => item == this.$route.name).length > 0 ? "edit" : "account"
+      let pages = [
+        "ProductEdit",
+        "ProductCreate",
+        "About",
+        "CompanyInfo",
+        "PrivacyPage",
+        "SeoSetting",
+        "TermsOfCustomer",
+      ];
+      this.change_header =
+        pages.filter((item) => item == this.$route.name).length > 0
+          ? "edit"
+          : "account";
     },
     CallCreateFunction() {
-      this.$refs.RouterView.CreateData()
+      this.$refs.RouterView.CreateData();
     },
     CallUpdateFunction() {
-      this.$refs.RouterView.UpdateData()
+      this.$refs.RouterView.UpdateData();
     },
     CallCancelFunction() {
-      this.$refs.RouterView.CancelEdit()
+      this.$refs.RouterView.CancelEdit();
     },
   },
   async created() {
-    await this.CheckToken()
-    this.ChangeHeader()
+    // await this.CheckToken()
+    this.ChangeHeader();
   },
   watch: {
-    "$route"() {
-      this.ChangeHeader()
-      if (this.$route.meta.promission == "A" && this.user_data.promission != "A") {
-        this.$router.push("/")
+    $route() {
+      this.ChangeHeader();
+      if (
+        this.$route.meta.promission == "A" &&
+        this.user_data.promission != "A"
+      ) {
+        this.$router.push("/");
       }
-    }
+    },
   },
   computed: {
     user_data() {
       if (this.$cookie.get("account_data")) {
-        return JSON.parse(this.$cookie.get("account_data"))
+        return JSON.parse(this.$cookie.get("account_data"));
+      } else {
+        return { name: "", admin_id: -1 };
       }
-      else {
-        return { name: "", admin_id: -1 }
-      }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

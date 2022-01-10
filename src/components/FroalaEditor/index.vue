@@ -1,60 +1,98 @@
 <template src="./template.html"></template>
 
 <script>
-//Import Froala Editor 
-import 'froala-editor/js/plugins.pkgd.min.js';
+//Import Froala Editor
+import "froala-editor/js/plugins.pkgd.min.js";
 //Import third party plugins
-import 'froala-editor/js/languages/zh_tw'
+import "froala-editor/js/languages/zh_tw";
 // Import Froala Editor css files.
-import 'froala-editor/css/froala_editor.pkgd.min.css';
+import "froala-editor/css/froala_editor.pkgd.min.css";
 
 // Import and use Vue Froala lib.
-import VueFroala from 'vue-froala-wysiwyg'
-import Vue from 'vue'
-Vue.use(VueFroala)
-Vue.config.productionTip = false
+import VueFroala from "vue-froala-wysiwyg";
+import Vue from "vue";
+Vue.use(VueFroala);
+Vue.config.productionTip = false;
 
 export default {
   props: {
     value: {
-      require: true
-    }
+      require: true,
+    },
   },
   data() {
     return {
       config: {
-        language: 'zh_tw',
+        language: "zh_tw",
         toolbarButtons: [
-          ['bold', 'italic', 'underline', 'strikeThrough', 'fontSize', 'textColor', 'backgroundColor', 'emoticons', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'insertHR', 'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'html'],
+          [
+            "bold",
+            "italic",
+            "underline",
+            "strikeThrough",
+            "fontSize",
+            "textColor",
+            "backgroundColor",
+            "emoticons",
+            "paragraphFormat",
+            "align",
+            "formatOL",
+            "formatUL",
+            "insertHR",
+            "insertLink",
+            "insertImage",
+            "insertVideo",
+            "insertTable",
+            "html",
+          ],
         ],
         toolbarButtonsMD: [
-          ['bold', 'italic', 'underline', 'strikeThrough', 'fontSize', 'textColor', 'backgroundColor', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'html'],
+          [
+            "bold",
+            "italic",
+            "underline",
+            "strikeThrough",
+            "fontSize",
+            "textColor",
+            "backgroundColor",
+            "paragraphFormat",
+            "align",
+            "formatOL",
+            "formatUL",
+            "insertLink",
+            "insertImage",
+            "insertVideo",
+            "insertTable",
+            "html",
+          ],
         ],
         heightMin: 200,
-        heightMax: 300,
-        imageUploadURL: process.env.VUE_APP_BASE_API + 'admin/create_froala_image.php',
+        heightMax: 600,
+        imageUploadURL: process.env.VUE_APP_BASE_API + "editor",
+        // imageUploadMethod: "POST",
         imageStyles: {
-          class1: 'Class 1',
-          class2: 'Class 2'
+          class1: "Class 1",
+          class2: "Class 2",
         },
         requestHeaders: {
-          Authorization: `${this.$cookie.get("account_token")}`
-        }
+          Authorization: `${this.$cookie.get("account_token")}`,
+          "Access-Control-Allow-Origin-Type": "*",
+        },
       },
-      model: 'Edit Your Content Here!'
-    }
+      model: "Edit Your Content Here!",
+    };
   },
   computed: {
     content: {
       get() {
-        return this.value
+        return this.value;
       },
       set(val) {
-        this.$emit("input", val)
-      }
-    }
-  }
-}
+        this.$emit("input", val);
+      },
+    },
+  },
+};
 </script>
 
 <style>

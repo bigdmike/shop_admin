@@ -23,35 +23,33 @@ const routes = [{
   },
   {
     path: '/products',
-    meta: {
-      promission: "A"
-    },
+
     name: 'Products',
     component: () => import( /* webpackChunkName: "products" */ '../views/Products/index.vue')
   },
   {
     path: '/product/:id',
-    meta: {
-      promission: "A"
-    },
+
     name: 'ProductEdit',
     component: () => import( /* webpackChunkName: "product_edit" */ '../views/ProductEdit/index.vue')
   },
   {
     path: '/products/new/',
-    meta: {
-      promission: "A"
-    },
+
     name: 'ProductCreate',
     component: () => import( /* webpackChunkName: "product_create" */ '../views/ProductCreate/index.vue')
   },
   {
-    path: '/categories',
-    meta: {
-      promission: "A"
-    },
-    name: 'Categories',
-    component: () => import( /* webpackChunkName: "categories" */ '../views/Categories/index.vue')
+    path: '/product_menu',
+
+    name: 'ProductMenu',
+    component: () => import( /* webpackChunkName: "product_menu" */ '../views/ProductMenu/index.vue')
+  },
+  {
+    path: '/menu_categories',
+
+    name: 'MenuCategories',
+    component: () => import( /* webpackChunkName: "categories" */ '../views/MenuCategories/index.vue')
   },
   {
     path: '/orders',
@@ -70,132 +68,74 @@ const routes = [{
   },
   {
     path: '/home_carousel',
-    meta: {
-      promission: "A"
-    },
+
     name: 'HomeCarousel',
     component: () => import( /* webpackChunkName: "home_carousel" */ '../views/HomeCarousel/index.vue')
-  },
-  {
-    path: '/home_product',
-    meta: {
-      promission: "A"
-    },
-    name: 'HomeProduct',
-    component: () => import( /* webpackChunkName: "home_product" */ '../views/HomeProduct/index.vue')
-  },
-  {
-    path: '/home_video_social',
-    meta: {
-      promission: "A"
-    },
-    name: 'HomeVideoSocial',
-    component: () => import( /* webpackChunkName: "home_video_social" */ '../views/HomeVideoSocial/index.vue')
   },
 
   {
     path: '/about',
-    meta: {
-      promission: "A"
-    },
+
     name: 'About',
     component: () => import( /* webpackChunkName: "about" */ '../views/About/index.vue')
   },
   {
-    path: '/videos',
-    meta: {
-      promission: "A"
-    },
-    name: 'Videos',
-    component: () => import( /* webpackChunkName: "videos" */ '../views/Videos/index.vue')
-  },
-  {
-    path: '/video/:id',
-    meta: {
-      promission: "A"
-    },
-    name: 'VideoEdit',
-    component: () => import( /* webpackChunkName: "video_edit" */ '../views/VideoEdit/index.vue')
-  },
-  {
-    path: '/videos/create',
-    meta: {
-      promission: "A"
-    },
-    name: 'VideoCreate',
-    component: () => import( /* webpackChunkName: "video_create" */ '../views/VideoCreate/index.vue')
-  },
-  {
     path: '/news',
-    meta: {
-      promission: "A"
-    },
+
     name: 'News',
     component: () => import( /* webpackChunkName: "news" */ '../views/News/index.vue')
   },
   {
-    path: '/article/:id',
-    meta: {
-      promission: "A"
-    },
-    name: 'NewsEdit',
-    component: () => import( /* webpackChunkName: "news_edit" */ '../views/NewsEdit/index.vue')
-  },
-  {
-    path: '/articles/create',
-    meta: {
-      promission: "A"
-    },
-    name: 'NewsCreate',
-    component: () => import( /* webpackChunkName: "news_create" */ '../views/NewsCreate/index.vue')
-  },
-  {
     path: '/questions',
-    meta: {
-      promission: "A"
-    },
+
     name: 'Questions',
     component: () => import( /* webpackChunkName: "questions" */ '../views/Questions/index.vue')
   },
   {
-    path: '/question/:id',
-    meta: {
-      promission: "A"
-    },
-    name: 'QuestionEdit',
-    component: () => import( /* webpackChunkName: "question_edit" */ '../views/QuestionEdit/index.vue')
+    path: '/home_kol',
+
+    name: 'HomeKol',
+    component: () => import( /* webpackChunkName: "home_kol" */ '../views/HomeKol/index.vue')
   },
   {
-    path: '/questions/create',
-    meta: {
-      promission: "A"
-    },
-    name: 'QuestionCreate',
-    component: () => import( /* webpackChunkName: "question_create" */ '../views/QuestionCreate/index.vue')
+    path: '/home_promote',
+
+    name: 'HomePromote',
+    component: () => import( /* webpackChunkName: "home_promote" */ '../views/HomePromote/index.vue')
   },
   {
-    path: '/shops',
-    meta: {
-      promission: "A"
-    },
-    name: 'Shops',
-    component: () => import( /* webpackChunkName: "shops" */ '../views/Shops/index.vue')
+    path: '/mascot',
+
+    name: 'Mascot',
+    component: () => import( /* webpackChunkName: "mascot" */ '../views/Mascot/index.vue')
+  },
+  {
+    path: '/advertisement',
+
+    name: 'Advertisement',
+    component: () => import( /* webpackChunkName: "advertisement" */ '../views/Advertisement/index.vue')
+  },
+  {
+    path: '/privacy_page',
+
+    name: 'PrivacyPage',
+    component: () => import( /* webpackChunkName: "privacy_page" */ '../views/PrivacyPage/index.vue')
+  },
+  {
+    path: '/terms_of_customer',
+
+    name: 'TermsOfCustomer',
+    component: () => import( /* webpackChunkName: "terms_of_customer" */ '../views/TermsOfCustomer/index.vue')
+  },
+  {
+    path: '/coupon',
+    name: 'Coupon',
+    component: () => import( /* webpackChunkName: "coupon" */ '../views/Coupon/index.vue')
   },
   {
     path: '/company_info',
-    meta: {
-      promission: "A"
-    },
     name: 'CompanyInfo',
     component: () => import( /* webpackChunkName: "company_info" */ '../views/CompanyInfo/index.vue')
-  },
-  {
-    path: '/ship_doc',
-    meta: {
-      promission: "A"
-    },
-    name: 'ShipDoc',
-    component: () => import( /* webpackChunkName: "ship_doc" */ '../views/ShipDoc/index.vue')
   },
   {
     path: '/settings',

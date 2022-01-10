@@ -1,0 +1,41 @@
+<v-container class="product_list px-0">
+    <v-data-table :headers="headers" :items="filter_value" :disable-pagination="true" :hide-default-footer="true"
+        sort-by="calories" class="elevation-1 pb-10">
+        <template v-slot:body="props">
+            <draggable :list="filter_value" tag="tbody" handle=".page__grab-icon" @end="drag=false,ChangeSort()">
+                <tr v-for="(item, index) in filter_value" :key="index">
+                    <td>
+                        <v-icon small class="page__grab-icon">
+                            mdi-dots-grid
+                        </v-icon>
+                    </td>
+                    <td>
+                        <a @click="$emit('open-update',item)">{{ item.Title }}</a>
+                    </td>
+                    <td>
+                        <p class="ma-0 pa-0">
+                            {{GetCategoryName(item)}}
+                        </p>
+                    </td>
+                    <td>
+                        <v-chip v-if="item.Status=='Y'" class="primary" small>
+                            已啟用
+                        </v-chip>
+                        <v-chip v-else small>
+                            已停用
+                        </v-chip>
+                    </td>
+                    <td>
+                        <v-btn @click="$emit('delete-data',item)" small color="error">刪除</v-btn>
+                    </td>
+                </tr>
+            </draggable>
+        </template>
+
+        <template v-slot:no-data>
+            <v-btn color="primary">
+                Reset
+            </v-btn>
+        </template>
+    </v-data-table>
+</v-container>

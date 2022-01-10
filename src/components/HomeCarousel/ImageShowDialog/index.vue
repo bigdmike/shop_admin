@@ -3,42 +3,48 @@
 <script>
 export default {
   name: "ImageShowDialog",
-  props: {
-    images: {
-      require: true
-    }
-  },
   data() {
     return {
       active: 0,
-      dialog: false
-    }
+      images: [],
+      dialog: false,
+    };
   },
   methods: {
     NextImage() {
-      this.active == this.images.length - 1 ? this.active = 0 : this.active += 1
+      this.active == this.images.length - 1
+        ? (this.active = 0)
+        : (this.active += 1);
     },
     PrevImage() {
-      this.active == 0 ? this.active = this.images.length - 1 : this.active -= 1
+      this.active == 0
+        ? (this.active = this.images.length - 1)
+        : (this.active -= 1);
     },
-    Open(index) {
-      this.dialog = true
-      this.active = index
+    Open(item) {
+      this.images.push(item.Image1);
+      this.images.push(item.Image2);
+      this.dialog = true;
     },
     Close() {
-      this.dialog = false
-      this.active = 0
-    }
+      this.dialog = false;
+      this.images = [];
+      this.active = 0;
+    },
   },
-  watch: {
-  }
-}
+  filters: {
+    image(val) {
+      return process.env.VUE_APP_BASEURL + val;
+    },
+  },
+};
 </script>
 
 <style lang="scss">
 .active_image {
-  width: 800px;
-  max-width: 800px;
+  max-width: 80vw;
+  max-height: 80vh;
+  object-fit: contain;
   @media (max-width: 768px) {
     width: auto;
     max-width: 95%;

@@ -1,30 +1,30 @@
 <template src="./template.html"></template>
 
 <script>
-import Breadcrumb from "@/components/Breadcrumb/"
-import GTMEditDialog from "@/components/Setting/EditDialog/"
+import Breadcrumb from "@/components/Breadcrumb/";
+import GTMEditDialog from "@/components/Setting/EditDialog/";
 export default {
   name: "Setting",
   components: {
     Breadcrumb,
-    GTMEditDialog
+    GTMEditDialog,
   },
   data() {
     return {
       breadcrumb_data: [
         {
           title: "網站設定",
-          link: ""
-        }
+          link: "",
+        },
       ],
-    }
+    };
   },
   methods: {
     OpenGTMEditDialog() {
-      this.$refs.GTMEditDialog.Open()
-    }
-  }
-}
+      this.$refs.GTMEditDialog.Open();
+    },
+  },
+};
 </script>
 
 <style lang="scss">

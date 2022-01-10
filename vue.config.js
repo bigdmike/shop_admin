@@ -4,7 +4,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://mjp.yongxin-demo.com/api/',
+        target: 'https://kitchen.yongxin-demo.com/',
         secure: false,
         pathRewrite: {
           '^/api': '/'
@@ -16,7 +16,7 @@ module.exports = {
     'vuetify'
   ],
   filenameHashing: true,
-  publicPath: '/mjp_admin/',
+  publicPath: '/kol_kitchen_admin/',
   configureWebpack: () => {
     if (process.env.NODE_ENV === 'production') {
       return {

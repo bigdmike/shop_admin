@@ -5,12 +5,10 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import axios_plugin from './common/axios_plugin'
 var VueCookie = require('vue-cookie');
 
 Vue.use(VueAxios, axios)
 Vue.use(VueCookie)
-Vue.mixin(axios_plugin)
 Vue.config.productionTip = false
 
 

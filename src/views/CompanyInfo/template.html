@@ -1,24 +1,26 @@
 <div id="Products">
 
     <Breadcrumb :link_array="breadcrumb_data" />
-    <v-container v-if="page_data.length>0">
+    <div class="pa-lg-10 pa-5" v-if="page_data!=null">
         <v-row>
             <v-col cols="12" md="8">
                 <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <p class="mt-0 mb-2">公司名稱</p>
-                    <v-text-field v-model="GetFormData('company_name').title" dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">公司信箱</p>
+                    <v-text-field v-model="page_data.CompanyEmail.Content" dense outlined></v-text-field>
                     <p class="mt-0 mb-2">公司地址</p>
-                    <v-text-field v-model="GetFormData('company_address').title" dense outlined></v-text-field>
-                    <p class="mt-0 mb-2">公司電話</p>
-                    <v-text-field v-model="GetFormData('company_phone').title" dense outlined></v-text-field>
-                    <p class="mt-0 mb-2">聯絡信箱</p>
-                    <v-text-field v-model="GetFormData('company_email').title" dense outlined></v-text-field>
+                    <v-text-field v-model="page_data.CompanyAddress.Content" dense outlined></v-text-field>
                     <p class="mt-0 mb-2">營業時間</p>
-                    <v-text-field v-model="GetFormData('company_time').title" dense outlined></v-text-field>
-                    <p class="mt-0 mb-2">公司創立日期</p>
-                    <v-text-field v-model="GetFormData('company_create_date').title" dense outlined></v-text-field>
+                    <v-text-field v-model="page_data.CompanyTime.Content" dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">公司電話</p>
+                    <v-text-field v-model="page_data.CompanyPhone.Content" dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">臉書連結</p>
+                    <v-text-field v-model="page_data.CompanyFBLink.Content" dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">IG連結</p>
+                    <v-text-field v-model="page_data.CompanyIGLink.Content" dense outlined></v-text-field>
+                    <p class="mt-0 mb-2">LINE@連結</p>
+                    <v-text-field v-model="page_data.CompanyLineLink.Content" dense outlined></v-text-field>
                 </v-card>
             </v-col>
         </v-row>
-    </v-container>
+    </div>
 </div>

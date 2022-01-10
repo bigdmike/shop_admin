@@ -12,9 +12,11 @@
         </v-col>
         <v-col cols="12" md="12" lg="4" class="mx-auto pt-4">
             <v-text-field v-model="account" class="mb-4" :flat="true" dense solo :hide-details="true"></v-text-field>
-            <v-text-field v-model="password" type="password" dense solo :flat="true" :hide-details="true">
+            <v-text-field v-model="password" v-on:keyup.enter="SendLoginData" type="password" dense solo :flat="true"
+                :hide-details="true">
             </v-text-field>
-            <v-btn @click="Login" class="d-block mt-4 body-1" large style="width:100%" depressed color="primary">
+            <v-btn @click="SendLoginData" class="d-block mt-4 body-1" large style="width:100%" depressed
+                color="primary">
                 登入
             </v-btn>
             <p v-if="error_msg!=''" class="body-2 text-center mt-4 red--text text--darken-4">{{error_msg}}</p>

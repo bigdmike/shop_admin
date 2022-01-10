@@ -1,5 +1,6 @@
 <div id="Products">
     <v-container v-if="product_data!=null">
+        <OptionDialog />
         <FilterDialog ref="FilterDialog" :product_status_data="product_status_data"
             :product_category_data="product_category_data" v-model="filter_data" />
         <DeleteDialog ref="DeleteDialog" v-on:load-data="GetProductData" />
@@ -75,7 +76,8 @@
                     v-model="product_data" :key_word="key_word" />
                 <ListShow v-if="show_type=='list'" :filter_data="filter_data" :product_status_data="product_status_data"
                     :product_category_data="product_category_data" v-on:update-sort="UpdateProductSort"
-                    v-on:delete-data="OpenDeleteDialog" v-model="product_data" :key_word="key_word" />
+                    v-on:delete-data="OpenDeleteDialog" v-model="product_data" :key_word="key_word"
+                    v-on:re-load="GetProductData" />
             </v-col>
         </v-row>
     </v-container>

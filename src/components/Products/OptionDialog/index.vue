@@ -1,0 +1,209 @@
+<template>
+  <v-dialog
+    v-model="dialog"
+    fullscreen
+    hide-overlay
+    transition="dialog-bottom-transition"
+  >
+    <EditDialog ref="EditDialog" v-on:update-option="SendUpdateData" />
+    <CreateDialog ref="CreateDialog" v-on:create-option="SendCreateData" />
+    <DeleteDialog ref="DeleteDialog" v-on:delete-option="SendDeleteData" />
+    <v-card class="grey lighten-3 overflow-hidden">
+      <v-toolbar dark color="primary">
+        <v-toolbar-title>商品庫存設定</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn dark text @click="Cancel"> 關閉 </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+      <v-row class="pa-8">
+        <v-col cols="12">
+          <h2>{{ product_name }}</h2>
+        </v-col>
+        <v-col cols="12" md="6">
+          <div class="d-flex justify-space-between align-center">
+            <h3>選項一</h3>
+            <v-btn
+              @click="OpenCreate(id, 'Color')"
+              color="primary font-weight-bold"
+              >新增</v-btn
+            >
+          </div>
+          <ListShow
+            v-if="option_1 != null"
+            type="Color"
+            v-on:re-load="GetGoodsStockData"
+            v-on:delete-option="OpenDelete"
+            v-on:set-edit="OpenEdit"
+            v-model="option_1"
+          />
+        </v-col>
+        <v-col cols="12" md="6">
+          <div class="d-flex justify-space-between align-center">
+            <h3>選項二</h3>
+            <v-btn
+              @click="OpenCreate(id, 'Size')"
+              color="primary font-weight-bold"
+              >新增</v-btn
+            >
+          </div>
+          <ListShow
+            v-if="option_2 != null"
+            type="Size"
+            v-on:re-load="GetGoodsStockData"
+            v-on:delete-option="OpenDelete"
+            v-on:set-edit="OpenEdit"
+            v-model="option_2"
+          />
+        </v-col>
+        <v-col cols="12">
+          <div class="d-flex justify-space-between align-center">
+            <h3>庫存設定</h3>
+            <v-btn
+              @click="OpenCreate(id, 'Size')"
+              color="primary font-weight-bold"
+              >新增</v-btn
+            >
+          </div>
+          <StockList
+            v-if="stocks != null"
+            :option_1="option_1"
+            :option_2="option_2"
+            v-on:set-edit="OpenEdit"
+            v-model="stocks"
+          />
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+import { get_goods } from "@/api/products.js";
+import {
+  getOptionStock,
+  create_color,
+  delete_color,
+  create_size,
+  delete_size,
+  update_color,
+  update_size,
+} from "@/api/product_option.js";
+import ListShow from "./ListShow/index.vue";
+import StockList from "./StockListShow/index.vue";
+import CreateDialog from "./CreateDialog/index.vue";
+import EditDialog from "./EditDialog/index.vue";
+import DeleteDialog from "./DeleteDialog/index.vue";
+export default {
+  name: "OptionDialog",
+  components: {
+    ListShow,
+    StockList,
+    CreateDialog,
+    DeleteDialog,
+    EditDialog,
+  },
+  data() {
+    return {
+      id: 1,
+      product: null,
+      option_1: null,
+      option_2: null,
+      stocks: null,
+      dialog: true,
+    };
+  },
+  computed: {
+    product_name() {
+      return this.product == null ? "" : this.product.Title;
+    },
+  },
+  methods: {
+    Open() {
+      this.id = 4;
+      this.dialog = true;
+    },
+    Cancel() {
+      this.id = -1;
+      this.dialog = false;
+    },
+    OpenCreate(id, type) {
+      this.$refs.CreateDialog.Open(id, type);
+    },
+    OpenEdit(id, type, title) {
+      this.$refs.EditDialog.Open(id, type, title);
+    },
+    OpenDelete(item) {
+      this.$refs.DeleteDialog.Open(item);
+    },
+    SortOption(data, title) {
+      let tmp_data = JSON.parse(JSON.stringify(data));
+      let first_option = tmp_data.filter((item) => item[title] == "無")[0];
+      tmp_data.splice(tmp_data.indexOf(first_option), 1);
+      tmp_data.splice(0, 0, first_option);
+      return tmp_data;
+    },
+    async GetGoodsStockData() {
+      //   let vm = this;
+      get_goods().then((res) => {
+        this.product = res.data.filter((item) => item.GoodsID == this.id)[0];
+        getOptionStock(this.product.GoodsID).then((res) => {
+          console.log(res);
+          this.option_1 = res[0].data.filter((item) => {
+            return item.GoodsID == this.product.GoodsID || item.GoodsID == 0;
+          });
+          this.option_1 = this.SortOption(this.option_1, "ColorTitle");
+          this.option_2 = res[1].data.filter(
+            (item) => item.GoodsID == this.product.GoodsID || item.GoodsID == 0
+          );
+          this.option_2 = this.SortOption(this.option_2, "SizeTitle");
+          this.stocks = res[2].data;
+        });
+      });
+    },
+    async SendCreateData(data) {
+      if (data.ColorTitle) {
+        create_color(data).then(() => {
+          this.$refs.CreateDialog.Cancel();
+          this.GetGoodsStockData();
+        });
+      } else {
+        create_size(data).then(() => {
+          this.$refs.CreateDialog.Cancel();
+          this.GetGoodsStockData();
+        });
+      }
+    },
+    async SendUpdateData(data) {
+      data.GoodsID = this.id;
+      if (data.ColorTitle) {
+        update_color(data).then(() => {
+          this.$refs.EditDialog.Cancel();
+          this.GetGoodsStockData();
+        });
+      } else {
+        update_size(data).then(() => {
+          this.$refs.EditDialog.Cancel();
+          this.GetGoodsStockData();
+        });
+      }
+    },
+    async SendDeleteData(data) {
+      if (data.ColorTitle) {
+        delete_color(data.ColorID).then(() => {
+          this.$refs.DeleteDialog.Cancel();
+          this.GetGoodsStockData();
+        });
+      } else {
+        delete_size(data.SizeID).then(() => {
+          this.$refs.DeleteDialog.Cancel();
+          this.GetGoodsStockData();
+        });
+      }
+    },
+  },
+  created() {
+    this.GetGoodsStockData();
+  },
+};
+</script>

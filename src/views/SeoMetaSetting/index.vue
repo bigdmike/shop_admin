@@ -1,70 +1,78 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs"
-import FroalaEditor from "@/components/FroalaEditor/"
-import Breadcrumb from "@/components/Breadcrumb/"
+import FroalaEditor from "@/components/FroalaEditor/";
+import Breadcrumb from "@/components/Breadcrumb/";
+import {
+  get_common_column,
+  update_common_column,
+  update_common_column_image,
+} from "@/api/common_column";
 export default {
-  name: "About",
+  name: "SEOSetting",
   components: {
     FroalaEditor,
-    Breadcrumb
+    Breadcrumb,
   },
   data() {
     return {
       breadcrumb_data: [
         {
-          title: "功能設定",
-          link: ""
+          title: "頁面編輯",
+          link: "",
         },
         {
-          title: "SEO META TAG",
-          link: ""
-        }
+          title: "SEO設定",
+          link: "",
+        },
       ],
-      page_data: [],
-      edit_item: null
-    }
+      image_preview_url: "",
+      about_cover: null,
+      about_content: null,
+    };
   },
   methods: {
     async UpdateData() {
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "web_edit/update_common_column.php", qs.stringify({ column_array: this.page_data }))
-      if (result != "error") {
-        this.$store.commit("SetSnackbar", {
-          content: "資料已更新",
-          status: true
-        })
-        this.GetPageData()
+      update_common_column(this.about_content).then(() => {
+        if (this.about_cover.Image1 != null) {
+          update_common_column_image(
+            this.about_cover.Title,
+            this.about_cover
+          ).then(() => {
+            this.GetPageData();
+          });
+        } else {
+          this.GetPageData();
+        }
+      });
+    },
+    async GetPageData() {
+      get_common_column(["SeoDescription", "SeoImage"]).then((res) => {
+        this.about_cover = res.SeoImage;
+        this.about_cover.Image1 = null;
+        this.image_preview_url =
+          process.env.VUE_APP_BASEURL + this.about_cover.Content;
+        this.about_content = res.SeoDescription;
+      });
+    },
+    UpdateCoverImage(file) {
+      this.about_cover.Image1 = file[0];
+      if (file.length > 0) {
+        this.image_preview_url = URL.createObjectURL(this.about_cover.Image1);
       }
     },
     CancelEdit() {
-      this.GetPageData()
-    },
-    async GetPageData() {
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "web_edit/get_common_column.php", qs.stringify({ column_array: ["base_meta"] }))
-      if (result != "error") {
-        this.page_data = JSON.parse(result.data)
-      }
-    },
-    async UpdateCoverImage(files) {
-      if (files.length > 0) {
-        let formData = new FormData();
-        formData.append("file", files[0]);
-        let result = await this.SendFormData(process.env.VUE_APP_BASE_API + "products/upload_product_image.php", formData)
-        if (result != "error") {
-          this.edit_item.image = JSON.parse(result.data).link
-        }
-      }
+      this.GetPageData();
     },
     OpenUploadImage(item) {
-      this.edit_item = item
-      this.$refs.ImageUpload.click()
-    }
+      this.edit_item = item;
+      this.$refs.ImageUpload.click();
+    },
   },
   created() {
-    this.GetPageData()
-  }
-}
+    this.GetPageData();
+  },
+};
 </script>
 <style>
 .image_card {

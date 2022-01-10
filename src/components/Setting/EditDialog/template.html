@@ -7,7 +7,7 @@
                         <h4>GTM編輯</h4>
                     </v-col>
                     <v-col class="d-flex" cols="12" v-if="code!=null">
-                        <v-text-field :rules="Require" v-model="code.title" label="GoogleTagManagerID" dense outlined>
+                        <v-text-field :rules="Require" v-model="code.Content" label="GoogleTagManagerID" dense outlined>
                         </v-text-field>
                     </v-col>
                 </v-row>
@@ -21,7 +21,7 @@
             <v-btn class="elevation-0" color="grey lighten-2" @click="Cancel">
                 取消
             </v-btn>
-            <v-btn class="elevation-0" color="primary" @click="UpdateCategory">
+            <v-btn class="elevation-0" color="primary" @click="UpdateData">
                 更新
             </v-btn>
         </v-card-actions>

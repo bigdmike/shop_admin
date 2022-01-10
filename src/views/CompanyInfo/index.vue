@@ -1,56 +1,63 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs"
-import Breadcrumb from "@/components/Breadcrumb/"
+import { get_common_column, update_common_column } from "@/api/common_column";
+import Breadcrumb from "@/components/Breadcrumb/";
 export default {
   name: "CompanyInfo",
   components: {
-    Breadcrumb
+    Breadcrumb,
   },
   data() {
     return {
       breadcrumb_data: [
         {
           title: "頁面編輯",
-          link: ""
+          link: "",
         },
         {
           title: "公司資訊",
-          link: ""
-        }
+          link: "",
+        },
       ],
-      page_data: [],
-    }
+      page_data: null,
+    };
   },
   methods: {
-    async UpdateData() {
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "web_edit/update_common_column.php", qs.stringify({ column_array: this.page_data }))
-      if (result != "error") {
-        this.$store.commit("SetSnackbar", {
-          content: "資料已更新",
-          status: true
-        })
-        this.GetPageData()
-      }
+    async UpdateData(index = 0) {
+      let key = Object.keys(this.page_data)[index];
+      update_common_column(this.page_data[key]).then(() => {
+        if (index != Object.keys(this.page_data).length - 1) {
+          this.UpdateData(index + 1);
+        } else {
+          this.GetPageData();
+        }
+      });
     },
     CancelEdit() {
-      this.GetPageData()
+      this.GetPageData();
     },
     async GetPageData() {
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "web_edit/get_common_column.php", qs.stringify({ column_array: ["company_name", "company_address", "company_phone", "company_email", "company_time", "company_create_date"] }))
-      if (result != "error") {
-        this.page_data = JSON.parse(result.data)
-      }
+      get_common_column([
+        "CompanyAddress",
+        "CompanyEmail",
+        "CompanyFBLink",
+        "CompanyIGLink",
+        "CompanyLineLink",
+        "CompanyPhone",
+        "CompanyTime",
+      ]).then((res) => {
+        this.page_data = res;
+      });
     },
     GetFormData(key) {
-      return this.page_data.filter(item => item.column_name == key)[0]
-    }
+      return this.page_data.filter((item) => item.column_name == key)[0];
+    },
   },
   created() {
-    this.GetPageData()
-  }
-}
+    this.GetPageData();
+  },
+};
 </script>
 <style>
 .image_card {

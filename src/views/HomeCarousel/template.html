@@ -1,6 +1,14 @@
 <div id="Products">
     <v-container>
         <v-row>
+            <template>
+                <!-- components -->
+                <CreateDialog ref="CreateDialog" v-on:create-carousel="CreateCarouselData" />
+                <EditDialog ref="EditDialog" v-on:update-carousel="UpdateCarouselData" />
+                <DeleteDialog ref="DeleteDialog" v-on:delete-carousel="DeleteCarouselData" />
+                <ImageShow ref="ImageShow" />
+            </template>
+
             <Breadcrumb :link_array="breadcrumb_data" />
             <v-col cols="12" md="12" lg="12" xl="10" class="mx-auto">
                 <div class="header d-flex justify-end align-center mb-5">
@@ -9,18 +17,12 @@
                     </div>
                 </div>
                 <v-container class="product_list" v-if="carousels.length >0">
-                    <DeleteDialog ref="DeleteDialog" v-on:load-data="GetCarouselData" />
-                    <ImageShow ref="ImageShow" :images="carousels" />
-                    <input ref="ImageUpload" @change="CreateCarouselData($event.target.files)" type="file"
-                        style="display: none;">
-                    <input ref="ImageEditUpload" @change="UpdateCarouselData($event.target.files)" type="file"
-                        style="display: none;">
                     <draggable class="row d-flex align-stretch flex-wrap" v-model="carousels" @start="drag=true"
-                        @end="drag=false,CheckSort()">
-                        <v-col cols="12" sm="6" md="4" lg="3" v-for="(item,item_index) in carousels" :key="item.title">
+                        @end="drag=false" @change="CheckSort">
+                        <v-col cols="12" sm="6" md="4" lg="3" v-for="(item) in carousels" :key="item.title">
                             <v-hover v-slot="{ hover }">
                                 <v-card class="image_card" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }">
-                                    <v-img :src="item.url" :aspect-ratio="5/3">
+                                    <v-img :src="item.Image1 | image" :aspect-ratio="5/3">
                                         <v-card-title :class="{'show':hover}"
                                             class="text-h6 white--text fill-height img_card_control">
                                             <div class="d-flex justify-space-between align-center my-auto mx-auto">
@@ -31,8 +33,8 @@
                                                         mdi-pencil-outline
                                                     </v-icon>
                                                 </v-btn>
-                                                <v-btn @click="OpenImageShow(item_index)"
-                                                    :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)" icon>
+                                                <v-btn @click="OpenImageShow(item)" :class="{ 'show-btns': hover }"
+                                                    color="rgba(255, 255, 255, 0)" icon>
                                                     <v-icon :class="{ 'show-btns': hover }" small
                                                         color="rgba(255, 255, 255, 0)">
                                                         mdi-eye

@@ -1,35 +1,26 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs"
 export default {
-  name: "DeleteCategoryDialog",
+  name: "DeleteNewsDialog",
   data() {
     return {
       id: -1,
-      dialog: false
-    }
+      dialog: false,
+    };
   },
   methods: {
-    Open(id) {
-      this.id = id
-      this.dialog = true
+    Open({ NewsID }) {
+      this.id = NewsID;
+      this.dialog = true;
     },
     Cancel() {
-      this.id = -1
-      this.dialog = false
+      this.id = -1;
+      this.dialog = false;
     },
-    async DeleteProduct() {
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "news/delete_news.php", qs.stringify({ id: this.id }))
-      if (result.status != "error") {
-        this.$emit("load-data")
-        this.$store.commit("SetSnackbar", {
-          content: "文章已刪除",
-          status: true
-        })
-        this.Cancel()
-      }
-    }
-  }
-}
+    async DeleteNews() {
+      this.$emit("delete-news", this.id);
+    },
+  },
+};
 </script>
