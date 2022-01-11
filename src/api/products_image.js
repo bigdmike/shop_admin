@@ -1,7 +1,7 @@
 import {
     patch,
     del,
-    put,
+    // post,
     get,
     post_image
 } from '@/common/request'
@@ -10,8 +10,13 @@ import {
 export function get_picture(id) {
     return get('admin/goods/picture/' + id)
 }
-export function create_picture(picture_item, id) {
-    return put('admin/goods/picture/' + id + '/0/0', picture_item, "已成功新增商品")
+export function create_picture(picture_item) {
+    picture_item.SizeID == "" ? picture_item.SizeID = 0 : ""
+    picture_item.ColorID == "" ? picture_item.ColorID = 0 : ""
+    let data = {}
+    data.Seq1 = picture_item.Seq
+    data.Image1 = picture_item.Image
+    return post_image(`admin/goods/picture/${picture_item.GoodsID}/${picture_item.SizeID}/${picture_item.ColorID}`, data, "已成功新增商品圖片")
 }
 // export function update_picture(picture_item) {
 //     return patch('admin/goods', picture_item, "已成功更新商品")
@@ -30,11 +35,10 @@ export function update_picture_image(goods_id, picture_item) {
 
 export function getGoodsAndCategory(id = -1) {
     //分類
-    var category = get('admin/menu')
-    //商品
-    var goods = get('admin/goods')
+    var color = get('admin/color')
+    var size = get('admin/size')
 
-    let promise_list = [category, goods]
+    let promise_list = [color, size]
     if (id != -1) {
         //圖片
         var images = get('admin/goods/picture/' + id)

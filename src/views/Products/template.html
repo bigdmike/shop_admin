@@ -1,9 +1,10 @@
 <div id="Products">
     <v-container v-if="product_data!=null">
-        <OptionDialog />
+        <OptionDialog ref="OptionDialog" />
         <FilterDialog ref="FilterDialog" :product_status_data="product_status_data"
             :product_category_data="product_category_data" v-model="filter_data" />
         <DeleteDialog ref="DeleteDialog" v-on:load-data="GetProductData" />
+        <ImageEditDialog ref="ImageEditDialog" />
         <v-row>
             <v-col cols="12" md="12" lg="12" class="mx-auto">
                 <div class="header d-flex justify-space-between align-center">
@@ -67,7 +68,7 @@
                     <v-chip v-if="filter_data.category!='all'" class="ma-2 caption" color="secondary" close
                         @click:close="filter_data.category = 'all'">
                         分類:
-                        {{product_category_data.filter(item=>item.category_id==filter_data.category)[0].name}}
+                        {{product_category_data.filter(item=>item.MenuID==filter_data.category)[0].Title}}
                     </v-chip>
                 </div>
 
@@ -76,8 +77,8 @@
                     v-model="product_data" :key_word="key_word" />
                 <ListShow v-if="show_type=='list'" :filter_data="filter_data" :product_status_data="product_status_data"
                     :product_category_data="product_category_data" v-on:update-sort="UpdateProductSort"
-                    v-on:delete-data="OpenDeleteDialog" v-model="product_data" :key_word="key_word"
-                    v-on:re-load="GetProductData" />
+                    v-on:delete-data="OpenDeleteDialog" v-on:open-stock="OpenStockDialog" v-model="product_data"
+                    :key_word="key_word" v-on:re-load="GetProductData" />
             </v-col>
         </v-row>
     </v-container>

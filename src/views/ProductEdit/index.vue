@@ -5,11 +5,8 @@ import Breadcrumb from "@/components/Breadcrumb/";
 import FroalaEditor from "@/components/FroalaEditor/";
 import DeleteDialog from "@/components/Products/DeleteDialog/index";
 
-import {
-  getGoodsAndCategory,
-  update_goods,
-  update_goods_image,
-} from "@/api/products";
+import { getGoodsAndCategory, update_goods_all } from "@/api/products";
+import { StrToBool, BoolToStr, ImageUrl } from "@/common/filter.js";
 export default {
   name: "ProductEdit",
   components: {
@@ -57,13 +54,7 @@ export default {
       if (this.product_data.name == "") {
         error += "- 請輸入商品名稱 <br>";
       }
-      // if (this.product_data.category.length <= 0) {
-      //   error += "- 請至少選取一個產品分類 <br>";
-      // }
       if (error == "") {
-        //先傳product 資料表的內容
-        //再傳product images 跟 delete_array的images部分
-        //最後傳product options 跟 option_types 還有delete_array的options跟option_types
         this.UpdateProductData();
       } else {
         error = "無法儲存商品請修正以下問題：<br>" + error;
@@ -83,18 +74,19 @@ export default {
         this.product_data = res[1].data.filter(
           (item) => item.GoodsID == this.$route.params.id
         )[0];
-        this.product_data.CombineDiscount =
-          this.product_data.CombineDiscount == "N" ? false : true;
-        this.product_data.DeliveryFrozen =
-          this.product_data.DeliveryFrozen == "N" ? false : true;
-        this.cover_file.cover_1_preview_url =
-          this.product_data.Image1 == ""
-            ? ""
-            : process.env.VUE_APP_BASEURL + this.product_data.Image1;
-        this.cover_file.cover_2_preview_url =
-          this.product_data.Image2 == ""
-            ? ""
-            : process.env.VUE_APP_BASEURL + this.product_data.Image2;
+        this.product_data.MenuID = [];
+        this.product_data.Menu.forEach((item) => {
+          this.product_data.MenuID.push(item.MenuID);
+        });
+
+        this.product_data = StrToBool(this.product_data);
+
+        this.cover_file.cover_1_preview_url = ImageUrl(
+          this.product_data.Image1
+        );
+        this.cover_file.cover_2_preview_url = ImageUrl(
+          this.product_data.Image2
+        );
       });
     },
     OpenDeleteDialog() {
@@ -118,22 +110,11 @@ export default {
       }
     },
     async UpdateProductData() {
-      let tmp_data = Object.assign({}, this.product_data);
-      tmp_data.CombineDiscount = tmp_data.CombineDiscount == false ? "N" : "Y";
-      tmp_data.DeliveryFrozen = tmp_data.DeliveryFrozen == false ? "N" : "Y";
-
-      update_goods(tmp_data).then(() => {
-        if (
-          this.cover_file.cover_1 != null ||
-          this.cover_file.cover_2 != null
-        ) {
-          tmp_data.Image1 = this.cover_file.cover_1;
-          tmp_data.Image2 = this.cover_file.cover_2;
-          console.log(tmp_data);
-          update_goods_image(tmp_data.GoodsID, tmp_data).then(() => {
-            this.GetProductData();
-          });
-        }
+      const images = [this.cover_file.cover_1, this.cover_file.cover_2];
+      console.log(this.product_data);
+      update_goods_all(BoolToStr(this.product_data), images).then((res) => {
+        console.log(res);
+        this.GetProductData();
       });
     },
   },

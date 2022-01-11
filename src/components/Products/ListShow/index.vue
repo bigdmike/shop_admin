@@ -57,7 +57,7 @@ export default {
         this.product_sort_array.push(item.sort);
       });
       this.$emit("input", this.filter_value);
-      this.$emit("update-sort");
+      this.$emit("update-sort", this.filter_value);
     },
     GetCategoryName(item) {
       let text = this.product_category_data.filter(
@@ -121,9 +121,13 @@ export default {
             );
           }
           if (this.filter_data.category != "all") {
-            data = data.filter(
-              (item) => item.MenuID == this.filter_data.category
-            );
+            data = data.filter((item) => {
+              return (
+                item.Menu.filter(
+                  (item) => item.MenuID == this.filter_data.category
+                ).length > 0
+              );
+            });
           }
           return data;
         }

@@ -25,6 +25,14 @@
                         {{ item.SellPrice }}
                     </td>
                     <td>
+                        <v-chip v-if="item.Status=='Y'" class="primary" small>
+                            已啟用
+                        </v-chip>
+                        <v-chip v-else small>
+                            已停用
+                        </v-chip>
+                    </td>
+                    <td>
                         <v-btn @click="$emit('set-edit',item)" small color="success">編輯</v-btn>
                     </td>
                 </tr>

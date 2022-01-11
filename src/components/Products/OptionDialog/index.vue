@@ -8,6 +8,18 @@
     <EditDialog ref="EditDialog" v-on:update-option="SendUpdateData" />
     <CreateDialog ref="CreateDialog" v-on:create-option="SendCreateData" />
     <DeleteDialog ref="DeleteDialog" v-on:delete-option="SendDeleteData" />
+    <CreateStockDialog
+      ref="CreateStockDialog"
+      :option_1="option_1"
+      :option_2="option_2"
+      v-on:create-stock="SendCreateStock"
+    />
+    <EditStockDialog
+      ref="EditStockDialog"
+      :option_1="option_1"
+      :option_2="option_2"
+      v-on:update-stock="SendCreateStock"
+    />
     <v-card class="grey lighten-3 overflow-hidden">
       <v-toolbar dark color="primary">
         <v-toolbar-title>商品庫存設定</v-toolbar-title>
@@ -59,9 +71,7 @@
         <v-col cols="12">
           <div class="d-flex justify-space-between align-center">
             <h3>庫存設定</h3>
-            <v-btn
-              @click="OpenCreate(id, 'Size')"
-              color="primary font-weight-bold"
+            <v-btn @click="OpenCreateStock()" color="primary font-weight-bold"
               >新增</v-btn
             >
           </div>
@@ -69,7 +79,8 @@
             v-if="stocks != null"
             :option_1="option_1"
             :option_2="option_2"
-            v-on:set-edit="OpenEdit"
+            v-on:set-edit="OpenEditStock"
+            v-on:sort-update="SendUpdateSortData"
             v-model="stocks"
           />
         </v-col>
@@ -88,11 +99,15 @@ import {
   delete_size,
   update_color,
   update_size,
+  create_stock,
+  update_stock_sort,
 } from "@/api/product_option.js";
 import ListShow from "./ListShow/index.vue";
 import StockList from "./StockListShow/index.vue";
 import CreateDialog from "./CreateDialog/index.vue";
+import CreateStockDialog from "./CreateStockDialog/index.vue";
 import EditDialog from "./EditDialog/index.vue";
+import EditStockDialog from "./EditStockDialog/index.vue";
 import DeleteDialog from "./DeleteDialog/index.vue";
 export default {
   name: "OptionDialog",
@@ -102,6 +117,8 @@ export default {
     CreateDialog,
     DeleteDialog,
     EditDialog,
+    CreateStockDialog,
+    EditStockDialog,
   },
   data() {
     return {
@@ -110,7 +127,7 @@ export default {
       option_1: null,
       option_2: null,
       stocks: null,
-      dialog: true,
+      dialog: false,
     };
   },
   computed: {
@@ -119,8 +136,10 @@ export default {
     },
   },
   methods: {
-    Open() {
-      this.id = 4;
+    Open(id) {
+      console.log(id);
+      this.id = id;
+      this.GetGoodsStockData();
       this.dialog = true;
     },
     Cancel() {
@@ -142,6 +161,12 @@ export default {
       tmp_data.splice(tmp_data.indexOf(first_option), 1);
       tmp_data.splice(0, 0, first_option);
       return tmp_data;
+    },
+    OpenCreateStock() {
+      this.$refs.CreateStockDialog.Open();
+    },
+    OpenEditStock(item) {
+      this.$refs.EditStockDialog.Open(item);
     },
     async GetGoodsStockData() {
       //   let vm = this;
@@ -201,9 +226,21 @@ export default {
         });
       }
     },
+    async SendCreateStock(data) {
+      data.GoodsID = this.id;
+      create_stock(data).then(() => {
+        this.$refs.CreateStockDialog.Cancel();
+        this.$refs.EditStockDialog.Cancel();
+        this.GetGoodsStockData();
+      });
+    },
+    async SendUpdateSortData(data) {
+      console.log(data);
+      update_stock_sort(data).then(() => {
+        this.GetGoodsStockData();
+      });
+    },
   },
-  created() {
-    this.GetGoodsStockData();
-  },
+  created() {},
 };
 </script>

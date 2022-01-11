@@ -5,27 +5,35 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
+    <CreateDialog
+      :color="color"
+      :size="size"
+      :id="id"
+      v-on:create-image="SendCreateData"
+      ref="CreateDialog"
+    />
+
     <v-card class="grey lighten-3 overflow-hidden">
       <v-toolbar dark color="primary">
         <v-toolbar-title>商品圖片設定</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn dark text @click="CreateNews"> 更新 </v-btn>
+          <v-btn dark text @click="Cancel"> 關閉 </v-btn>
         </v-toolbar-items>
       </v-toolbar>
 
       <v-col cols="12" md="12" lg="12" xl="10" class="mx-auto">
-        <div class="header d-flex justify-end align-center mb-5">
-          <div class="d-flex align-center">
-            <v-btn @click="OpenUpload" color="primary font-weight-bold"
-              >新增圖片</v-btn
-            >
+        <div class="product_list mx-auto px-10 pt-10">
+          <div class="header d-flex justify-end align-center mb-5">
+            <div class="d-flex align-center">
+              <v-btn @click="OpenCreateDialog" color="primary font-weight-bold"
+                >新增圖片</v-btn
+              >
+            </div>
           </div>
-        </div>
-        <v-container class="product_list">
           <draggable
             class="row d-flex align-stretch flex-wrap"
-            v-model="carousels"
+            v-model="images"
             @start="drag = true"
             @end="drag = false"
           >
@@ -34,7 +42,7 @@
               sm="6"
               md="4"
               lg="3"
-              v-for="item in carousels"
+              v-for="item in images"
               :key="item.title"
             >
               <v-hover v-slot="{ hover }">
@@ -43,7 +51,7 @@
                   :elevation="hover ? 12 : 2"
                   :class="{ 'on-hover': hover }"
                 >
-                  <v-img :src="item.Image1 | image" :aspect-ratio="5 / 3">
+                  <v-img :src="ConvertImage(item.Image)" :aspect-ratio="5 / 3">
                     <v-card-title
                       :class="{ show: hover }"
                       class="text-h6 white--text fill-height img_card_control"
@@ -106,16 +114,23 @@
               </v-hover>
             </v-col>
           </draggable>
-        </v-container>
+        </div>
       </v-col>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { validEmpty, validFileEmpty } from "@/common/validate.js";
+import draggable from "vuedraggable";
+import CreateDialog from "./CreateDialog/index.vue";
+import { getGoodsAndCategory, create_picture } from "@/api/products_image.js";
+import { ImageUrl } from "@/common/filter.js";
 export default {
-  name: "NewsCreateDialog",
+  name: "ProductImageCreateDialog",
+  components: {
+    CreateDialog,
+    draggable,
+  },
   props: {
     category_list: {
       require: true,
@@ -124,12 +139,16 @@ export default {
   },
   data() {
     return {
+      id: 1,
       title: "",
       content: "",
       category: "",
       cover: null,
       image_preview_url: "",
-      dialog: false,
+      images: [],
+      color: [],
+      size: [],
+      dialog: true,
       errors: {
         title: "",
         content: "",
@@ -153,6 +172,7 @@ export default {
       this.dialog = true;
       this.cover = null;
       this.image_preview_url = "";
+      this.images = [];
       this.errors = {
         title: "",
         content: "",
@@ -174,40 +194,39 @@ export default {
         image: "",
       };
     },
-    CreateNews() {
-      let error = false;
-      this.errors = {
-        title: "",
-        content: "",
-        category: "",
-        image: "",
-      };
-      if (!validEmpty(this.title)) {
-        this.errors.title = "請輸入文章標題";
-        error = true;
-      }
-      // if (!validEmpty(this.content)) {
-      //   this.errors.content = "請輸入文章內容";
-      //   error = true;
-      // }
-      if (!validEmpty(this.category)) {
-        this.errors.category = "請選擇文章分類";
-        error = true;
-      }
-      if (!validFileEmpty(this.cover)) {
-        this.errors.image = "請上傳文章封面圖";
-        error = true;
-      }
-      if (!error) {
-        this.$emit("create-news", {
-          Title: this.title,
-          Content: this.content,
-          CategoryID: this.category,
-          Image1: this.cover,
-          Seq: 0,
-        });
-      }
+    OpenCreateDialog() {
+      this.$refs.CreateDialog.Open();
     },
+    CreateNews() {
+      this.$emit("create-news", {
+        Title: this.title,
+        Content: this.content,
+        CategoryID: this.category,
+        Image1: this.cover,
+        Seq: 0,
+      });
+    },
+    GetImages() {
+      getGoodsAndCategory(this.id).then((res) => {
+        console.log(res);
+        this.color = res[0].data;
+        this.size = res[1].data;
+        this.images = res[2].data;
+      });
+    },
+    ConvertImage(image) {
+      return ImageUrl(image);
+    },
+    SendCreateData(data) {
+      data.GoodsID = this.id;
+      create_picture(data).then(() => {
+        this.$refs.CreateDialog.Cancel();
+        this.GetImages();
+      });
+    },
+  },
+  created() {
+    this.GetImages();
   },
 };
 </script>

@@ -2,27 +2,25 @@ import {
     patch,
     del,
     put,
-    get
+    get,
+    post
 } from '@/common/request'
 
 // 商品分類
-export function get_categories() {
-    return get('admin/menu/category')
+export function create_stock(list_item) {
+    return post('admin/goods/stock', list_item, "已成功更新商品庫存")
 }
-export function get_menu() {
-    return get('admin/menu')
-}
-export function create_menu(list_item) {
-    return put('admin/menu', list_item, "已成功新增商品分類")
-}
-export function update_menu(list_item) {
-    return patch('admin/menu', list_item, "已成功更新商品分類")
-}
-export function update_menu_sort(list) {
-    return patch('admin/menu/updateSeqBatch', list, "已成功更新商品分類排序")
-}
-export function delete_menu(id) {
-    return del('admin/menu/' + id, "已成功刪除商品分類")
+export function update_stock_sort(list) {
+    let tmp_data = []
+    list.forEach((item, item_index) => {
+        tmp_data.push({
+            GoodsID: item.GoodsID,
+            ColorID: item.ColorID,
+            SizeID: item.SizeID,
+            Seq: item_index + 1
+        })
+    });
+    return patch('admin/goods/stock/updateSeqBatch', tmp_data, "已成功更新商品庫存")
 }
 
 //選項一

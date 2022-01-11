@@ -1,17 +1,17 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs";
 import Breadcrumb from "@/components/Breadcrumb/";
 import FroalaEditor from "@/components/FroalaEditor/";
-import ImageCard from "@/components/ProductCreate/ImageCard/";
 import DeleteDialog from "@/components/Products/DeleteDialog/index";
+
+import { getGoodsAndCategory, create_goods_all } from "@/api/products";
+import { BoolToStr } from "@/common/filter.js";
 export default {
   name: "ProductCreate",
   components: {
     Breadcrumb,
     FroalaEditor,
-    ImageCard,
     DeleteDialog,
   },
   data() {
@@ -22,7 +22,7 @@ export default {
           link: "/products",
         },
         {
-          title: "商品編輯",
+          title: "新增商品",
           link: "",
         },
       ],
@@ -32,30 +32,17 @@ export default {
           value: "Y",
         },
         {
-          label: "尚未開賣",
-          value: "W",
-        },
-        {
           label: "隱藏",
           value: "N",
         },
       ],
-      product_data: {
-        product_id: 0,
-        name: "",
-        cover: "",
-        thumbnail: "",
-        category: [],
-        options: [],
-        images: [],
-        option_combine: [],
-        status: "Y",
-      },
+      product_data: null,
       category_data: [],
-      delete_array: {
-        options: [],
-        option_types: [],
-        images: [],
+      cover_file: {
+        cover_1: null,
+        cover_2: null,
+        cover_1_preview_url: "",
+        cover_2_preview_url: "",
       },
       drag: false,
     };
@@ -67,19 +54,7 @@ export default {
       if (this.product_data.name == "") {
         error += "- 請輸入商品名稱 <br>";
       }
-      if (this.product_data.category.length <= 0) {
-        error += "- 請至少選取一個產品分類 <br>";
-      }
-      if (this.product_data.images.length <= 0) {
-        error += "- 請至少加入一張圖片 <br>";
-      }
-      if (this.product_data.options.length <= 0) {
-        error += "- 請至少加入一個選項 <br>";
-      }
       if (error == "") {
-        //先傳product 資料表的內容
-        //再傳product images 跟 delete_array的images部分
-        //最後傳product options 跟 option_types 還有delete_array的options跟option_types
         this.CreateProductData();
       } else {
         error = "無法儲存商品請修正以下問題：<br>" + error;
@@ -94,120 +69,55 @@ export default {
       this.$router.push("/products");
     },
     async GetProductData() {
-      let result = await this.SendGetData(
-        process.env.VUE_APP_BASE_API + "products/get_product_list.php"
-      );
-      if (result != "error") {
-        this.category_data = JSON.parse(result.data).category;
-      }
+      getGoodsAndCategory().then((res) => {
+        this.category_data = res[0].data;
+        this.product_data = {};
+        this.product_data.Image1 = "";
+        this.product_data.Image2 = "";
+        this.product_data.Seq = 0;
+        this.product_data.Tittle = "";
+        this.product_data.Description = "";
+        this.product_data.Memo1 = "";
+        this.product_data.Memo2 = "";
+        this.product_data.Memo3 = "";
+        this.product_data.Option1 = "商品Option1";
+        this.product_data.Option2 = "商品Option2";
+        this.product_data.Status = false;
+        this.product_data.CombineDiscount = false;
+        this.product_data.DeliveryFrozen = false;
+        this.product_data.RecommendMenuID = 0;
+        this.product_data.Menu = [];
+      });
     },
     OpenDeleteDialog() {
       this.$refs.DeleteDialog.Open(this.$route.params.id);
     },
     OpenUploadImage(id) {
-      this.$refs[id].click();
+      this.$refs[`ImageUpload${id}`].click();
     },
-    async ChangeImageFile(files) {
+    async ChangeImageFile(files, index) {
       if (files.length > 0) {
-        let formData = new FormData();
-        formData.append("file", files[0]);
-        let result = await this.SendFormData(
-          process.env.VUE_APP_BASE_API + "products/upload_product_image.php",
-          formData
+        this.cover_file[`cover_${index}`] = files[0];
+        this.cover_file[`cover_${index}_preview_url`] = URL.createObjectURL(
+          this.cover_file[`cover_${index}`]
         );
-        if (result != "error") {
-          this.product_data.images.push({
-            image_id: 0,
-            url: JSON.parse(result.data).link,
-            title: "",
-            alt: "",
-            position: this.product_data.images.length - 1,
-          });
-        }
+      } else {
+        this.cover_file[`cover_${index}`] = null;
+        this.cover_file[`cover_${index}_preview_url`] =
+          this.product_data[`Image${index}`] == ""
+            ? ""
+            : process.env.VUE_APP_BASEURL + this.product_data[`Image${index}`];
       }
     },
-    UpdateDeleteOptions(array) {
-      this.delete_array["options"] = this.delete_array["options"].concat(array);
-    },
-    UpdateDeleteOptionTypes(array) {
-      this.delete_array["option_types"] =
-        this.delete_array["option_types"].concat(array);
-    },
-    UpdateDeleteImages(array) {
-      this.delete_array["images"] = this.delete_array["images"].concat(array);
-    },
-    UpdateOptionCombine(array) {
-      this.product_data.option_combine = array;
-    },
-    async UpdateCoverImage(files, id) {
-      if (files.length > 0) {
-        let formData = new FormData();
-        formData.append("file", files[0]);
-        let result = await this.SendFormData(
-          process.env.VUE_APP_BASE_API + "products/upload_product_image.php",
-          formData
-        );
-        if (result != "error") {
-          this.product_data[id] = JSON.parse(result.data).link;
-        }
-      }
-    },
-
     async CreateProductData() {
-      let data = {
-        product_id: 0,
-        category: this.product_data.category,
-        name: this.product_data.name,
-        description: this.product_data.description,
-        cover: this.product_data.cover,
-        status: this.product_data.status,
-      };
-      let result = await this.SendPostData(
-        process.env.VUE_APP_BASE_API + "products/create_product.php",
-        qs.stringify({
-          post_data: { product_data: data },
-        })
-      );
-      if (result.status == "success") {
-        this.CreateProductImage(result.msg);
-      }
-    },
-    async CreateProductImage(id) {
-      let result = await this.SendPostData(
-        process.env.VUE_APP_BASE_API + "products/create_product_image.php",
-        qs.stringify({
-          post_data: {
-            product_id: id,
-            image_data: this.product_data.images,
-          },
-        })
-      );
-      if (result.status == "success") {
-        this.CreateProductOption(id);
-      }
-    },
-    async CreateProductOption(id) {
-      let tmp_product = JSON.parse(JSON.stringify(this.product_data));
-      tmp_product.option_combine.forEach((item) => {
-        item.status = item.status == true || item.status == "Y" ? "Y" : "N";
+      console.log(this.product_data);
+      const images = [this.cover_file.cover_1, this.cover_file.cover_2];
+      create_goods_all(BoolToStr(this.product_data), images).then((res) => {
+        console.log(res);
+        if (res[0].code == 200 && res[1].code == 200) {
+          this.$router.push("/products");
+        }
       });
-      let result = await this.SendPostData(
-        process.env.VUE_APP_BASE_API + "products/create_product_options.php",
-        qs.stringify({
-          post_data: {
-            product_id: id,
-            option_type: this.product_data.options,
-            option_combine: tmp_product.option_combine,
-          },
-        })
-      );
-      if (result.status == "success") {
-        this.$store.commit("SetSnackbar", {
-          content: "商品已建立",
-          status: true,
-        });
-        this.$router.push("/products");
-      }
     },
   },
   created() {

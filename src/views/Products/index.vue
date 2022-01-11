@@ -6,6 +6,7 @@ import DeleteDialog from "@/components/Products/DeleteDialog/index";
 import GridShow from "@/components/Products/GridShow/index";
 import ListShow from "@/components/Products/ListShow/index";
 import OptionDialog from "@/components/Products/OptionDialog/index";
+import ImageEditDialog from "@/components/Products/ImageEditDialog/index.vue";
 import {
   getGoodsAndCategory,
   // create_good,
@@ -13,6 +14,7 @@ import {
   // delete_good,
   // update_good_sort,
   // update_good_image,
+  update_goods_sort,
 } from "@/api/products";
 export default {
   name: "Products",
@@ -22,6 +24,7 @@ export default {
     GridShow,
     ListShow,
     OptionDialog,
+    ImageEditDialog,
   },
   data() {
     return {
@@ -61,6 +64,9 @@ export default {
         ? (this.show_type = "grid")
         : (this.show_type = "list");
     },
+    OpenStockDialog(id) {
+      this.$refs.OptionDialog.Open(id);
+    },
     async GetProductData() {
       getGoodsAndCategory().then((res) => {
         console.log(res);
@@ -78,7 +84,18 @@ export default {
       });
       is_sort ? "" : this.UpdateProductSort();
     },
-    async UpdateProductSort() {
+    async UpdateProductSort(data) {
+      let tmp_data = [];
+      data.forEach((item, item_index) => {
+        tmp_data.push({
+          ID: item.GoodsID,
+          Seq: item_index + 1,
+        });
+      });
+
+      update_goods_sort(tmp_data).then(() => {
+        this.GetProductData();
+      });
       //
     },
   },

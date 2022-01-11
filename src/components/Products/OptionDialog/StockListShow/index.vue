@@ -56,6 +56,11 @@ export default {
           sortable: false,
         },
         {
+          text: "啟用狀態",
+          align: "start",
+          sortable: false,
+        },
+        {
           text: "動作",
           align: "start",
           sortable: false,
@@ -65,12 +70,8 @@ export default {
   },
   methods: {
     ChangeSort() {
-      // let tmp_data = JSON.parse(JSON.stringify(this.value));
-      // let old_item = tmp_data[moved_log.oldIndex];
-      // tmp_data[moved_log.oldIndex] = tmp_data[moved_log.newIndex];
-      // tmp_data[moved_log.newIndex] = old_item;
-      // this.$emit("input", tmp_data);
-      // this.$emit("update-sort");
+      console.log(this.value);
+      this.$emit("sort-update", this.value);
     },
     SetEdit(item) {
       this.$emit("set-edit", item);
