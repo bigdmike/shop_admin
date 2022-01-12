@@ -2,9 +2,8 @@
 
 <script>
 import draggable from "vuedraggable";
-import { update_goods } from "@/api/products";
-import { get_stock } from "@/api/stock";
-import { get_picture } from "@/api/products_image";
+import { update_goods, getStockAndImage } from "@/api/products";
+import { ImageUrl } from "@/common/filter.js";
 export default {
   name: "ProductListShow",
   props: {
@@ -38,19 +37,23 @@ export default {
       drag: false,
       headers: [
         { text: "", value: "" },
+        { text: "商品縮圖", value: "" },
         {
           text: "商品名稱",
           align: "start",
           sortable: false,
           value: "name",
         },
-        { text: "產品分類", value: "category" },
+        { text: "上架時間", value: "category" },
         { text: "上架狀態", value: "status" },
         { text: "動作", value: "action" },
       ],
     };
   },
   methods: {
+    ConvertImage(image) {
+      return ImageUrl(image);
+    },
     ChangeSort() {
       this.product_sort_array = [];
       this.value.forEach((item) => {
@@ -60,43 +63,41 @@ export default {
       this.$emit("update-sort", this.filter_value);
     },
     GetCategoryName(item) {
-      let text = this.product_category_data.filter(
-        (category_item) => category_item.MenuID == item.MenuID
-      );
-      return text.length > 0 ? text[0].Title : "";
+      let data = [];
+      item.Menu.forEach((item) => {
+        data.push(item.Title);
+      });
+      return data;
     },
     ChangeStatus(item) {
-      console.log(item);
       let stocks = [];
       let images = [];
       let enable = false;
-      get_stock(item.GoodsID).then((res) => {
-        stocks = res.data;
-        get_picture(item.GoodsID).then((res) => {
-          images = res.data;
-        });
-      });
-      if (stocks.length > 0 && images.length > 0) {
-        enable = true;
-      }
-      if (item.Status == false) {
-        enable = true;
-      }
-      if (enable) {
-        let tmp_data = Object.assign({}, item);
-        tmp_data.Status = tmp_data.Status ? "Y" : "N";
-        tmp_data.ID = tmp_data.GoodsID;
-        update_goods(tmp_data).then(() => {
+      getStockAndImage(item.GoodsID).then((res) => {
+        stocks = res[0].data;
+        images = res[1].data;
+        if (stocks.length > 0 && images.length > 0) {
+          enable = true;
+        }
+        if (item.Status == false) {
+          enable = true;
+        }
+        if (enable) {
+          let tmp_data = Object.assign({}, item);
+          tmp_data.Status = tmp_data.Status ? "Y" : "N";
+          tmp_data.ID = tmp_data.GoodsID;
+          update_goods(tmp_data).then(() => {
+            this.$emit("re-load");
+          });
+        } else {
           this.$emit("re-load");
-        });
-      } else {
-        this.$emit("re-load");
-        this.$store.commit("SetDialog", {
-          title: "發生錯誤",
-          content: "請至少新增一張圖片與一個產品選項後才能啟用商品",
-          status: true,
-        });
-      }
+          this.$store.commit("SetDialog", {
+            title: "發生錯誤",
+            content: "請至少新增一張圖片與一個產品選項後才能啟用商品",
+            status: true,
+          });
+        }
+      });
     },
   },
   created() {

@@ -60,11 +60,12 @@
             </v-col>
             <v-col cols="12" lg="4">
                 <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="d-flex align-center mb-4">
-                        <v-icon class="mr-2">mdi-list-status</v-icon>商品狀態
+
+                    <h3 class="d-flex align-center">
+                        <v-icon class="mr-2">mdi-shape-outline</v-icon>啟用狀態
                     </h3>
-                    <!-- <v-select v-model="product_data.Status" :items="status_data" item-text="label" item-value="value"
-                        hide-details dense outlined single-line></v-select> -->
+                    <v-select class="mb-8" v-model="product_data.Status" :items="status_data" item-text="label"
+                        item-value="value" hide-details></v-select>
                     <div>
                         <v-checkbox :hide-details="true" v-model="product_data.CombineDiscount" label="組合商品">
                         </v-checkbox>
@@ -73,12 +74,17 @@
                     </div>
                 </v-card>
                 <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="d-flex align-center mb-4">
+                    <h3 class="d-flex align-center">
                         <v-icon class="mr-2">mdi-shape-outline</v-icon>商品分類
                     </h3>
-                    <v-select v-model="product_data.MenuID" :items="category_data" item-text="Title" item-value="MenuID"
-                        chips hide-details multiple></v-select>
+                    <v-select class="mb-8" v-model="product_data.MenuID" :items="category_data" item-text="Title"
+                        item-value="MenuID" chips hide-details multiple></v-select>
                     <!-- multiple -->
+                    <h3 class="d-flex align-center mt-4">
+                        <v-icon class="mr-2">mdi-list-status</v-icon>推薦商品分類
+                    </h3>
+                    <v-select v-model="product_data.RecommendMenuID" :items="category_data" item-text="Title"
+                        item-value="MenuID" hide-details></v-select>
                 </v-card>
 
                 <v-card elevation="2" class="pa-8 mb-5 rounded-lg">

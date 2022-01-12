@@ -46,9 +46,9 @@ const routes = [{
     component: () => import( /* webpackChunkName: "product_menu" */ '../views/ProductMenu/index.vue')
   },
   {
-    path: '/menu_categories',
+    path: '/categories',
 
-    name: 'MenuCategories',
+    name: 'Categories',
     component: () => import( /* webpackChunkName: "categories" */ '../views/MenuCategories/index.vue')
   },
   {
@@ -80,10 +80,34 @@ const routes = [{
     component: () => import( /* webpackChunkName: "about" */ '../views/About/index.vue')
   },
   {
+    path: '/discount',
+
+    name: 'Discount',
+    component: () => import( /* webpackChunkName: "discount" */ '../views/Discount/index.vue')
+  },
+  {
     path: '/news',
 
     name: 'News',
     component: () => import( /* webpackChunkName: "news" */ '../views/News/index.vue')
+  },
+  {
+    path: '/web_links',
+
+    name: 'WebLinks',
+    component: () => import( /* webpackChunkName: "web_links" */ '../views/WebLink/index.vue')
+  },
+  {
+    path: '/payment',
+
+    name: 'PayMent',
+    component: () => import( /* webpackChunkName: "payment" */ '../views/Payment/index.vue')
+  },
+  {
+    path: '/shipping',
+
+    name: 'Shipping',
+    component: () => import( /* webpackChunkName: "shipping" */ '../views/Shipping/index.vue')
   },
   {
     path: '/questions',

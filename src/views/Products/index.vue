@@ -11,7 +11,7 @@ import {
   getGoodsAndCategory,
   // create_good,
   // update_good,
-  // delete_good,
+  delete_goods,
   // update_good_sort,
   // update_good_image,
   update_goods_sort,
@@ -67,9 +67,11 @@ export default {
     OpenStockDialog(id) {
       this.$refs.OptionDialog.Open(id);
     },
+    OpenImageDialog(id) {
+      this.$refs.ImageEditDialog.Open(id);
+    },
     async GetProductData() {
       getGoodsAndCategory().then((res) => {
-        console.log(res);
         this.product_category_data = res[0].data;
         res[1].data.forEach((item) => {
           item.Status = item.Status == "Y" ? true : false;
@@ -97,6 +99,12 @@ export default {
         this.GetProductData();
       });
       //
+    },
+    async SendDeleteData(id) {
+      delete_goods(id).then(() => {
+        this.$refs.DeleteDialog.Cancel();
+        this.GetProductData();
+      });
     },
   },
   created() {

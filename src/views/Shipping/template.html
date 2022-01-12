@@ -1,0 +1,17 @@
+<div id="Products">
+    <template>
+        <!-- QUESTION DIALOG -->
+        <EditDialog ref="EditDialog" v-on:update-shipping="SendUpdateData" />
+    </template>
+    <Breadcrumb :link_array="breadcrumb_data" />
+    <v-container v-if="shipping_data!=null">
+        <v-row>
+            <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-8 px-4">
+                <div class="d-flex justify-space-between align-center">
+                    <h3>物流運送方式</h3>
+                </div>
+                <ListShow v-on:edit-shipping="OpenEditDialog" v-model="shipping_data" />
+            </v-col>
+        </v-row>
+    </v-container>
+</div>

@@ -1,17 +1,25 @@
 <v-container class="product_list">
     <draggable class="row d-flex align-stretch flex-wrap" v-model="filter_product_data" @start="drag=true"
-        @end="drag=false,ChangeSort()">
+        @end="drag=false" @change="ChangeSort">
         <v-col cols="12" sm="6" md="4" lg="3" v-for="item in filter_product_data" :key="item.title">
             <v-hover>
                 <template v-slot:default="{ hover }">
                     <v-card :elevation=" hover ? 16 : 6" style="user-select:none;cursor: grab;"
                         class="product transition-swing mx-auto mb-5 rounded-lg" max-width="374">
 
-                        <v-img :aspect-ratio="5/4" :src="item.Image1"></v-img>
-
-                        <v-card-title>{{item.Title}}</v-card-title>
+                        <v-img :aspect-ratio="1" :src="ConvertImage(item.Image1)"></v-img>
 
                         <v-card-text>
+                            <router-link class="text-subtitle-1" :to="`/product/${item.GoodsID}`">{{ item.Title }}
+                            </router-link>
+                            <p class="mb-0 mt-1 caption d-flex justify-space-between">{{item.created_at}}
+                                <v-chip v-if="item.Status" class="px-5" color="success" small>
+                                    啟用
+                                </v-chip>
+                                <v-chip v-else small class="px-5">
+                                    停用
+                                </v-chip>
+                            </p>
                             <div class="text-subtitle-1 blue--text text--darken-1">
                                 {{ GetCategoryName(item)}}
                             </div>
@@ -21,10 +29,14 @@
                         <v-divider class="mx-4"></v-divider>
 
                         <v-card-actions>
-                            <v-btn @click="$router.push('/product/'+item.GoodsID)" class="ml-auto" color="primary" text>
-                                編輯
+
+                            <v-btn @click="$emit('open-image',item.GoodsID)" small text color="primary" class="ml-auto">
+                                圖片設定
                             </v-btn>
-                            <v-btn @click="$emit('delete-data',item.GoodsID)" class="mr-auto" color="error" text>
+                            <v-btn @click="$emit('open-stock',item.GoodsID)" small text color="success" class="mx-2">
+                                庫存設定
+                            </v-btn>
+                            <v-btn @click="$emit('delete-data',item.GoodsID)" small text color="error" class="mr-auto">
                                 刪除
                             </v-btn>
                         </v-card-actions>

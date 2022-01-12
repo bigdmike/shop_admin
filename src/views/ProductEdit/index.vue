@@ -29,11 +29,11 @@ export default {
       status_data: [
         {
           label: "已發布",
-          value: "Y",
+          value: true,
         },
         {
           label: "隱藏",
-          value: "N",
+          value: false,
         },
       ],
       product_data: null,

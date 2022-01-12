@@ -2,6 +2,7 @@
 
 <script>
 import draggable from "vuedraggable";
+import { ImageUrl, DataSort } from "@/common/filter.js";
 export default {
   name: "ProductsGridShow",
   props: {
@@ -36,11 +37,12 @@ export default {
     };
   },
   methods: {
-    ChangeSort() {
-      this.product_sort_array = [];
-      this.value.forEach((item) => {
-        this.product_sort_array.push(item.sort);
-      });
+    ConvertImage(image) {
+      return ImageUrl(image);
+    },
+    ChangeSort(moved_log) {
+      let tmp_data = JSON.parse(JSON.stringify(this.filter_product_data));
+      this.$emit("update-sort", DataSort(moved_log, tmp_data));
     },
     GetCategoryName(item) {
       let text = this.product_category_data.filter(
@@ -67,12 +69,15 @@ export default {
           }
           if (this.filter_data.status != "all") {
             data = data.filter(
-              (item) => item.status == this.filter_data.status
+              (item) => item.Status == this.filter_data.status
             );
           }
           if (this.filter_data.category != "all") {
             data = data.filter(
-              (item) => item.category == this.filter_data.category
+              (item) =>
+                item.Menu.filter(
+                  (menu) => menu.MenuID == this.filter_data.category
+                ).length > 0
             );
           }
           return data;

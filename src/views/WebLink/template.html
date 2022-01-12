@@ -1,0 +1,40 @@
+<div id="Products">
+    <template>
+        <!-- CATEGORY DIALOG -->
+        <CategoryCreateDialog ref="CategoryCreateDialog" v-on:create-category="SendCreateCategoryData" />
+        <CategoryEditDialog ref="CategoryEditDialog" v-on:update-category="SendUpdateCategoryData" />
+        <CategoryDeleteDialog ref="CategoryDeleteDialog" v-on:delete-category="SendDeleteCategoryData" />
+    </template>
+    <template>
+        <!-- QUESTION DIALOG -->
+        <CreateDialog ref="CreateDialog" :category_list="weblink_categories" v-on:create-weblink="SendCreateData" />
+        <EditDialog ref="EditDialog" :category_list="weblink_categories" v-on:update-weblink="SendUpdateData" />
+        <DeleteDialog ref="DeleteDialog" v-on:delete-weblink="SendDeleteData" />
+    </template>
+    <Breadcrumb :link_array="breadcrumb_data" />
+    <v-container v-if="weblink_data!=null">
+        <v-row>
+            <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-8 px-4">
+                <v-row>
+                    <v-col cols="12" md="12" lg="12">
+                        <div class="d-flex justify-space-between align-center">
+                            <h3>選單群組</h3>
+                            <v-btn @click="OpenCreateCategoryDialog" color="primary font-weight-bold">新增</v-btn>
+                        </div>
+                        <CategoryListShow v-on:update-sort="UpdateWebLinkCategorySort"
+                            v-on:set-edit="OpenEditCategoryDialog" v-on:delete-data="OpenDeleteCategoryDialog"
+                            v-model="weblink_categories" />
+                    </v-col>
+                    <v-col cols="12" md="12" lg="12">
+                        <div class="d-flex justify-space-between align-center">
+                            <h3>選單連結</h3>
+                            <v-btn @click="OpenCreateDialog" color="primary font-weight-bold">新增</v-btn>
+                        </div>
+                        <ListShow :category="weblink_categories" v-on:update-sort="UpdateWebLinkSort"
+                            v-on:delete-data="OpenDeleteDialog" v-on:set-edit="OpenEditDialog" v-model="weblink_data" />
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+    </v-container>
+</div>

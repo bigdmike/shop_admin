@@ -12,6 +12,7 @@
       v-on:create-image="SendCreateData"
       ref="CreateDialog"
     />
+    <DeleteDialog ref="DeleteDialog" v-on:delete-image="SendDeleteData" />
 
     <v-card class="grey lighten-3 overflow-hidden">
       <v-toolbar dark color="primary">
@@ -36,6 +37,7 @@
             v-model="images"
             @start="drag = true"
             @end="drag = false"
+            @change="SendSortData"
           >
             <v-col
               cols="12"
@@ -94,7 +96,7 @@
                           </v-icon>
                         </v-btn>
                         <v-btn
-                          @click="OpenDelete(item)"
+                          @click="OpenDeleteDialog(item.GoodsPictureID)"
                           :class="{ 'show-btns': hover }"
                           color="rgba(255, 255, 255, 0)"
                           icon
@@ -123,88 +125,46 @@
 <script>
 import draggable from "vuedraggable";
 import CreateDialog from "./CreateDialog/index.vue";
-import { getGoodsAndCategory, create_picture } from "@/api/products_image.js";
+import DeleteDialog from "./DeleteDialog/index.vue";
+import {
+  getGoodsAndCategory,
+  create_picture,
+  update_picture_sort,
+  delete_picture,
+} from "@/api/products_image.js";
 import { ImageUrl } from "@/common/filter.js";
 export default {
   name: "ProductImageCreateDialog",
   components: {
     CreateDialog,
+    DeleteDialog,
     draggable,
-  },
-  props: {
-    category_list: {
-      require: true,
-      type: Array,
-    },
   },
   data() {
     return {
-      id: 1,
-      title: "",
-      content: "",
-      category: "",
-      cover: null,
-      image_preview_url: "",
+      id: -1,
       images: [],
       color: [],
       size: [],
-      dialog: true,
-      errors: {
-        title: "",
-        content: "",
-        category: "",
-      },
+      dialog: false,
     };
   },
-  watch: {
-    cover() {
-      //圖片預覽
-      if (this.cover != null) {
-        this.image_preview_url = URL.createObjectURL(this.cover);
-      }
-    },
-  },
   methods: {
-    Open() {
-      this.title = "";
-      this.content = "";
-      this.category = -1;
+    Open(id) {
+      this.id = id;
+      this.GetImages();
       this.dialog = true;
-      this.cover = null;
-      this.image_preview_url = "";
       this.images = [];
-      this.errors = {
-        title: "",
-        content: "",
-        category: "",
-        image: "",
-      };
     },
     Cancel() {
-      this.title = "";
-      this.content = "";
-      this.category = -1;
       this.dialog = false;
-      this.cover = null;
-      this.image_preview_url = "";
-      this.errors = {
-        title: "",
-        content: "",
-        category: "",
-        image: "",
-      };
+      this.images = [];
     },
     OpenCreateDialog() {
       this.$refs.CreateDialog.Open();
     },
-    CreateNews() {
-      this.$emit("create-news", {
-        Title: this.title,
-        Content: this.content,
-        CategoryID: this.category,
-        Image1: this.cover,
-        Seq: 0,
-      });
+    OpenDeleteDialog(id) {
+      this.$refs.DeleteDialog.Open(id);
     },
     GetImages() {
       getGoodsAndCategory(this.id).then((res) => {
@@ -217,6 +177,19 @@ export default {
     ConvertImage(image) {
       return ImageUrl(image);
     },
+    SendSortData() {
+      // GoodsPictureID
+      let data = [];
+      this.images.forEach((item, item_index) => {
+        data.push({
+          ID: item.GoodsPictureID,
+          Seq: item_index + 1,
+        });
+      });
+      update_picture_sort(data).then(() => {
+        this.GetImages();
+      });
+    },
     SendCreateData(data) {
       data.GoodsID = this.id;
       create_picture(data).then(() => {
@@ -224,9 +197,12 @@ export default {
         this.GetImages();
       });
     },
-  },
-  created() {
-    this.GetImages();
+    SendDeleteData(id) {
+      delete_picture(id).then(() => {
+        this.$refs.DeleteDialog.Cancel();
+        this.GetImages();
+      });
+    },
   },
 };
 </script>

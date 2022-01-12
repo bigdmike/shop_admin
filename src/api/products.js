@@ -95,6 +95,23 @@ export function create_goods_all(goods_item, images) {
 
 }
 
+export function getStockAndImage(id) {
+    //庫存
+    var stocks = get('admin/goods/stock/' + id)
+    var images = get('admin/goods/picture/' + id)
+
+    let promise_list = [stocks, images]
+
+    return Promise.all(GetPromise(promise_list))
+        .then(
+            res => {
+                if (promise_list.length == res.length) {
+                    return (res)
+                }
+            }, err => console.log(err)
+        )
+}
+
 
 
 export function update_goods_all(goods_item, images) {

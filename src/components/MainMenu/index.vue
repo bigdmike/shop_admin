@@ -22,6 +22,10 @@ export default {
           group: true,
           list: [
             {
+              title: "網站選單",
+              link: "/web_links",
+            },
+            {
               title: "廣告設定",
               link: "/advertisement",
             },
@@ -97,11 +101,11 @@ export default {
             },
             {
               title: "商品分類",
-              link: "/categories",
+              link: "/product_menu",
             },
             {
               title: "商品目錄",
-              link: "/menu_categories",
+              link: "/categories",
             },
             // {
             //   title: "庫存管理",
@@ -113,13 +117,23 @@ export default {
             // }
           ],
         },
-        // {
-        //   title: "使用者管理",
-        //   icon: "mdi-account",
-        //   link: "/customers",
-        //   group: false,
-        //   list: []
-        // },
+        {
+          title: "金物流管理",
+          icon: "mdi-credit-card-outline",
+          link: "/payment",
+          type: "U",
+          group: true,
+          list: [
+            {
+              title: "付款方式",
+              link: "/payment",
+            },
+            {
+              title: "運送方式",
+              link: "/shipping",
+            },
+          ],
+        },
         {
           title: "促銷優惠",
           icon: "mdi-sale",
@@ -130,6 +144,10 @@ export default {
             {
               title: "優惠券代碼",
               link: "/coupon",
+            },
+            {
+              title: "打折/贈品",
+              link: "/discount",
             },
           ],
         },

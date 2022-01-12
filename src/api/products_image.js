@@ -16,7 +16,7 @@ export function create_picture(picture_item) {
     let data = {}
     data.Seq1 = picture_item.Seq
     data.Image1 = picture_item.Image
-    return post_image(`admin/goods/picture/${picture_item.GoodsID}/${picture_item.SizeID}/${picture_item.ColorID}`, data, "已成功新增商品圖片")
+    return post_image(`admin/goods/picture/${picture_item.GoodsID}/${picture_item.ColorID}/${picture_item.SizeID}`, data, "已成功新增商品圖片")
 }
 // export function update_picture(picture_item) {
 //     return patch('admin/goods', picture_item, "已成功更新商品")

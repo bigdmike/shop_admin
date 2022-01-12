@@ -24,7 +24,7 @@
               <v-select
                 v-model="color_id"
                 label="指定規格一"
-                :items="GetGoodsOption(color)"
+                :items="GetColorOption()"
                 item-text="ColorTitle"
                 item-value="ColorID"
                 outlined
@@ -36,7 +36,7 @@
               <v-select
                 v-model="size_id"
                 label="指定規格二"
-                :items="GetGoodsOption(size)"
+                :items="GetSizeOption()"
                 item-text="SizeTitle"
                 item-value="SizeID"
                 outlined
@@ -124,8 +124,36 @@ export default {
         });
       }
     },
-    GetGoodsOption(data) {
-      return data.filter((item) => item.GoodsID == this.id);
+    GetColorOption() {
+      let data = this.color;
+      if (data.filter((item) => item.ColorID == 0).length <= 0) {
+        data.splice(0, 0, {
+          ColorTitle: "不指定",
+          ColorID: 0,
+        });
+      }
+      return data.filter((item) => {
+        return (
+          item.GoodsID == this.id ||
+          item.ColorTitle == "無" ||
+          item.ColorID == 0
+        );
+      });
+    },
+    GetSizeOption() {
+      let data = this.size;
+
+      if (data.filter((item) => item.SizeID == 0).length <= 0) {
+        data.splice(0, 0, {
+          SizeTitle: "不指定",
+          SizeID: 0,
+        });
+      }
+      return data.filter((item) => {
+        return (
+          item.GoodsID == this.id || item.SizeTitle == "無" || item.SizeID == 0
+        );
+      });
     },
   },
 };

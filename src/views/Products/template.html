@@ -3,7 +3,7 @@
         <OptionDialog ref="OptionDialog" />
         <FilterDialog ref="FilterDialog" :product_status_data="product_status_data"
             :product_category_data="product_category_data" v-model="filter_data" />
-        <DeleteDialog ref="DeleteDialog" v-on:load-data="GetProductData" />
+        <DeleteDialog ref="DeleteDialog" v-on:delete-product="SendDeleteData" />
         <ImageEditDialog ref="ImageEditDialog" />
         <v-row>
             <v-col cols="12" md="12" lg="12" class="mx-auto">
@@ -72,13 +72,16 @@
                     </v-chip>
                 </div>
 
-                <GridShow v-if="show_type=='grid'" :filter_data="filter_data" v-on:delete-data="OpenDeleteDialog"
-                    :product_status_data="product_status_data" :product_category_data="product_category_data"
-                    v-model="product_data" :key_word="key_word" />
+                <GridShow v-if="show_type=='grid'" :filter_data="filter_data" :product_status_data="product_status_data"
+                    :product_category_data="product_category_data" v-on:update-sort="UpdateProductSort"
+                    v-on:delete-data="OpenDeleteDialog" v-on:open-stock="OpenStockDialog"
+                    v-on:open-image="OpenImageDialog" v-model="product_data" :key_word="key_word"
+                    v-on:re-load="GetProductData" />
                 <ListShow v-if="show_type=='list'" :filter_data="filter_data" :product_status_data="product_status_data"
                     :product_category_data="product_category_data" v-on:update-sort="UpdateProductSort"
-                    v-on:delete-data="OpenDeleteDialog" v-on:open-stock="OpenStockDialog" v-model="product_data"
-                    :key_word="key_word" v-on:re-load="GetProductData" />
+                    v-on:delete-data="OpenDeleteDialog" v-on:open-stock="OpenStockDialog"
+                    v-on:open-image="OpenImageDialog" v-model="product_data" :key_word="key_word"
+                    v-on:re-load="GetProductData" />
             </v-col>
         </v-row>
     </v-container>

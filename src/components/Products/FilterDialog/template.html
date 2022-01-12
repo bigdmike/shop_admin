@@ -10,8 +10,8 @@
                         item-value="value" label="商品狀態" outlined></v-select>
                 </v-col>
                 <v-col class="d-flex" cols="12">
-                    <v-select v-model="category" hide-details="auto" dense :items="product_category_data"
-                        item-text="Title" item-value="MenuID" label="商品分類" outlined></v-select>
+                    <v-select v-model="category" hide-details="auto" dense :items="GetCategory()" item-text="Title"
+                        item-value="MenuID" label="商品分類" outlined></v-select>
                 </v-col>
             </v-row>
         </v-container>
