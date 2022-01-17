@@ -18,7 +18,8 @@ export async function get_common_column(column_list) {
 export function update_common_column(column_item) {
     let data = {
         Title: column_item.Title,
-        Content: column_item.Content
+        Content: column_item.Content,
+        Front: column_item.Front
     }
     return post('admin/column/replace', data, "已成功更新欄位")
 }

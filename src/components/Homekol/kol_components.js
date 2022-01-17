@@ -36,7 +36,10 @@ export default {
             });
         },
         async SendUpdateData(item) {
-            update_kol(item).then((res) => {
+            let tmp_data = Object.assign({}, item)
+            delete tmp_data.Image1
+            delete tmp_data.Image2
+            update_kol(tmp_data).then((res) => {
                 if (res.code == 200) {
                     if (item.Image1 != null) {
                         update_kol_image(item.ID, item).then(() => {

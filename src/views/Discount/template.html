@@ -1,8 +1,8 @@
 <div id="Products">
     <template>
         <!-- QUESTION DIALOG -->
-        <CreateDialog ref="CreateDialog" v-on:create-discount="SendCreateData" />
-        <EditDialog ref="EditDialog" v-on:update-discount="SendUpdateData" />
+        <CreateDialog ref="CreateDialog" :category_list="category_data" v-on:create-discount="SendCreateData" />
+        <EditDialog ref="EditDialog" :category_list="category_data" v-on:update-discount="SendUpdateData" />
         <DeleteDialog ref="DeleteDialog" v-on:delete-discount="SendDeleteData" />
     </template>
     <Breadcrumb :link_array="breadcrumb_data" />

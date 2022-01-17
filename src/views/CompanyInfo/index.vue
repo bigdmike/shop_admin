@@ -26,6 +26,7 @@ export default {
   methods: {
     async UpdateData(index = 0) {
       let key = Object.keys(this.page_data)[index];
+      this.page_data[key].Front = "Y";
       update_common_column(this.page_data[key]).then(() => {
         if (index != Object.keys(this.page_data).length - 1) {
           this.UpdateData(index + 1);

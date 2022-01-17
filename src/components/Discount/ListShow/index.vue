@@ -23,8 +23,8 @@ export default {
           sortable: false,
           value: "Title",
         },
-        { text: "優惠代碼", value: "CouponNumber" },
-        { text: "剩餘張數", value: "CouponCount" },
+        { text: "優惠類型", value: "DiscountType" },
+        { text: "啟用狀態", value: "Status" },
         { text: "開始時間", value: "StartTime" },
         { text: "結束時間", value: "EndTime" },
         { text: "動作", value: "action" },
@@ -42,6 +42,17 @@ export default {
     },
     SetEdit(item) {
       this.$emit("set-edit", item);
+    },
+  },
+  filters: {
+    DiscountType(val) {
+      return val == "P"
+        ? "打折"
+        : val == "G"
+        ? "贈品"
+        : val == "D"
+        ? "免運"
+        : "";
     },
   },
   created() {},

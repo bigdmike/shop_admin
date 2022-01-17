@@ -10,8 +10,8 @@ export default {
     };
   },
   methods: {
-    Open({ CouponID }) {
-      this.id = CouponID;
+    Open({ DiscountID }) {
+      this.id = DiscountID;
       this.dialog = true;
     },
     Cancel() {
@@ -19,7 +19,7 @@ export default {
       this.dialog = false;
     },
     async DeleteCoupon() {
-      this.$emit("delete-coupon", this.id);
+      this.$emit("delete-discount", this.id);
     },
   },
 };

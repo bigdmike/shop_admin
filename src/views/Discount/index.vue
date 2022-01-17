@@ -1,7 +1,7 @@
 <template src="./template.html"></template>
 
 <script>
-import { get_discount } from "@/api/discount.js";
+import { getMenuAndDiscount } from "@/api/discount.js";
 import ListShow from "@/components/Discount/ListShow/index";
 import Breadcrumb from "@/components/Breadcrumb/";
 import discount_components from "@/components/Discount/discount_components.js";
@@ -25,13 +25,15 @@ export default {
         },
       ],
       discount_data: [],
+      category_data: [],
     };
   },
   methods: {
     async GetDiscountData() {
-      get_discount().then((res) => {
-        this.discount_data = res.data;
-        console.log(res.data);
+      getMenuAndDiscount().then((res) => {
+        this.discount_data = res[0].data;
+        this.category_data = res[1].data;
+        console.log(res);
       });
     },
   },

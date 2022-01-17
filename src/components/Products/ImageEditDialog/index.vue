@@ -5,6 +5,7 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
+    <InfoDialog ref="InfoDialog" :color="color" :size="size" />
     <CreateDialog
       :color="color"
       :size="size"
@@ -53,7 +54,7 @@
                   :elevation="hover ? 12 : 2"
                   :class="{ 'on-hover': hover }"
                 >
-                  <v-img :src="ConvertImage(item.Image)" :aspect-ratio="5 / 3">
+                  <v-img :src="ConvertImage(item.Image)" :aspect-ratio="1">
                     <v-card-title
                       :class="{ show: hover }"
                       class="text-h6 white--text fill-height img_card_control"
@@ -68,21 +69,7 @@
                         "
                       >
                         <v-btn
-                          @click="OpenEdit(item)"
-                          :class="{ 'show-btns': hover }"
-                          color="rgba(255, 255, 255, 0)"
-                          icon
-                        >
-                          <v-icon
-                            :class="{ 'show-btns': hover }"
-                            small
-                            color="rgba(255, 255, 255, 0)"
-                          >
-                            mdi-pencil-outline
-                          </v-icon>
-                        </v-btn>
-                        <v-btn
-                          @click="OpenImageShow(item)"
+                          @click="OpenInfoDialog(item)"
                           :class="{ 'show-btns': hover }"
                           color="rgba(255, 255, 255, 0)"
                           icon
@@ -126,6 +113,7 @@
 import draggable from "vuedraggable";
 import CreateDialog from "./CreateDialog/index.vue";
 import DeleteDialog from "./DeleteDialog/index.vue";
+import InfoDialog from "./InfoDialog/index.vue";
 import {
   getGoodsAndCategory,
   create_picture,
@@ -139,6 +127,7 @@ export default {
     CreateDialog,
     DeleteDialog,
     draggable,
+    InfoDialog,
   },
   data() {
     return {
@@ -159,6 +148,9 @@ export default {
     Cancel() {
       this.dialog = false;
       this.images = [];
+    },
+    OpenInfoDialog(item) {
+      this.$refs.InfoDialog.Open(item);
     },
     OpenCreateDialog() {
       this.$refs.CreateDialog.Open();
