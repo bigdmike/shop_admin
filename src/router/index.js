@@ -175,7 +175,7 @@ const routes = [{
 
 const router = new VueRouter({
   routes,
-  base: "/rerace_admin/",
+  base: "/kol_kitchen/",
   mode: "history"
 })
 

@@ -124,7 +124,7 @@ export function update_goods_all(goods_item, images) {
     var goods_menu = patch('admin/menu2goods/goods/' + goods_item.ID, goods_item.MenuID, "已成功更新商品所屬分類")
 
     let promise_list = [goods_info, goods_menu]
-    if (images[0] != null && images[1] != null) {
+    if (images[0] != null || images[1] != null) {
         let image_data = {}
         typeof images[0] == "string" || images[0] == null ? "" : image_data.Image1 = images[0]
         typeof images[1] == "string" || images[1] == null ? "" : image_data.Image2 = images[1]

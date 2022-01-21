@@ -23,6 +23,29 @@ export default {
   data() {
     return {
       config: {
+        events: {
+          "image.uploaded": function (response) {
+            // Parse response to get image url.
+            console.log(response);
+            console.log(response.link);
+            var img_url =
+              "https://kitchen.yongxin-demo.com/" + JSON.parse(response).link;
+
+            // Insert image.
+            this.image.insert(img_url, false, null, this.image.get(), response);
+
+            return false;
+          },
+          "image.inserted": function ($img, response) {
+            console.log($img, response);
+            // Image was inserted in the editor.
+          },
+          "image.error": function (error, response) {
+            console.log(error, response);
+          },
+        },
+        imageUploadRemoteUrls: true,
+        imageDefaultWidth: 0,
         language: "zh_tw",
         toolbarButtons: [
           [
@@ -68,8 +91,8 @@ export default {
         ],
         heightMin: 200,
         heightMax: 600,
-        imageUploadURL: process.env.VUE_APP_BASE_API + "editor",
-        // imageUploadMethod: "POST",
+        imageUploadURL: process.env.VUE_APP_BASE_API + "editor/upload",
+        imageUploadMethod: "POST",
         imageStyles: {
           class1: "Class 1",
           class2: "Class 2",
@@ -92,6 +115,7 @@ export default {
       },
     },
   },
+  mounted() {},
 };
 </script>
 

@@ -10,13 +10,20 @@ module.exports = {
           '^/api': '/'
         }
       },
+      '/test_api': {
+        target: 'https://mjp.yongxin-demo.com/api/',
+        secure: false,
+        pathRewrite: {
+          '^/test_api': '/'
+        }
+      }
     }
   },
   transpileDependencies: [
     'vuetify'
   ],
   filenameHashing: true,
-  publicPath: '/kol_kitchen_admin/',
+  publicPath: '/kol_kitchen/',
   configureWebpack: () => {
     if (process.env.NODE_ENV === 'production') {
       return {

@@ -114,7 +114,7 @@ export default {
       const images = [this.cover_file.cover_1, this.cover_file.cover_2];
       create_goods_all(BoolToStr(this.product_data), images).then((res) => {
         console.log(res);
-        if (res[0].code == 200 && res[1].code == 200) {
+        if (res[0].code == 200) {
           this.$router.push("/products");
         }
       });
