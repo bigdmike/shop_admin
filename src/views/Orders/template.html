@@ -1,6 +1,5 @@
 <div id="Products">
-    <FilterDialog ref="FilterDialog" :order_status_data="order_status_data" :order_payment_data="order_payment_data"
-        v-model="filter_data" />
+    <FilterDialog ref="FilterDialog" :order_status_data="order_status_data" v-model="filter_data" />
     <v-container>
         <v-row>
 
@@ -41,14 +40,10 @@
                         @click:close="filter_data.status = 'all'">
                         狀態: {{order_status_data.filter(item=>item.value==filter_data.status)[0].label}}
                     </v-chip>
-                    <v-chip v-if="filter_data.payment!='all'" class="ma-2 caption" color="secondary" close
-                        @click:close="filter_data.payment = 'all'">
-                        付款方式: {{order_payment_data.filter(item=>item.value==filter_data.payment)[0].label}}
-                    </v-chip>
                 </div>
 
-                <ListShow :filter_data="filter_data" :order_status_data="order_status_data"
-                    :order_payment_data="order_payment_data" v-model="order_data" :key_word="key_word" />
+                <ListShow :filter_data="filter_data" :order_status_data="order_status_data" v-model="order_data"
+                    :key_word="key_word" />
             </v-col>
         </v-row>
     </v-container>

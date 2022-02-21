@@ -3,23 +3,25 @@
            'items-per-page-text':'每頁筆數'
       }">
 
-        <template v-slot:item.order_id="{ item }">
-            <router-link :to="`/order/${item.order_id}`">#{{item.order_id}}</router-link>
+        <template v-slot:item.TradeID="{ item }">
+            <router-link :to="`/order/${item.TradeID}`">#{{item.TradeID}}</router-link>
         </template>
 
         <template v-slot:item.create_time="{ item }">
-            {{item.create_time.slice(0,10)}}
+            {{item.created_at.slice(0,10)}}
         </template>
 
         <template v-slot:item.status="{ item }">
-            <v-chip :color="status_array[item.status].color" :text-color="status_array[item.status]['text-color']"
-                small>
-                {{status_array[item.status].label}}
+            <v-chip small :color="status_array[item.Status].color"
+                :text-color="status_array[item.Status]['text-color']">
+
+                {{status_array[item.Status].label}}
+                <!-- {{item.Status}} -->
             </v-chip>
         </template>
 
         <template v-slot:item.total_price="{ item }">
-            {{item.total_price | money_format}} TWD
+            NT$ {{item.Price | money_format}}
         </template>
 
 

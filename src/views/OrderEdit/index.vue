@@ -1,99 +1,193 @@
 <template src="./template.html"></template>
 
 <script>
-import qs from "qs"
-import Breadcrumb from "@/components/Breadcrumb/"
-import FroalaEditor from "@/components/FroalaEditor/"
-import CommentDialog from "@/components/OrderEdit/CommentDialog"
-import PrintOrder from "@/components/OrderEdit/PrintOrder"
+import Breadcrumb from "@/components/Breadcrumb/";
+import FroalaEditor from "@/components/FroalaEditor/";
+import CommentDialog from "@/components/OrderEdit/CommentDialog";
+import PrintOrder from "@/components/OrderEdit/PrintOrder";
+import PrintHCT from "@/components/OrderEdit/PrintHCT";
+import { hex_to_ascii } from "@/common/filter.js";
+import {
+  GetOrderAndProduct,
+  UpdateOrderInfo,
+  GetHCTOrder,
+} from "@/api/order.js";
 export default {
   name: "OrderEdit",
   components: {
     Breadcrumb,
     FroalaEditor,
     CommentDialog,
-    PrintOrder
+    PrintOrder,
+    PrintHCT,
   },
   data() {
     return {
       breadcrumb_data: [
         {
           title: "所有訂單",
-          link: "/orders"
+          link: "/orders",
         },
         {
           title: "管理訂單",
-          link: ""
-        }
+          link: "",
+        },
       ],
       status_array: {
         W: {
-          label: "尚未付款",
+          label: "等待回應",
           color: "",
-          "text-color": ""
+          "text-color": "",
         },
         P: {
           label: "完成付款",
           color: "primary",
-          "text-color": "white"
+          "text-color": "white",
+        },
+        T: {
+          label: "理貨中",
+          color: "orange lighten-1",
+          "text-color": "white",
         },
         S: {
           label: "已出貨",
           color: "green",
-          "text-color": "white"
+          "text-color": "white",
         },
-        N: {
+        A: {
+          label: "已到貨",
+          color: "blue",
+          "text-color": "white",
+        },
+        F: {
+          label: "訂單已完成",
+          color: "green",
+          "text-color": "white",
+        },
+        C: {
           label: "已取消",
           color: "black",
-          "text-color": "white"
-        }
+          "text-color": "white",
+        },
       },
+      products: [],
+      discount_list: [],
+      coupon_list: [],
+      payment_list: [],
+      shipway_list: [],
+      zip_code: [],
       order_data: null,
-    }
+      HCT_image: "",
+    };
   },
   methods: {
     async GetOrders() {
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "orders/get_order_admin.php", qs.stringify({ order_id: this.$route.params.id }))
-      if (result != "error") {
-        this.order_data = JSON.parse(result.data)
-      }
+      GetOrderAndProduct().then((res) => {
+        console.log(res);
+        this.products = res[0].data;
+        this.discount_list = res[2].data;
+        this.coupon_list = res[3].data;
+        this.payment_list = res[4].data;
+        this.shipway_list = res[5].data;
+        this.zip_code = res[6].data;
+        this.order_data = res[1].data.List.filter(
+          (item) => item.TradeID == this.$route.params.id
+        )[0];
+      });
+    },
+    GetOrderProducts() {
+      let order_products = [];
+      this.order_data.SubTradeList.forEach((item) => {
+        let exist_product = -1;
+        order_products.forEach((product, product_index) => {
+          if (
+            product.GoodsID == item.GoodsID &&
+            item.ColorID == product.ColorID &&
+            product.SizeID == item.SizeID
+          ) {
+            exist_product = product_index;
+          }
+        });
+
+        if (exist_product != -1) {
+          order_products[exist_product].Amount += 1;
+        } else {
+          let tmp_product = Object.assign({}, item);
+          tmp_product.Info = this.products.filter(
+            (product) => product.GoodsID == item.GoodsID
+          )[0];
+          tmp_product.Amount = 1;
+          tmp_product.Option = tmp_product.Info.Stock.filter(
+            (option) =>
+              option.ColorID == item.ColorID && option.SizeID == item.SizeID
+          )[0];
+          order_products.push(tmp_product);
+        }
+      });
+      return order_products;
+    },
+    GetProductDiscount(id) {
+      return this.discount_list.filter((item) => item.DiscountID == id)[0];
+    },
+    GetCoupon(id) {
+      return this.coupon_list.filter((item) => item.CouponID == id)[0];
+    },
+    GetPayment() {
+      return this.payment_list.filter(
+        (item) => item.PaymentID == this.order_data.PaymentID
+      )[0];
+    },
+    GetShipway() {
+      return this.shipway_list.filter(
+        (item) => item.ShippingID == this.order_data.ShippingID
+      )[0];
+    },
+    GetHCTOrder() {
+      GetHCTOrder(this.order_data.TradeID).then((res) => {
+        this.HCT_image = hex_to_ascii(res.data.image);
+        this.$refs.PrintHCT.Print();
+        this.GetOrders();
+      });
     },
     OpenCommentDialog() {
-      this.$refs.CommentDialog.Open(this.order_data.order_comment)
+      this.$refs.CommentDialog.Open(this.order_data.AdminMemo);
     },
     Print() {
-      this.$refs.PrintOrder.Print()
+      this.$refs.PrintOrder.Print();
     },
     GetStatusActive(label) {
-      return label == this.status_array[this.order_data.status].label ? "primary" : ""
+      return label == this.status_array[this.order_data.Status].label
+        ? "primary"
+        : "";
     },
-    async UpdateStatus(index) {
-      if (index != this.order_data.status) {
-        let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "orders/update_order_status.php", qs.stringify({ order_id: this.$route.params.id, status: index }))
-        if (result != "error") {
-          this.GetOrders()
-        }
+    UpdateOrderInfo(comment = -1, status = -1) {
+      if (status != -1) {
+        this.order_data.Status = status;
       }
+      if (comment != -1) {
+        this.order_data.AdminMemo = comment;
+      }
+      UpdateOrderInfo(this.order_data).then(() => {
+        this.$refs.CommentDialog.Close();
+        this.GetOrders();
+        this.$store.commit("SetSnackbar", {
+          content: "商店備註已更新",
+          status: true,
+        });
+      });
     },
-    async Refund() {
-      let result = await this.SendPostData(process.env.VUE_APP_BASE_API + "orders/refund_order.php", qs.stringify({ order_data: { type: 'zero_card', id: this.$route.params.id } }))
-      if (result != "error") {
-        this.$store.commit("SetDialog", { title: "已成功申請退款", content: "提醒您，零卡分期退款需要幾個工作天確認後才會將額度退還給消費者，有任何疑問請與零卡分期客服聯絡。", status: true })
-        this.GetOrders()
-      }
-    }
   },
   computed: {},
   created() {
-    this.GetOrders()
+    this.GetOrders();
   },
   filters: {
     money_format(value) {
-      let val = (value / 1).toFixed(0).replace('.', ',')
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    }
-  }
-}
+      let val = (value / 1).toFixed(0).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+  },
+};
 </script>
 <style>
 .image_card {

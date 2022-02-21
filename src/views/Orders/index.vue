@@ -1,87 +1,79 @@
 <template src="./template.html"></template>
 
 <script>
-import FilterDialog from "@/components/Orders/FilterDialog/index"
-import ListShow from "@/components/Orders/ListShow/index"
+import FilterDialog from "@/components/Orders/FilterDialog/index";
+import ListShow from "@/components/Orders/ListShow/index";
+import { GetOrderList } from "@/api/order.js";
 export default {
   name: "Products",
   components: {
     FilterDialog,
-    ListShow
+    ListShow,
   },
   data() {
     return {
       filter_data: {
         status: "all",
-        payment: "all"
+        member_id: -1,
+        data_per_page: 10,
       },
       order_status_data: [
         {
           label: "全部",
-          value: "all"
+          value: "all",
         },
         {
           label: "尚未付款",
-          value: "W"
+          value: "W",
         },
         {
           label: "已付款",
-          value: "P"
+          value: "P",
+        },
+        {
+          label: "理貨中",
+          value: "T",
         },
         {
           label: "已出貨",
-          value: "S"
-        }
+          value: "S",
+        },
+        {
+          label: "已送達",
+          value: "A",
+        },
+        {
+          label: "已完成",
+          value: "F",
+        },
+        {
+          label: "已取消",
+          value: "C",
+        },
       ],
-      order_payment_data: [
-        {
-          label: "全部",
-          value: "all"
-        },
-        {
-          label: "零卡分期",
-          value: "zero_card"
-        },
-        {
-          label: "信用卡",
-          value: "Credit"
-        },
-        {
-          label: "ATM",
-          value: "ATM"
-        },
-        {
-          label: "超商代碼",
-          value: "CVS"
-        }
-      ],
-      order_data: [
-
-      ],
+      order_data: [],
       key_word: "",
-      show_type: "list"
-    }
+      show_type: "list",
+    };
   },
   methods: {
     OpenFilterDialog() {
-      this.$refs.FilterDialog.Open()
+      this.$refs.FilterDialog.Open();
     },
     async GetOrders() {
-      let result = await this.SendGetData(process.env.VUE_APP_BASE_API + "orders/get_orders_admin.php")
-      if (result != "error") {
-        this.order_data = JSON.parse(result.data)
-        this.order_data.sort((a, b) => {
-          return new Date(b.create_time) - new Date(a.create_time)
-        })
-      }
-    }
+      GetOrderList(-1, -1, "all", -1).then((res) => {
+        console.log(res);
+        this.order_data = res.data.List.sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
+      });
+    },
   },
   created() {
-    this.GetOrders()
+    this.GetOrders();
   },
-  computed: {
-  }
-}
+  computed: {},
+};
 </script>
 
 <style >

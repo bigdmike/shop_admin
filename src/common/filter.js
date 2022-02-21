@@ -41,3 +41,23 @@ export function DataSort(moved_log, data) {
     });
     return data
 }
+
+export function hex_to_ascii(str1) {
+    let input = str1.replace(/[^A-Fa-f0-9]/g, "");
+    if (input.length % 2) {
+        console.log("cleaned hex string length is odd.");
+        return;
+    }
+
+    let binary = new Array();
+    for (let i = 0; i < input.length / 2; i++) {
+        let h = input.substr(i * 2, 2);
+        binary[i] = parseInt(h, 16);
+    }
+
+    let byteArray = new Uint8Array(binary);
+    return window.URL.createObjectURL(new Blob([byteArray], {
+        type: 'application/octet-stream'
+    }))
+    //document.body.appendChild(img)
+}
