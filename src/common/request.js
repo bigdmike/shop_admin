@@ -3,15 +3,19 @@ import axios from "axios";
 import store from "@/store/index.js"
 import router from '@/router'
 
-let baseURL = process.env.VUE_APP_BASE_API;
+// let baseURL = process.env.VUE_APP_BASE_API;
+let baseURL = "https://kitchen.yongxin-demo.com/"
 // 建立axios例項
 const service = axios.create({
     baseURL: baseURL,
     timeout: 30000, // 請求超時時間
     headers: {
         "Content-Type": "application/json;charset=UTF-8",
-        "Access-Control-Allow-Origin-Type": "*"
+        // "Access-Control-Allow-Origin-Type": "*",
+        // "Access-Control-Allow-Origin": "*",
+        // "content-type": 'application/x-www-form-urlencoded'
     },
+    // withCredentials: true
 });
 // axios.defaults.withCredentials = true; // 若跨域請求需要帶 cookie 身份識別
 // axios.defaults.headers.post["Access-Control-Allow-Origin-Type"] = "*"; // 允許跨域

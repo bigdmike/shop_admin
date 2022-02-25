@@ -1,0 +1,23 @@
+<html>
+
+<body>
+    <div id=""></div>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <!-- Javascript -->
+    <script>
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/json',
+            url: 'https://kitchen.yongxin-demo.com/admin/weblink/category',
+            data: 'Column=TestImage',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer 6e836f81ce2660d262e81a4253ea3aac');
+            },
+            success: function (res) {
+                console.log(res);
+            }
+        });
+    </script>
+</body>
+
+</html>
