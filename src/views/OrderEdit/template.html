@@ -1,7 +1,7 @@
 <div id="Order">
     <v-container v-if="order_data!=null">
         <CommentDialog v-on:send-data="UpdateOrderInfo" ref="CommentDialog" />
-        <PrintOrder :order_data="order_data" ref="PrintOrder" />
+        <PrintOrder :order_data="order_data" :products="GetOrderProducts()" :zip_code="zip_code" ref="PrintOrder" />
         <PrintHCT :image="HCT_image" ref="PrintHCT" />
         <v-row>
             <Breadcrumb :link_array="breadcrumb_data" />
@@ -73,6 +73,10 @@
                             <v-btn class="elevation-0 ml-2" color="primary" v-if="order_data.ShippingID==5"
                                 @click="GetHCTOrder()">
                                 新竹物流出貨單
+                            </v-btn>
+                            <v-btn class="elevation-0 ml-2" color="primary"
+                                v-if="order_data.ShippingID==2 || order_data.ShippingID==1" @click="GetCVSOrder()">
+                                超商出貨單
                             </v-btn>
                         </v-col>
                         <!-- PRODUCT LIST -->
@@ -171,7 +175,9 @@
                         <v-icon class="mr-2">mdi-account</v-icon>客戶資訊
                     </h3>
                     <p class="mb-0 font-weight-black">{{order_data.ReceiverName}}</p>
-                    <p class="mb-2 grey--text text--darken-2 body-2">{{order_data.ReceiverAddress}}</p>
+                    <p class="mb-2 grey--text text--darken-2 body-2">
+                        {{GetZipCity(order_data.ReceiverAddressCode).City + GetZipCity(order_data.ReceiverAddressCode).Area}}{{order_data.ReceiverAddress}}
+                    </p>
                     <p class="mb-0 grey--text text--darken-2 body-2">{{order_data.ReceiverPhone}}</p>
                     <p class="mb-0 grey--text text--darken-2 body-2">{{order_data.ReceiverEmail}}</p>
                 </v-card>
@@ -190,5 +196,6 @@
                 </v-card>
             </v-col>
         </v-row>
+        <div class="form_area"></div>
     </v-container>
 </div>

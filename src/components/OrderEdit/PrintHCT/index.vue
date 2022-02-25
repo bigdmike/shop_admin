@@ -20,9 +20,6 @@ export default {
       this.$refs.PrintBtn.click();
     },
   },
-  mounted() {
-    console.log(this.$refs.PrintBtn);
-  },
 };
 </script>
 

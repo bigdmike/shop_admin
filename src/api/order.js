@@ -9,7 +9,18 @@ export function GetOrderList(data_per_page, page, status, member_id) {
     page != -1 ? url += "&Page=" + page : ""
     status != "all" ? url += "&Status=" + status : ""
     member_id != -1 ? url += "&MemberID=" + member_id : ""
-    return get(url)
+    let shipping = get("shipping")
+    let orders = get(url)
+    let promise_list = [orders, shipping]
+
+    return Promise.all(GetPromise(promise_list))
+        .then(
+            res => {
+                if (promise_list.length == res.length) {
+                    return (res)
+                }
+            }, err => console.log(err)
+        )
 }
 
 export function GetOrderAndProduct() {
@@ -56,6 +67,9 @@ export function GetHCTOrder(order_id) {
     return get("admin/trade/HCT/" + order_id)
 }
 
+export function GetCVSOrder(order_id) {
+    return get("admin/trade/ECLogistics/" + order_id)
+}
 
 function GetPromise(promiseList) {
     return promiseList.map(promise =>

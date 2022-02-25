@@ -54,6 +54,7 @@ export default {
       order_data: [],
       key_word: "",
       show_type: "list",
+      shipping_list: [],
     };
   },
   methods: {
@@ -63,7 +64,8 @@ export default {
     async GetOrders() {
       GetOrderList(-1, -1, "all", -1).then((res) => {
         console.log(res);
-        this.order_data = res.data.List.sort((a, b) => {
+        this.shipping_list = res[1].data;
+        this.order_data = res[0].data.List.sort((a, b) => {
           return new Date(b.created_at) - new Date(a.created_at);
         });
       });

@@ -11,6 +11,7 @@ import {
   GetOrderAndProduct,
   UpdateOrderInfo,
   GetHCTOrder,
+  GetCVSOrder,
 } from "@/api/order.js";
 export default {
   name: "OrderEdit",
@@ -35,32 +36,32 @@ export default {
       ],
       status_array: {
         W: {
-          label: "等待回應",
+          label: "尚未付款",
           color: "",
           "text-color": "",
         },
         P: {
           label: "完成付款",
-          color: "primary",
+          color: "blue lighten-1",
           "text-color": "white",
         },
         T: {
           label: "理貨中",
-          color: "orange lighten-1",
+          color: "yellow darken-1",
           "text-color": "white",
         },
         S: {
           label: "已出貨",
-          color: "green",
+          color: "orange darken-3",
           "text-color": "white",
         },
         A: {
-          label: "已到貨",
-          color: "blue",
+          label: "已送達",
+          color: "deep-orange darken-3",
           "text-color": "white",
         },
         F: {
-          label: "訂單已完成",
+          label: "已完成",
           color: "green",
           "text-color": "white",
         },
@@ -137,6 +138,9 @@ export default {
         (item) => item.PaymentID == this.order_data.PaymentID
       )[0];
     },
+    GetZipCity(id) {
+      return this.zip_code.filter((item) => item.ZipCode == id)[0];
+    },
     GetShipway() {
       return this.shipway_list.filter(
         (item) => item.ShippingID == this.order_data.ShippingID
@@ -147,6 +151,23 @@ export default {
         this.HCT_image = hex_to_ascii(res.data.image);
         this.$refs.PrintHCT.Print();
         this.GetOrders();
+      });
+    },
+    GetCVSOrder() {
+      GetCVSOrder(this.order_data.TradeID).then((res) => {
+        console.log(res);
+        if (res.code == 200) {
+          let form = res.data.split("<form")[1].split("</form>")[0];
+          form =
+            "<form" +
+            res.data.split("<form")[1].split("</form>")[0] +
+            "</form>";
+          form = form.replace('target="_self"', 'target="_blank"');
+          document.querySelector(".form_area").innerHTML = "";
+          document.querySelector(".form_area").innerHTML += form;
+          document.querySelector(".form_area form").submit();
+          console.log(document.querySelector(".form_area form"));
+        }
       });
     },
     OpenCommentDialog() {

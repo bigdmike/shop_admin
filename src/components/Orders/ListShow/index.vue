@@ -25,6 +25,10 @@ export default {
       require: true,
       type: String,
     },
+    shipping_list: {
+      require: true,
+      type: Array,
+    },
   },
   components: {
     draggable,
@@ -35,6 +39,7 @@ export default {
         { text: "訂單編號", value: "TradeID" },
         { text: "訂單日期", value: "created_at" },
         { text: "客戶姓名", value: "ReceiverName" },
+        { text: "運送方式", value: "ShippingID" },
         { text: "訂單狀態", value: "status" },
         { text: "總金額", value: "total_price" },
       ],
@@ -46,11 +51,26 @@ export default {
         },
         P: {
           label: "完成付款",
-          color: "primary",
+          color: "blue lighten-1",
+          "text-color": "white",
+        },
+        T: {
+          label: "理貨中",
+          color: "yellow darken-1",
           "text-color": "white",
         },
         S: {
           label: "已出貨",
+          color: "orange darken-3",
+          "text-color": "white",
+        },
+        A: {
+          label: "已送達",
+          color: "deep-orange darken-3",
+          "text-color": "white",
+        },
+        F: {
+          label: "已完成",
           color: "green",
           "text-color": "white",
         },
