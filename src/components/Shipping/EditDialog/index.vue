@@ -26,7 +26,6 @@
                 v-model="deliver_volume_max"
                 hide-details="auto"
                 outlined
-                readonly
                 dense
                 required
               ></v-text-field>
@@ -38,7 +37,6 @@
                 v-model="deliver_weight_max"
                 hide-details="auto"
                 outlined
-                readonly
                 dense
                 required
               ></v-text-field>

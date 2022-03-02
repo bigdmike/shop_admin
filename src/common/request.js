@@ -34,7 +34,6 @@ const getCookie = (name) => {
 }
 
 const showDialog = (res) => {
-    console.log(res)
     store.commit("SetDialog", {
         title: "發生錯誤",
         content: res.msg,
@@ -210,12 +209,10 @@ export function del(url, success_text = "") {
  *  params:引數
  * */
 export function post_image(url, params = {}, success_text = "") {
-    console.log(params)
     let image_data = new FormData();
     Object.keys(params).forEach(item => {
         image_data.append(item, params[item])
     })
-    console.log(image_data)
     store.commit("SetPageLoading", 1)
     return new Promise((resolve, reject) => {
         // console.log(service)
