@@ -7,7 +7,7 @@ import Breadcrumb from "@/components/Breadcrumb/";
 import category_components from "@/components/News/category_components.js";
 import news_components from "@/components/News/news_components.js";
 export default {
-  name: "News",
+  name: "NewsCover",
   mixins: [category_components, news_components],
   components: {
     ListShow,
@@ -32,7 +32,6 @@ export default {
   methods: {
     async GetNewsData() {
       get_all_data().then((res) => {
-        console.log(res);
         this.news_categories = res[0].data;
         this.news_data = res[1].data;
         this.CheckSort();

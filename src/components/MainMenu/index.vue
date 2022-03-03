@@ -46,6 +46,10 @@ export default {
               link: "/about",
             },
             {
+              title: "最新消息封面",
+              link: "/news_cover",
+            },
+            {
               title: "最新消息",
               link: "/news",
             },

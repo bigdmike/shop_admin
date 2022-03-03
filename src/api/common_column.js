@@ -23,9 +23,9 @@ export function update_common_column(column_item, front_show = "Y") {
     }
     return post('admin/column/replace', data, "已成功更新欄位")
 }
-export function update_common_column_image(column_name, column_item, front_show = "Y") {
+export function update_common_column_image(column_name, column_item) {
     let image_data = {}
     typeof column_item.Image1 == "string" || column_item.Image1 == null ? "" : image_data[column_name] = column_item.Image1
-    image_data.Front = front_show
+    // image_data.Front = front_show
     return post_image("admin/column/image", image_data, "已成功更新欄位")
 }

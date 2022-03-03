@@ -92,6 +92,12 @@ const routes = [{
     component: () => import( /* webpackChunkName: "news" */ '../views/News/index.vue')
   },
   {
+    path: '/news_cover',
+
+    name: 'NewsCover',
+    component: () => import( /* webpackChunkName: "news_cover" */ '../views/NewsCover/index.vue')
+  },
+  {
     path: '/web_links',
 
     name: 'WebLinks',
