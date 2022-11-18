@@ -1,0 +1,114 @@
+<div id="Products">
+  <Breadcrumb :link_array="breadcrumb_data" />
+
+  <v-container v-if="page_data!=null">
+    <input
+      style="display: none;"
+      type="file"
+      ref="ImageUpload"
+      @change="UpdateImage($event.target.files)"
+    />
+    <v-row>
+      <v-col cols="12"> <p class="mt-0 mb-0">區塊一</p> </v-col>
+      <v-col cols="12" md="4">
+        <MainImageCard
+          :image_data="page_data.about_section_1_image"
+          upload_key="about_section_1_image"
+          @update-action="UpdateImage"
+        />
+      </v-col>
+      <v-col cols="12" md="8">
+        <v-card class="pa-5">
+          <v-text-field
+            label="標題"
+            v-model="page_data.about_section_1_title.Content"
+            dense
+            outlined
+          ></v-text-field>
+          <v-text-field
+            label="副標題"
+            v-model="page_data.about_section_1_sub_title.Content"
+            dense
+            outlined
+          ></v-text-field>
+          <FroalaEditor v-model="page_data.about_section_1_content.Content" />
+        </v-card>
+      </v-col>
+      <v-col cols="12"> <p class="mt-0 mb-0">區塊二</p> </v-col>
+      <v-col cols="12" md="4">
+        <MainImageCard
+          :image_data="page_data.about_section_2_image"
+          upload_key="about_section_2_image"
+          @update-action="UpdateImage"
+        />
+      </v-col>
+      <v-col cols="12" md="8">
+        <v-card class="pa-5">
+          <v-text-field
+            label="標題"
+            v-model="page_data.about_section_2_title.Content"
+            dense
+            outlined
+          ></v-text-field>
+          <v-text-field
+            label="副標題"
+            v-model="page_data.about_section_2_sub_title.Content"
+            dense
+            outlined
+          ></v-text-field>
+          <FroalaEditor v-model="page_data.about_section_2_content.Content" />
+        </v-card>
+      </v-col>
+      <v-col cols="12"> <p class="mt-0 mb-0">區塊三</p> </v-col>
+      <v-col cols="12" md="4">
+        <MainImageCard
+          :image_data="page_data.about_section_3_image"
+          upload_key="about_section_3_image"
+          @update-action="UpdateImage"
+        />
+      </v-col>
+      <v-col cols="12" md="8">
+        <v-card class="pa-5">
+          <v-text-field
+            label="標題"
+            v-model="page_data.about_section_3_title.Content"
+            dense
+            outlined
+          ></v-text-field>
+          <v-text-field
+            label="副標題"
+            v-model="page_data.about_section_3_sub_title.Content"
+            dense
+            outlined
+          ></v-text-field>
+          <FroalaEditor v-model="page_data.about_section_3_content.Content" />
+        </v-card>
+      </v-col>
+      <v-col cols="12"> <p class="mt-0 mb-0">區塊四</p> </v-col>
+      <v-col cols="12" md="4">
+        <MainImageCard
+          :image_data="page_data.about_section_4_image"
+          upload_key="about_section_4_image"
+          @update-action="UpdateImage"
+        />
+      </v-col>
+      <v-col cols="12" md="8">
+        <v-card class="pa-5">
+          <v-text-field
+            label="標題"
+            v-model="page_data.about_section_4_title.Content"
+            dense
+            outlined
+          ></v-text-field>
+          <v-text-field
+            label="副標題"
+            v-model="page_data.about_section_4_sub_title.Content"
+            dense
+            outlined
+          ></v-text-field>
+          <FroalaEditor v-model="page_data.about_section_4_content.Content" />
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

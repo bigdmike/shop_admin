@@ -60,6 +60,7 @@ export default {
     ChangeHeader() {
       let pages = [
         'HomePageEdit',
+        'AboutPageEdit',
         'ProductEdit',
         'ProductCreate',
         'About',

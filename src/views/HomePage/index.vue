@@ -86,22 +86,3 @@ export default {
   },
 };
 </script>
-<style>
-.image_card {
-  transition: opacity 0.4s ease-in-out;
-  cursor: grab;
-}
-
-.img_card_control {
-  background-color: rgba(0, 0, 0, 0.541);
-  transition: opacity 0.4s ease-in-out;
-  opacity: 0;
-}
-.img_card_control.show {
-  opacity: 1;
-}
-
-.show-btns {
-  color: rgba(255, 255, 255, 1) !important;
-}
-</style>

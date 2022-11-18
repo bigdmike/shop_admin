@@ -29,6 +29,14 @@ const routes = [
       import(/* webpackChunkName: "home_page" */ '../views/HomePage/index.vue'),
   },
   {
+    path: '/about_page',
+    name: 'AboutPageEdit',
+    component: () =>
+      import(
+        /* webpackChunkName: "about_page" */ '../views/AboutPage/index.vue'
+      ),
+  },
+  {
     path: '/products',
 
     name: 'Products',

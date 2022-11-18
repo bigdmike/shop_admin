@@ -29,6 +29,10 @@ export default {
               title: '首頁管理',
               link: '/home_page',
             },
+            {
+              title: '關於我們頁面管理',
+              link: '/about_page',
+            },
             // {
             //   title: "廣告設定",
             //   link: "/advertisement",
@@ -45,10 +49,6 @@ export default {
             //   title: '首頁底部連結',
             //   link: '/home_promote',
             // },
-            {
-              title: '關於我們',
-              link: '/about',
-            },
             {
               title: '最新消息封面',
               link: '/news_cover',
