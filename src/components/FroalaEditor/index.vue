@@ -2,15 +2,15 @@
 
 <script>
 //Import Froala Editor
-import "froala-editor/js/plugins.pkgd.min.js";
+import 'froala-editor/js/plugins.pkgd.min.js';
 //Import third party plugins
-import "froala-editor/js/languages/zh_tw";
+import 'froala-editor/js/languages/zh_tw';
 // Import Froala Editor css files.
-import "froala-editor/css/froala_editor.pkgd.min.css";
+import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 // Import and use Vue Froala lib.
-import VueFroala from "vue-froala-wysiwyg";
-import Vue from "vue";
+import VueFroala from 'vue-froala-wysiwyg';
+import Vue from 'vue';
 Vue.use(VueFroala);
 Vue.config.productionTip = false;
 
@@ -24,85 +24,85 @@ export default {
     return {
       config: {
         events: {
-          "image.uploaded": function (response) {
+          'image.uploaded': function(response) {
             // Parse response to get image url.
             console.log(response);
             console.log(response.link);
             var img_url =
-              "https://kitchen.yongxin-demo.com/" + JSON.parse(response).link;
+              'https://api.yaowenfruit.com/' + JSON.parse(response).link;
 
             // Insert image.
             this.image.insert(img_url, false, null, this.image.get(), response);
 
             return false;
           },
-          "image.inserted": function ($img, response) {
+          'image.inserted': function($img, response) {
             console.log($img, response);
             // Image was inserted in the editor.
           },
-          "image.error": function (error, response) {
+          'image.error': function(error, response) {
             console.log(error, response);
           },
         },
         imageUploadRemoteUrls: true,
         imageDefaultWidth: 0,
-        language: "zh_tw",
+        language: 'zh_tw',
         toolbarButtons: [
           [
-            "bold",
-            "italic",
-            "underline",
-            "strikeThrough",
-            "fontSize",
-            "textColor",
-            "backgroundColor",
-            "emoticons",
-            "paragraphFormat",
-            "align",
-            "formatOL",
-            "formatUL",
-            "insertHR",
-            "insertLink",
-            "insertImage",
-            "insertVideo",
-            "insertTable",
-            "html",
+            'bold',
+            'italic',
+            'underline',
+            'strikeThrough',
+            'fontSize',
+            'textColor',
+            'backgroundColor',
+            'emoticons',
+            'paragraphFormat',
+            'align',
+            'formatOL',
+            'formatUL',
+            'insertHR',
+            'insertLink',
+            'insertImage',
+            'insertVideo',
+            'insertTable',
+            'html',
           ],
         ],
         toolbarButtonsMD: [
           [
-            "bold",
-            "italic",
-            "underline",
-            "strikeThrough",
-            "fontSize",
-            "textColor",
-            "backgroundColor",
-            "paragraphFormat",
-            "align",
-            "formatOL",
-            "formatUL",
-            "insertLink",
-            "insertImage",
-            "insertVideo",
-            "insertTable",
-            "html",
+            'bold',
+            'italic',
+            'underline',
+            'strikeThrough',
+            'fontSize',
+            'textColor',
+            'backgroundColor',
+            'paragraphFormat',
+            'align',
+            'formatOL',
+            'formatUL',
+            'insertLink',
+            'insertImage',
+            'insertVideo',
+            'insertTable',
+            'html',
           ],
         ],
         heightMin: 200,
         heightMax: 600,
-        imageUploadURL: process.env.VUE_APP_BASE_API + "editor/upload",
-        imageUploadMethod: "POST",
+        imageUploadURL: process.env.VUE_APP_BASE_API + 'editor/upload',
+        imageUploadMethod: 'POST',
         imageStyles: {
-          class1: "Class 1",
-          class2: "Class 2",
+          class1: 'Class 1',
+          class2: 'Class 2',
         },
         requestHeaders: {
-          Authorization: `${this.$cookie.get("account_token")}`,
-          "Access-Control-Allow-Origin-Type": "*",
+          Authorization: `${this.$cookie.get('account_token')}`,
+          'Access-Control-Allow-Origin-Type': '*',
         },
       },
-      model: "Edit Your Content Here!",
+      model: 'Edit Your Content Here!',
     };
   },
   computed: {
@@ -111,7 +111,7 @@ export default {
         return this.value;
       },
       set(val) {
-        this.$emit("input", val);
+        this.$emit('input', val);
       },
     },
   },

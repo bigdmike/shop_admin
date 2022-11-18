@@ -1,29 +1,27 @@
-const CompressionPlugin = require("compression-webpack-plugin");
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://kitchen.yongxin-demo.com/',
+        target: 'https://api.yaowenfruit.com',
         secure: false,
         pathRewrite: {
-          '^/api': '/'
-        }
+          '^/api': '/',
+        },
       },
       '/test_api': {
-        target: 'https://mjp.yongxin-demo.com/api/',
+        target: 'https://api.yaowenfruit.com',
         secure: false,
         pathRewrite: {
-          '^/test_api': '/'
-        }
-      }
-    }
+          '^/test_api': '/',
+        },
+      },
+    },
   },
-  transpileDependencies: [
-    'vuetify'
-  ],
+  transpileDependencies: ['vuetify'],
   filenameHashing: true,
-  publicPath: '/kol_kitchen/',
+  publicPath: '/yaowen_admin/',
   configureWebpack: () => {
     if (process.env.NODE_ENV === 'production') {
       return {
@@ -32,8 +30,8 @@ module.exports = {
             test: /\.js$|\.html$|\.css$/, // 需要压缩的文件类型
             //|\.jpg$|\.jpeg$|\.png
             threshold: 10240, // 归档需要进行压缩的文件大小最小值，我这个是10K以上的进行压缩
-            deleteOriginalAssets: false // 是否删除原文件
-          })
+            deleteOriginalAssets: false, // 是否删除原文件
+          }),
         ],
         optimization: {
           runtimeChunk: 'single',
@@ -47,17 +45,17 @@ module.exports = {
                 name(module) {
                   // get the name. E.g. node_modules/packageName/not/this/part.js
                   // or node_modules/packageName
-                  const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
+                  const packageName = module.context.match(
+                    /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                  )[1];
                   // npm package names are URL-safe, but some servers don't like @ symbols
-                  return `npm.${packageName.replace('@', '')}`
-                }
-              }
-            }
-          }
+                  return `npm.${packageName.replace('@', '')}`;
+                },
+              },
+            },
+          },
         },
-      }
+      };
     }
-
-
   },
-}
+};

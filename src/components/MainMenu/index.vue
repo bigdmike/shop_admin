@@ -2,89 +2,93 @@
 
 <script>
 export default {
-  name: "MainMenu",
+  name: 'MainMenu',
   data() {
     return {
       menu: [
         {
-          title: "首頁",
-          icon: "mdi-home",
-          type: "U",
-          link: "/",
+          title: '首頁',
+          icon: 'mdi-home',
+          type: 'U',
+          link: '/',
           group: false,
           list: [],
         },
         {
-          title: "頁面編輯",
-          icon: "mdi-pencil",
-          link: "/questions",
-          type: "U",
+          title: '頁面編輯',
+          icon: 'mdi-pencil',
+          link: '/questions',
+          type: 'U',
           group: true,
           list: [
             {
-              title: "網站選單",
-              link: "/web_links",
+              title: '網站選單',
+              link: '/web_links',
             },
             {
-              title: "廣告設定",
-              link: "/advertisement",
+              title: '首頁管理',
+              link: '/home_page',
+            },
+            // {
+            //   title: "廣告設定",
+            //   link: "/advertisement",
+            // },
+            {
+              title: '首頁大圖輪播',
+              link: '/home_carousel',
+            },
+            // {
+            //   title: '首頁網紅介紹',
+            //   link: '/home_kol',
+            // },
+            // {
+            //   title: '首頁底部連結',
+            //   link: '/home_promote',
+            // },
+            {
+              title: '關於我們',
+              link: '/about',
             },
             {
-              title: "首頁大圖輪播",
-              link: "/home_carousel",
+              title: '最新消息封面',
+              link: '/news_cover',
             },
             {
-              title: "首頁網紅介紹",
-              link: "/home_kol",
+              title: '最新消息',
+              link: '/news',
             },
             {
-              title: "首頁底部連結",
-              link: "/home_promote",
+              title: '常見問題',
+              link: '/questions',
             },
             {
-              title: "關於我們",
-              link: "/about",
+              title: '角色館',
+              link: '/mascot',
             },
             {
-              title: "最新消息封面",
-              link: "/news_cover",
+              title: '公司資訊',
+              link: '/company_info',
             },
             {
-              title: "最新消息",
-              link: "/news",
+              title: '隱私權政策',
+              link: '/privacy_page',
             },
             {
-              title: "常見問題",
-              link: "/questions",
-            },
-            {
-              title: "角色館",
-              link: "/mascot",
-            },
-            {
-              title: "公司資訊",
-              link: "/company_info",
-            },
-            {
-              title: "隱私權政策",
-              link: "/privacy_page",
-            },
-            {
-              title: "會員責任規範條款",
-              link: "/terms_of_customer",
+              title: '會員責任規範條款',
+              link: '/terms_of_customer',
             },
           ],
         },
         {
-          title: "訂單管理",
-          icon: "mdi-inbox",
-          link: "/orders",
-          type: "U",
+          title: '訂單管理',
+          icon: 'mdi-inbox',
+          link: '/orders',
+          type: 'U',
           group: true,
           list: [
             {
-              title: "所有訂單",
-              link: "/orders",
+              title: '所有訂單',
+              link: '/orders',
             },
             // {
             //   title: "遺棄的購物車",
@@ -93,23 +97,23 @@ export default {
           ],
         },
         {
-          title: "商品管理",
-          icon: "mdi-tag-text",
-          link: "/products",
-          type: "U",
+          title: '商品管理',
+          icon: 'mdi-tag-text',
+          link: '/products',
+          type: 'U',
           group: true,
           list: [
             {
-              title: "所有商品",
-              link: "/products",
+              title: '所有商品',
+              link: '/products',
             },
             {
-              title: "商品分類",
-              link: "/product_menu",
+              title: '商品分類',
+              link: '/product_menu',
             },
             {
-              title: "商品目錄",
-              link: "/categories",
+              title: '商品目錄',
+              link: '/categories',
             },
             // {
             //   title: "庫存管理",
@@ -122,44 +126,44 @@ export default {
           ],
         },
         {
-          title: "金物流管理",
-          icon: "mdi-credit-card-outline",
-          link: "/payment",
-          type: "U",
+          title: '金物流管理',
+          icon: 'mdi-credit-card-outline',
+          link: '/payment',
+          type: 'U',
           group: true,
           list: [
             {
-              title: "付款方式",
-              link: "/payment",
+              title: '付款方式',
+              link: '/payment',
             },
             {
-              title: "運送方式",
-              link: "/shipping",
+              title: '運送方式',
+              link: '/shipping',
             },
           ],
         },
         {
-          title: "促銷優惠",
-          icon: "mdi-sale",
-          type: "U",
-          link: "/promotions",
+          title: '促銷優惠',
+          icon: 'mdi-sale',
+          type: 'U',
+          link: '/promotions',
           group: true,
           list: [
             {
-              title: "優惠券代碼",
-              link: "/coupon",
+              title: '優惠券代碼',
+              link: '/coupon',
             },
             {
-              title: "打折/贈品",
-              link: "/discount",
+              title: '打折/贈品',
+              link: '/discount',
             },
           ],
         },
         {
-          title: "分析報表",
-          icon: "mdi-google-analytics",
-          type: "U",
-          link: "/charts",
+          title: '分析報表',
+          icon: 'mdi-google-analytics',
+          type: 'U',
+          link: '/charts',
           group: false,
           list: [],
         },
@@ -177,17 +181,17 @@ export default {
     GroupOpenFilter(menu_item) {
       let result = false;
       menu_item.list.forEach((item) => {
-        this.$route.path == item.link ? (result = true) : "";
+        this.$route.path == item.link ? (result = true) : '';
       });
       return result;
     },
   },
   computed: {
     user_data() {
-      if (this.$cookie.get("account_data")) {
-        return JSON.parse(this.$cookie.get("account_data"));
+      if (this.$cookie.get('account_data')) {
+        return JSON.parse(this.$cookie.get('account_data'));
       } else {
-        return { name: "", admin_id: -1 };
+        return { name: '', admin_id: -1 };
       }
     },
   },

@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { get_goods } from "@/api/products.js";
+import { get_goods } from '@/api/products.js';
 import {
   getOptionStock,
   create_color,
@@ -101,16 +101,16 @@ import {
   update_size,
   create_stock,
   update_stock_sort,
-} from "@/api/product_option.js";
-import ListShow from "./ListShow/index.vue";
-import StockList from "./StockListShow/index.vue";
-import CreateDialog from "./CreateDialog/index.vue";
-import CreateStockDialog from "./CreateStockDialog/index.vue";
-import EditDialog from "./EditDialog/index.vue";
-import EditStockDialog from "./EditStockDialog/index.vue";
-import DeleteDialog from "./DeleteDialog/index.vue";
+} from '@/api/product_option.js';
+import ListShow from './ListShow/index.vue';
+import StockList from './StockListShow/index.vue';
+import CreateDialog from './CreateDialog/index.vue';
+import CreateStockDialog from './CreateStockDialog/index.vue';
+import EditDialog from './EditDialog/index.vue';
+import EditStockDialog from './EditStockDialog/index.vue';
+import DeleteDialog from './DeleteDialog/index.vue';
 export default {
-  name: "OptionDialog",
+  name: 'OptionDialog',
   components: {
     ListShow,
     StockList,
@@ -132,7 +132,7 @@ export default {
   },
   computed: {
     product_name() {
-      return this.product == null ? "" : this.product.Title;
+      return this.product == null ? '' : this.product.Title;
     },
   },
   methods: {
@@ -157,7 +157,7 @@ export default {
     },
     SortOption(data, title) {
       let tmp_data = JSON.parse(JSON.stringify(data));
-      let first_option = tmp_data.filter((item) => item[title] == "無")[0];
+      let first_option = tmp_data.filter((item) => item[title] == '無')[0];
       tmp_data.splice(tmp_data.indexOf(first_option), 1);
       tmp_data.splice(0, 0, first_option);
       return tmp_data;
@@ -177,11 +177,11 @@ export default {
           this.option_1 = res[0].data.filter((item) => {
             return item.GoodsID == this.product.GoodsID || item.GoodsID == 0;
           });
-          this.option_1 = this.SortOption(this.option_1, "ColorTitle");
+          this.option_1 = this.SortOption(this.option_1, 'ColorTitle');
           this.option_2 = res[1].data.filter(
             (item) => item.GoodsID == this.product.GoodsID || item.GoodsID == 0
           );
-          this.option_2 = this.SortOption(this.option_2, "SizeTitle");
+          this.option_2 = this.SortOption(this.option_2, 'SizeTitle');
           this.stocks = res[2].data;
         });
       });
@@ -228,6 +228,10 @@ export default {
     },
     async SendCreateStock(data) {
       data.GoodsID = this.id;
+      // this.axios.put(
+      //   'https://kitchen.yongxin-demo.com/admin/goods/stock',
+      //   data
+      // );
       create_stock(data).then(() => {
         this.$refs.CreateStockDialog.Cancel();
         this.$refs.EditStockDialog.Cancel();
