@@ -1,0 +1,42 @@
+<div id="Products">
+  <template>
+    <!-- CATEGORY DIALOG -->
+    <CategoryCreateDialog
+      ref="CategoryCreateDialog"
+      v-on:create-category="SendCreateCategoryData"
+    />
+    <CategoryEditDialog
+      ref="CategoryEditDialog"
+      v-on:update-category="SendUpdateCategoryData"
+    />
+    <CategoryDeleteDialog
+      ref="CategoryDeleteDialog"
+      v-on:delete-category="SendDeleteCategoryData"
+    />
+  </template>
+  <Breadcrumb :link_array="breadcrumb_data" />
+  <v-container>
+    <v-row>
+      <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-8 px-4">
+        <v-row>
+          <v-col cols="12">
+            <div class="d-flex justify-space-between align-center">
+              <h3>文章分類</h3>
+              <v-btn
+                @click="OpenCreateCategoryDialog"
+                color="primary font-weight-bold"
+                >新增</v-btn
+              >
+            </div>
+            <ListShow
+              v-on:update-sort="UpdateNewsCategorySort"
+              v-on:set-edit="OpenEditCategoryDialog"
+              v-on:delete-data="OpenDeleteCategoryDialog"
+              v-model="news_categories"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

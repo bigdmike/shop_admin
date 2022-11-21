@@ -15,6 +15,14 @@ Vue.prototype.$ImageUrl = (item) => {
   return item == '' ? '' : process.env.VUE_APP_BASEURL + item;
 };
 
+Vue.prototype.$SetImageObj = (item, image_url) => {
+  let tmp_data = Object.assign({}, item);
+  tmp_data.type = 'image';
+  tmp_data.Image1 = null;
+  tmp_data.PreviewImage = Vue.prototype.$ImageUrl(image_url);
+  return tmp_data;
+};
+
 Date.prototype.addDays = function(d) {
   return new Date(this.valueOf() + 864e5 * d);
 };

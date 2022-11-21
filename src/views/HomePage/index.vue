@@ -48,29 +48,24 @@ export default {
       ]).then((res) => {
         console.log(res);
         this.page_data = {};
-        res.home_main_product_bg.type = 'image';
-        res.home_main_product_bg.Image1 = null;
-        res.home_main_product_bg.PreviewImage = this.$ImageUrl(
+        res.home_main_product_bg = this.$SetImageObj(
+          res.home_main_product_bg,
           res.home_main_product_bg.Content
         );
-        res.home_new_product_bg.type = 'image';
-        res.home_new_product_bg.Image1 = null;
-        res.home_new_product_bg.PreviewImage = this.$ImageUrl(
+        res.home_new_product_bg = this.$SetImageObj(
+          res.home_new_product_bg,
           res.home_new_product_bg.Content
         );
-        res.home_promote_1_image.type = 'image';
-        res.home_promote_1_image.Image1 = null;
-        res.home_promote_1_image.PreviewImage = this.$ImageUrl(
+        res.home_promote_1_image = this.$SetImageObj(
+          res.home_promote_1_image,
           res.home_promote_1_image.Content
         );
-        res.home_promote_2_image.type = 'image';
-        res.home_promote_2_image.Image1 = null;
-        res.home_promote_2_image.PreviewImage = this.$ImageUrl(
+        res.home_promote_2_image = this.$SetImageObj(
+          res.home_promote_2_image,
           res.home_promote_2_image.Content
         );
-        res.home_promote_3_image.type = 'image';
-        res.home_promote_3_image.Image1 = null;
-        res.home_promote_3_image.PreviewImage = this.$ImageUrl(
+        res.home_promote_3_image = this.$SetImageObj(
+          res.home_promote_3_image,
           res.home_promote_3_image.Content
         );
         this.page_data = res;

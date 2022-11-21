@@ -1,16 +1,20 @@
 <div id="Products">
-    <v-container v-if="product_data!=null">
-        <OptionDialog ref="OptionDialog" />
-        <FilterDialog ref="FilterDialog" :product_status_data="product_status_data"
-            :product_category_data="product_category_data" v-model="filter_data" />
-        <DeleteDialog ref="DeleteDialog" v-on:delete-product="SendDeleteData" />
-        <ImageEditDialog ref="ImageEditDialog" />
-        <v-row>
-            <v-col cols="12" md="12" lg="12" class="mx-auto">
-                <div class="header d-flex justify-space-between align-center">
-                    <h3 class="my-0 text-h5 font-weight-bold">所有商品</h3>
-                    <div class="d-flex align-center">
-                        <v-menu offset-y>
+  <v-container v-if="product_data!=null">
+    <OptionDialog ref="OptionDialog" />
+    <FilterDialog
+      ref="FilterDialog"
+      :product_status_data="product_status_data"
+      :product_category_data="product_category_data"
+      v-model="filter_data"
+    />
+    <DeleteDialog ref="DeleteDialog" v-on:delete-product="SendDeleteData" />
+    <ImageEditDialog ref="ImageEditDialog" />
+    <v-row>
+      <v-col cols="12" md="12" lg="12" class="mx-auto">
+        <div class="header d-flex justify-space-between align-center">
+          <h3 class="my-0 text-h5 font-weight-bold">所有商品</h3>
+          <div class="d-flex align-center">
+            <!-- <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="mr-4 grey lighten-2 elevation-0" v-bind="attrs" v-on="on">
                                     更多
@@ -31,58 +35,104 @@
                                     <v-list-item-title>管理標籤</v-list-item-title>
                                 </v-list-item>
                             </v-list>
-                        </v-menu>
-                        <v-btn @click="$router.push('/products/new/')" color="primary font-weight-bold">新增商品</v-btn>
-                    </div>
-                </div>
+                        </v-menu> -->
+            <v-btn
+              @click="$router.push('/products/new/')"
+              color="primary font-weight-bold"
+              >新增商品</v-btn
+            >
+          </div>
+        </div>
 
-                <div class="searchbar d-flex align-stretch pt-5 pb-2">
-                    <v-btn @click="OpenFilterDialog" class="ma-0 py-0 filter_btn  black--text" outlined>
-                        商品篩選
-                        <v-icon class="ml-2">mdi-menu-down</v-icon>
-                    </v-btn>
-                    <v-text-field class="searchtext" v-model="key_word" hide-details="auto" color="grey darken-2"
-                        outlined dense append-icon="mdi-magnify"></v-text-field>
-                    <v-tooltip bottom>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn @click="ChangeShowType" class="ml-2 display_btn" color="grey lighten-2 elevation-0"
-                                small v-bind="attrs" v-on="on">
-                                <v-icon v-if="show_type=='list'" dark>
-                                    mdi-format-list-checkbox
-                                </v-icon>
-                                <v-icon v-if="show_type=='grid'" dark>
-                                    mdi-view-grid-outline
-                                </v-icon>
-                            </v-btn>
-                        </template>
-                        <span>切換顯示模式</span>
-                    </v-tooltip>
+        <div class="searchbar d-flex align-stretch pt-5 pb-2">
+          <v-btn
+            @click="OpenFilterDialog"
+            class="ma-0 py-0 filter_btn  black--text"
+            outlined
+          >
+            商品篩選
+            <v-icon class="ml-2">mdi-menu-down</v-icon>
+          </v-btn>
+          <v-text-field
+            class="searchtext"
+            v-model="key_word"
+            hide-details="auto"
+            color="grey darken-2"
+            outlined
+            dense
+            append-icon="mdi-magnify"
+          ></v-text-field>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                @click="ChangeShowType"
+                class="ml-2 display_btn"
+                color="grey lighten-2 elevation-0"
+                small
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon v-if="show_type=='list'" dark>
+                  mdi-format-list-checkbox
+                </v-icon>
+                <v-icon v-if="show_type=='grid'" dark>
+                  mdi-view-grid-outline
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>切換顯示模式</span>
+          </v-tooltip>
+        </div>
 
-                </div>
+        <div class="filter_bar d-flex align-center py-0">
+          <v-chip
+            v-if="filter_data.status!='all'"
+            class="ma-2 caption"
+            close
+            @click:close="filter_data.status = 'all'"
+          >
+            狀態:
+            {{product_status_data.filter(item=>item.value==filter_data.status)[0].label}}
+          </v-chip>
+          <v-chip
+            v-if="filter_data.category!='all'"
+            class="ma-2 caption"
+            color="secondary"
+            close
+            @click:close="filter_data.category = 'all'"
+          >
+            分類:
+            {{product_category_data.filter(item=>item.MenuID==filter_data.category)[0].Title}}
+          </v-chip>
+        </div>
 
-                <div class="filter_bar d-flex align-center py-0">
-                    <v-chip v-if="filter_data.status!='all'" class="ma-2 caption" close
-                        @click:close="filter_data.status = 'all'">
-                        狀態: {{product_status_data.filter(item=>item.value==filter_data.status)[0].label}}
-                    </v-chip>
-                    <v-chip v-if="filter_data.category!='all'" class="ma-2 caption" color="secondary" close
-                        @click:close="filter_data.category = 'all'">
-                        分類:
-                        {{product_category_data.filter(item=>item.MenuID==filter_data.category)[0].Title}}
-                    </v-chip>
-                </div>
-
-                <GridShow v-if="show_type=='grid'" :filter_data="filter_data" :product_status_data="product_status_data"
-                    :product_category_data="product_category_data" v-on:update-sort="UpdateProductSort"
-                    v-on:delete-data="OpenDeleteDialog" v-on:open-stock="OpenStockDialog"
-                    v-on:open-image="OpenImageDialog" v-model="product_data" :key_word="key_word"
-                    v-on:re-load="GetProductData" />
-                <ListShow v-if="show_type=='list'" :filter_data="filter_data" :product_status_data="product_status_data"
-                    :product_category_data="product_category_data" v-on:update-sort="UpdateProductSort"
-                    v-on:delete-data="OpenDeleteDialog" v-on:open-stock="OpenStockDialog"
-                    v-on:open-image="OpenImageDialog" v-model="product_data" :key_word="key_word"
-                    v-on:re-load="GetProductData" />
-            </v-col>
-        </v-row>
-    </v-container>
+        <GridShow
+          v-if="show_type=='grid'"
+          :filter_data="filter_data"
+          :product_status_data="product_status_data"
+          :product_category_data="product_category_data"
+          v-on:update-sort="UpdateProductSort"
+          v-on:delete-data="OpenDeleteDialog"
+          v-on:open-stock="OpenStockDialog"
+          v-on:open-image="OpenImageDialog"
+          v-model="product_data"
+          :key_word="key_word"
+          v-on:re-load="GetProductData"
+        />
+        <ListShow
+          v-if="show_type=='list'"
+          :filter_data="filter_data"
+          :product_status_data="product_status_data"
+          :product_category_data="product_category_data"
+          v-on:update-sort="UpdateProductSort"
+          v-on:delete-data="OpenDeleteDialog"
+          v-on:open-stock="OpenStockDialog"
+          v-on:open-image="OpenImageDialog"
+          v-model="product_data"
+          :key_word="key_word"
+          v-on:re-load="GetProductData"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
 </div>

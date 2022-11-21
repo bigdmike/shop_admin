@@ -1,11 +1,11 @@
 <template src="./template.html"></template>
 
 <script>
-import FroalaEditor from "@/components/FroalaEditor/";
-import Breadcrumb from "@/components/Breadcrumb/";
-import { get_common_column, update_common_column } from "@/api/common_column";
+import FroalaEditor from '@/components/FroalaEditor/';
+import Breadcrumb from '@/components/Breadcrumb/';
+import { get_common_column, updateData } from '@/api/common_column';
 export default {
-  name: "TermsOfCustomer",
+  name: 'TermsOfCustomer',
   components: {
     FroalaEditor,
     Breadcrumb,
@@ -14,26 +14,27 @@ export default {
     return {
       breadcrumb_data: [
         {
-          title: "頁面編輯",
-          link: "",
+          title: '頁面編輯',
+          link: '',
         },
         {
-          title: "會員責任規範條款",
-          link: "",
+          title: '會員責任規範條款',
+          link: '',
         },
       ],
-      privacy_content: null,
+      page_data: null,
     };
   },
   methods: {
-    async UpdateData() {
-      update_common_column(this.privacy_content).then(() => {
+    UpdateData() {
+      updateData(this.page_data).then((res) => {
+        console.log(res);
         this.GetPageData();
       });
     },
-    async GetPageData() {
-      get_common_column(["TermsOfCustomer"]).then((res) => {
-        this.privacy_content = res.TermsOfCustomer;
+    GetPageData() {
+      get_common_column(['terms_of_customer']).then((res) => {
+        this.page_data = res;
       });
     },
     CancelEdit() {

@@ -2,12 +2,6 @@
   <Breadcrumb :link_array="breadcrumb_data" />
 
   <v-container v-if="page_data!=null">
-    <input
-      style="display: none;"
-      type="file"
-      ref="ImageUpload"
-      @change="UpdateImage($event.target.files)"
-    />
     <v-row>
       <v-col cols="12">
         <p class="mt-0 mb-2">主打商品背景圖片</p>

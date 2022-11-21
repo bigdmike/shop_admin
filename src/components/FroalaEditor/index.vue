@@ -47,6 +47,7 @@ export default {
         imageUploadRemoteUrls: true,
         imageDefaultWidth: 0,
         language: 'zh_tw',
+        pastePlain: true,
         toolbarButtons: [
           [
             'bold',
@@ -67,6 +68,7 @@ export default {
             'insertVideo',
             'insertTable',
             'html',
+            'clearFormatting',
           ],
         ],
         toolbarButtonsMD: [
@@ -87,6 +89,7 @@ export default {
             'insertVideo',
             'insertTable',
             'html',
+            'clearFormatting',
           ],
         ],
         heightMin: 200,
@@ -155,7 +158,7 @@ export default {
   opacity: 1;
 }
 
-.fr-fic {
+/* .fr-fic {
   width: 100% !important;
-}
+} */
 </style>

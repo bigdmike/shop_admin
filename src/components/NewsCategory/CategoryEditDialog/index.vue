@@ -5,16 +5,16 @@
         style="border-bottom: 1px solid rgb(218, 218, 218)"
         class="bg-primary"
       >
-        新增商品分類
+        新增文章分類
       </v-card-title>
 
       <v-card-text class="pt-5">
         <v-container>
           <v-row>
             <v-col cols="12" sm="12" md="12">
+              <p>分類標題</p>
               <v-text-field
                 v-model="title"
-                label="分類標題"
                 placeholder="請輸入分類標題"
                 hide-details="auto"
                 outlined
@@ -24,16 +24,12 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-select
-                label="啟用狀態"
-                v-model="status"
-                :items="status_list"
-                hide-details="auto"
-                item-text="label"
-                item-value="value"
-                outlined
-                dense
-              ></v-select>
+              <p>封面圖片</p>
+              <MainImageCard
+                :image_data="cover_image"
+                upload_key="cover_image"
+                @update-action="UpdateImage"
+              />
             </v-col>
           </v-row>
         </v-container>
@@ -52,61 +48,71 @@
 
 <script>
 import { validEmpty } from '@/common/validate.js';
+import MainImageCard from '@/components/MainImageCard/';
 export default {
-  name: 'MenuCreateDialog',
+  name: 'MenuDialog',
   props: {
     category_list: {
       require: true,
       type: Array,
     },
   },
-  components: {},
+  components: {
+    MainImageCard,
+  },
   data() {
     return {
       title: '',
+      content: '',
       category: 1,
+      cover_image: null,
       dialog: false,
-      status: 'Y',
       errors: {
         title: '',
         content: '',
         category: '',
       },
-      status_list: [
-        {
-          label: '已啟用',
-          value: 'Y',
-        },
-        {
-          label: '已停用',
-          value: 'N',
-        },
-      ],
     };
   },
   methods: {
     Open() {
       this.title = '';
+      this.content = '';
       this.category = 1;
-      this.status = 'Y';
       this.dialog = true;
+      this.cover_image = this.$SetImageObj(this.cover_image, '');
       this.errors = {
         title: '',
+        content: '',
+        category: '',
+        image: '',
       };
     },
     Cancel() {
       this.title = '';
+      this.content = '';
       this.category = 1;
-      this.status = 'Y';
       this.dialog = false;
+      this.cover = null;
+      this.image_preview_url = '';
       this.errors = {
         title: '',
+        content: '',
+        category: '',
+        image: '',
       };
+    },
+    UpdateImage(val) {
+      this.$set(this.cover_image, 'PreviewImage', val.preview_url);
+      this.$set(this.cover_image, 'Image1', val.file);
     },
     CreateData() {
       let error = false;
       this.errors = {
         title: '',
+        content: '',
+        category: '',
+        image: '',
       };
       if (!validEmpty(this.title)) {
         this.errors.title = '請輸入分類名稱';
@@ -115,10 +121,10 @@ export default {
       if (!error) {
         this.$emit('create-menu', {
           Title: this.title,
-          Content: '',
+          Content: this.content,
           CategoryID: 1,
-          Status: this.status,
-          Image1: '',
+          Status: 'Y',
+          Image1: this.cover_image.file,
           Seq: 0,
         });
       }

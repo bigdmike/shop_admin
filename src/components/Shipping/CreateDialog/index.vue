@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="500">
     <v-card>
       <v-card-title style="border-bottom: 1px solid rgb(218, 218, 218)">
-        更新付款方式
+        新增付款方式
       </v-card-title>
 
       <v-card-text class="pt-5">
@@ -169,17 +169,17 @@ export default {
     },
   },
   methods: {
-    Open(item) {
-      this.id = item.ShippingID;
-      this.title = item.Title;
-      this.shipping_type = item.ShippingType;
-      this.deliver_volume_max = item.DeliverVolumeMax;
-      this.deliver_weight_max = item.DeliverWeightMax;
-      this.delivery_frozen = item.DeliveryFrozen;
-      this.shipping_fee = item.ShippingFee;
-      this.shipping_fee_outlying = item.ShippingFeeOutlying;
-      this.status_outlying = item.StatusOutlying;
-      this.status = item.Status;
+    Open() {
+      // this.id = item.ShippingID;
+      // this.title = item.Title;
+      // this.shipping_type = item.ShippingType;
+      // this.deliver_volume_max = item.DeliverVolumeMax;
+      // this.deliver_weight_max = item.DeliverWeightMax;
+      // this.delivery_frozen = item.DeliveryFrozen;
+      // this.shipping_fee = item.ShippingFee;
+      // this.shipping_fee_outlying = item.ShippingFeeOutlying;
+      // this.status_outlying = item.StatusOutlying;
+      // this.status = item.Status;
       this.dialog = true;
     },
     Cancel() {
@@ -195,8 +195,7 @@ export default {
       this.dialog = false;
     },
     UpdatePayment() {
-      this.$emit('update-shipping', {
-        ID: this.id,
+      this.$emit('create-shipping', {
         Title: this.title,
         Status: this.status,
         ShippingType: this.shipping_type,

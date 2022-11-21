@@ -1,201 +1,299 @@
 <div id="Order">
-    <v-container v-if="order_data!=null">
-        <CommentDialog v-on:send-data="UpdateOrderInfo" ref="CommentDialog" />
-        <PrintOrder :order_data="order_data" :products="GetOrderProducts()" :zip_code="zip_code" ref="PrintOrder" />
-        <PrintHCT :image="HCT_image" ref="PrintHCT" />
-        <v-row>
-            <Breadcrumb :link_array="breadcrumb_data" />
-            <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
-                <div class="header d-flex justify-space-between align-center">
-                    <h3 class="my-0 text-h5 font-weight-black">#{{order_data.TradeID}}
-                        <span
-                            class="text-body-2 grey--text text--darken-1 font-weight-regular ml-2">{{order_data.created_at}}</span>
-                        <v-chip :class="status_array[order_data.Status].color"
-                            :text-color="status_array[order_data.Status]['text-color']" class="ma-2 caption" small>
-                            {{status_array[order_data.Status].label}}
-                        </v-chip>
-                    </h3>
-                </div>
-            </v-col>
-            <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
-                <v-menu offset-y>
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="px-0 mr-4" color="green" small text v-bind="attrs" v-on="on">
-                            <v-icon small class="mr-1">mdi-list-Status</v-icon>變更訂單狀態
-                        </v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item v-for="(item, index) in status_array" :key="`Status_${index}`">
-                            <v-list-item-title>
-                                <v-btn text :color="GetStatusActive(item.label)" @click="UpdateOrderInfo(-1,index)">
-                                    {{ item.label  }}
-                                </v-btn>
-                            </v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-                <v-btn class="px-0 mr-4" color="primary" small text @click="Print">
-                    <v-icon small class="mr-1">mdi-printer</v-icon>出貨單
+  <v-container v-if="order_data!=null">
+    <CommentDialog v-on:send-data="UpdateOrderInfo" ref="CommentDialog" />
+    <PrintOrder
+      :order_data="order_data"
+      :products="GetOrderProducts()"
+      :zip_code="zip_code"
+      ref="PrintOrder"
+    />
+    <PrintHCT :image="HCT_image" ref="PrintHCT" />
+    <v-row>
+      <Breadcrumb :link_array="breadcrumb_data" />
+      <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+        <div class="header d-flex justify-space-between align-center">
+          <h3 class="my-0 text-h5 font-weight-black">
+            #{{order_data.TradeID}}
+            <span
+              class="text-body-2 grey--text text--darken-1 font-weight-regular ml-2"
+              >{{order_data.created_at}}</span
+            >
+            <v-chip
+              :class="status_array[order_data.Status].color"
+              :text-color="status_array[order_data.Status]['text-color']"
+              class="ma-2 caption"
+              small
+            >
+              {{status_array[order_data.Status].label}}
+            </v-chip>
+          </h3>
+        </div>
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="px-0 mr-4"
+              color="green"
+              small
+              text
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon small class="mr-1">mdi-list-Status</v-icon>變更訂單狀態
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in status_array"
+              :key="`Status_${index}`"
+            >
+              <v-list-item-title>
+                <v-btn
+                  text
+                  :color="GetStatusActive(item.label)"
+                  @click="UpdateOrderInfo(-1,index)"
+                >
+                  {{ item.label }}
                 </v-btn>
-                <v-btn v-if="order_data.payment == 'zero_card'" class="px-0" color="error" small text @click="Refund">
-                    <v-icon small class="mr-1">mdi-printer</v-icon>退款
-                </v-btn>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-btn class="px-0 mr-4" color="primary" small text @click="Print">
+          <v-icon small class="mr-1">mdi-printer</v-icon>出貨單
+        </v-btn>
+        <v-btn
+          v-if="order_data.payment == 'zero_card'"
+          class="px-0"
+          color="error"
+          small
+          text
+          @click="Refund"
+        >
+          <v-icon small class="mr-1">mdi-printer</v-icon>退款
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="8">
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <v-row>
+            <v-col cols="12" md="6">
+              <p class="mb-0">訂單總金額</p>
+              <h3 class="text-h4 font-weight-bold">
+                {{order_data.Price | money_format}} TWD
+              </h3>
+              <div class="mt-4">
+                <p class="caption pa-0 ma-0" v-if="order_data.Status=='W'">
+                  {{GetPayment().Title}} - 尚未付款
+                </p>
+                <p
+                  class="caption pa-0 ma-0"
+                  v-if="order_data.Status=='P' || order_data.Status=='S'"
+                >
+                  {{GetPayment().Title}} - 已完成付款
+                </p>
+              </div>
+              <div>
+                <p class="caption pa-0 ma-0">
+                  {{GetShipway().Title}}
+                </p>
+              </div>
             </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="12" md="8">
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <v-row>
-                        <v-col cols="12" md="6">
-                            <p class="mb-0">訂單總金額</p>
-                            <h3 class="text-h4 font-weight-bold">{{order_data.Price | money_format}} TWD</h3>
-                            <div class="mt-4">
-                                <p class="caption pa-0 ma-0" v-if="order_data.Status=='W'">
-                                    {{GetPayment().Title}} - 尚未付款
-                                </p>
-                                <p class="caption pa-0 ma-0" v-if="order_data.Status=='P' || order_data.Status=='S'">
-                                    {{GetPayment().Title}} - 已完成付款
-                                </p>
-                            </div>
-                            <div>
-                                <p class="caption pa-0 ma-0">
-                                    {{GetShipway().Title}}
-                                </p>
-                            </div>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <p class="mb-0">商品總數</p>
-                            <h3 class="text-h4 font-weight-bold">{{order_data.SubTradeList.length}}</h3>
-                            <p class="caption" v-if="order_data.Status =='S'">已出貨</p>
-                            <p class="subtitle-2 caption" v-else>尚未出貨</p>
-                            <v-btn @click="Print" class="elevation-0 " color="grey lighten-3">出貨單</v-btn>
+            <v-col cols="12" md="6">
+              <p class="mb-0">商品總數</p>
+              <h3 class="text-h4 font-weight-bold">
+                {{order_data.SubTradeList.length}}
+              </h3>
+              <p class="caption" v-if="order_data.Status =='S'">已出貨</p>
+              <p class="subtitle-2 caption" v-else>尚未出貨</p>
+              <v-btn @click="Print" class="elevation-0 " color="grey lighten-3"
+                >產生出貨單</v-btn
+              >
 
-                            <v-btn class="elevation-0 ml-2" color="primary" v-if="order_data.ShippingID==5"
-                                @click="GetHCTOrder()">
-                                新竹物流出貨單
-                            </v-btn>
-                            <v-btn class="elevation-0 ml-2" color="primary"
-                                v-if="order_data.ShippingID==2 || order_data.ShippingID==1" @click="GetCVSOrder()">
-                                超商出貨單
-                            </v-btn>
-                        </v-col>
-                        <!-- PRODUCT LIST -->
-                        <v-col cols="12">
-                            <v-divider class="my-5"></v-divider>
-                            <v-row v-for="(item,item_index) in GetOrderProducts()" :key="`product_${item_index}`">
-                                <v-col cols="6" md="4">
-                                    <p class="my-0 blue--text"> {{item.Info.Title}}</p>
-                                    <span class="caption"> {{item.Option.ColorTitle}} / {{item.Option.SizeTitle}}</span>
-                                </v-col>
-                                <v-col cols="6" md="4" class=" d-flex align-center justify-end">
-                                    <p class="my-0 ">NT$ {{item.SellPrice | money_format}} x {{item.Amount}}</p>
-                                </v-col>
-                                <v-col cols="6" md="4" class=" d-flex align-end justify-center flex-column">
-                                    <p v-if="item.SellPrice !=item.FinalPrice"
-                                        class="my-0 text-decoration-line-through body-2 grey--text lighten-1--text">NT$
-                                        {{(item.SellPrice * item.Amount) | money_format}} </p>
-                                    <p class="my-0">NT$ {{(item.FinalPrice * item.Amount) | money_format}} </p>
-                                </v-col>
-                                <v-col cols="12" class="py-0 px-2 d-flex align-center"
-                                    v-if="item.DiscountID_PercentMenu!=0">
-                                    <v-chip class="mr-4" small>
-                                        {{GetProductDiscount(item.DiscountID_PercentMenu).Title}}</v-chip>
-                                    <span
-                                        class="caption">-NT${{(item.SellPrice*(GetProductDiscount(item.DiscountID_PercentMenu).DiscountPercent/100))*item.Amount}}</span>
-                                </v-col>
-                                <v-col cols="12">
-                                    <v-divider></v-divider>
-                                </v-col>
-                            </v-row>
-                            <v-row>
-                                <v-col cols="12" class="py-0 d-flex align-center justify-space-between">
-                                    <p class="my-0 body-2 blue--text">運費</p>
-                                    <p class="my-0  body-2">
-                                        NT$
-                                        {{( order_data.ShippingFree == 1? 0: order_data.ShippingFee) | money_format}}
-                                    </p>
-                                </v-col>
-                                <v-col cols="12" class="py-0 mt-2 d-flex align-center justify-space-between">
-                                    <p class="my-0 body-2 blue--text">金流手續費</p>
-                                    <p class="my-0  body-2">
-                                        NT$
-                                        {{(  order_data.PaymentSubtotalFee) | money_format}}
-                                    </p>
-                                </v-col>
-                            </v-row>
-
-                            <v-divider class="mt-5 "></v-divider>
-                        </v-col>
-
-                        <v-col cols="12" v-if="order_data.CouponID!=0">
-                            <v-alert outlined type="success" prominent border="left" text>
-                                <span class="caption pa-0 ma-0">以套用優惠券</span>
-                                <p class="pa-0 ma-0 font-weight-bold">{{GetCoupon(order_data.CouponID).Title}}</p>
-                                <p class="pa-0 ma-0 body-2">折抵 NT$ {{GetCoupon(order_data.CouponID).Money}}</p>
-                            </v-alert>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-row>
-                                <v-col cols="6" v-if="order_data.ShippingCode!=''">
-                                    <p class="mb-1 font-weight-bold">物流編號</p>
-                                    <p class="mb-0 body-2 grey--text text--darken-1">{{order_data.ShippingCode}}</p>
-                                </v-col>
-                                <v-col cols="12">
-                                    <p class="mb-1 font-weight-bold">客戶備註</p>
-                                    <p class="mb-0 body-2 grey--text text--darken-1">
-                                        {{order_data.ReceiverMemo!=''?order_data.ReceiverMemo : "無"}}
-                                    </p>
-                                </v-col>
-                            </v-row>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-row>
-                                <v-col cols="12">
-                                    <p class="mb-2 font-weight-bold">訂單更新紀錄</p>
-                                    <p class="mb-1 body-2 grey--text text--darken-1">
-                                        {{order_data.created_at}} - 訂單建立
-                                    </p>
-                                    <p v-if="order_data.PaymentTime!=null"
-                                        class="mb-1 body-2 grey--text text--darken-1">
-                                        {{order_data.PaymentTime}} - 完成付款
-                                    </p>
-                                    <p v-if="order_data.ShippingTime!=null"
-                                        class="mb-1 body-2 grey--text text--darken-1">
-                                        {{order_data.ShippingTime}} - 訂單出貨
-                                    </p>
-                                </v-col>
-                            </v-row>
-                        </v-col>
-                    </v-row>
-                </v-card>
+              <v-btn
+                class="elevation-0 ml-2"
+                color="primary"
+                v-if="order_data.ShippingType=='HCT'"
+                @click="GetHCTOrder()"
+              >
+                新竹物流出貨單
+              </v-btn>
+              <v-btn
+                class="elevation-0 ml-2"
+                color="primary"
+                v-if="order_data.ShippingType=='FAMIC2C' || order_data.ShippingType=='UNIMARTC2C'"
+                @click="GetCVSOrder()"
+              >
+                超商出貨單
+              </v-btn>
             </v-col>
-            <v-col cols="4">
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="d-flex align-center mb-4">
-                        <v-icon class="mr-2">mdi-account</v-icon>客戶資訊
-                    </h3>
-                    <p class="mb-0 font-weight-black">{{order_data.ReceiverName}}</p>
-                    <p class="mb-2 grey--text text--darken-2 body-2">
-                        {{GetZipCity(order_data.ReceiverAddressCode).City + GetZipCity(order_data.ReceiverAddressCode).Area}}{{order_data.ReceiverAddress}}
-                    </p>
-                    <p class="mb-0 grey--text text--darken-2 body-2">{{order_data.ReceiverPhone}}</p>
-                    <p class="mb-0 grey--text text--darken-2 body-2">{{order_data.ReceiverEmail}}</p>
-                </v-card>
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="d-flex align-center mb-4">
-                        <v-icon class="mr-2">mdi-store</v-icon>商家備註欄
-                    </h3>
-                    <p v-if="order_data.AdminMemo!=''" class="mb-0 font-weight-black">{{order_data.AdminMemo}}
-                    </p>
-                    <p v-else class="mb-0 body-2">留下備註...</p>
-                    <v-row>
-                        <v-col class="d-flex justify-end mt-4">
-                            <v-btn @click="OpenCommentDialog" class="elevation-0 " color="grey lighten-3">編輯</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card>
+            <!-- PRODUCT LIST -->
+            <v-col cols="12">
+              <v-divider class="my-5"></v-divider>
+              <v-row
+                v-for="(item,item_index) in GetOrderProducts()"
+                :key="`product_${item_index}`"
+              >
+                <v-col cols="6" md="4">
+                  <p class="my-0 blue--text">{{item.Info.Title}}</p>
+                  <span class="caption">
+                    {{item.Option.ColorTitle}} / {{item.Option.SizeTitle}}</span
+                  >
+                </v-col>
+                <v-col cols="6" md="4" class=" d-flex align-center justify-end">
+                  <p class="my-0 ">
+                    NT$ {{item.SellPrice | money_format}} x {{item.Amount}}
+                  </p>
+                </v-col>
+                <v-col
+                  cols="6"
+                  md="4"
+                  class=" d-flex align-end justify-center flex-column"
+                >
+                  <p
+                    v-if="item.SellPrice !=item.FinalPrice"
+                    class="my-0 text-decoration-line-through body-2 grey--text lighten-1--text"
+                  >
+                    NT$ {{(item.SellPrice * item.Amount) | money_format}}
+                  </p>
+                  <p class="my-0">
+                    NT$ {{(item.FinalPrice * item.Amount) | money_format}}
+                  </p>
+                </v-col>
+                <v-col
+                  cols="12"
+                  class="py-0 px-2 d-flex align-center"
+                  v-if="item.DiscountID_PercentMenu!=0"
+                >
+                  <v-chip class="mr-4" small>
+                    {{GetProductDiscount(item.DiscountID_PercentMenu).Title}}</v-chip
+                  >
+                  <span class="caption"
+                    >-NT${{(item.SellPrice*(GetProductDiscount(item.DiscountID_PercentMenu).DiscountPercent/100))*item.Amount}}</span
+                  >
+                </v-col>
+                <v-col cols="12">
+                  <v-divider></v-divider>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  cols="12"
+                  class="py-0 d-flex align-center justify-space-between"
+                >
+                  <p class="my-0 body-2 blue--text">運費</p>
+                  <p class="my-0  body-2">
+                    NT$ {{( order_data.ShippingFree == 1? 0:
+                    order_data.ShippingFee) | money_format}}
+                  </p>
+                </v-col>
+                <v-col
+                  cols="12"
+                  class="py-0 mt-2 d-flex align-center justify-space-between"
+                >
+                  <p class="my-0 body-2 blue--text">金流手續費</p>
+                  <p class="my-0  body-2">
+                    NT$ {{( order_data.PaymentSubtotalFee) | money_format}}
+                  </p>
+                </v-col>
+              </v-row>
+
+              <v-divider class="mt-5 "></v-divider>
             </v-col>
-        </v-row>
-        <div class="form_area"></div>
-    </v-container>
+
+            <v-col cols="12" v-if="order_data.CouponID!=0">
+              <v-alert outlined type="success" prominent border="left" text>
+                <span class="caption pa-0 ma-0">以套用優惠券</span>
+                <p class="pa-0 ma-0 font-weight-bold">
+                  {{GetCoupon(order_data.CouponID).Title}}
+                </p>
+                <p class="pa-0 ma-0 body-2">
+                  折抵 NT$ {{GetCoupon(order_data.CouponID).Money}}
+                </p>
+              </v-alert>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <v-col cols="6" v-if="order_data.ShippingCode!=''">
+                  <p class="mb-1 font-weight-bold">物流編號</p>
+                  <p class="mb-0 body-2 grey--text text--darken-1">
+                    {{order_data.ShippingCode}}
+                  </p>
+                </v-col>
+                <v-col cols="12">
+                  <p class="mb-1 font-weight-bold">客戶備註</p>
+                  <p class="mb-0 body-2 grey--text text--darken-1">
+                    {{order_data.ReceiverMemo!=''?order_data.ReceiverMemo :
+                    "無"}}
+                  </p>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <v-col cols="12">
+                  <p class="mb-2 font-weight-bold">訂單更新紀錄</p>
+                  <p class="mb-1 body-2 grey--text text--darken-1">
+                    {{order_data.created_at}} - 訂單建立
+                  </p>
+                  <p
+                    v-if="order_data.PaymentTime!=null"
+                    class="mb-1 body-2 grey--text text--darken-1"
+                  >
+                    {{order_data.PaymentTime}} - 完成付款
+                  </p>
+                  <p
+                    v-if="order_data.ShippingTime!=null"
+                    class="mb-1 body-2 grey--text text--darken-1"
+                  >
+                    {{order_data.ShippingTime}} - 訂單出貨
+                  </p>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+      <v-col cols="4">
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-account</v-icon>客戶資訊
+          </h3>
+          <p class="mb-0 font-weight-black">{{order_data.ReceiverName}}</p>
+          <p class="mb-2 grey--text text--darken-2 body-2">
+            {{GetZipCity(order_data.ReceiverAddressCode).City +
+            GetZipCity(order_data.ReceiverAddressCode).Area}}{{order_data.ReceiverAddress}}
+          </p>
+          <p class="mb-0 grey--text text--darken-2 body-2">
+            {{order_data.ReceiverPhone}}
+          </p>
+          <p class="mb-0 grey--text text--darken-2 body-2">
+            {{order_data.ReceiverEmail}}
+          </p>
+        </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-store</v-icon>商家備註欄
+          </h3>
+          <p v-if="order_data.AdminMemo!=''" class="mb-0 font-weight-black">
+            {{order_data.AdminMemo}}
+          </p>
+          <p v-else class="mb-0 body-2">留下備註...</p>
+          <v-row>
+            <v-col class="d-flex justify-end mt-4">
+              <v-btn
+                @click="OpenCommentDialog"
+                class="elevation-0 "
+                color="grey lighten-3"
+                >編輯</v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <div class="form_area"></div>
+  </v-container>
 </div>

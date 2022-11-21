@@ -37,6 +37,30 @@ const routes = [
       ),
   },
   {
+    path: '/home_carousel',
+    name: 'HomeCarousel',
+    component: () =>
+      import(
+        /* webpackChunkName: "home_carousel" */ '../views/HomeCarousel/index.vue'
+      ),
+  },
+  {
+    path: '/news_category',
+    name: 'NewsCategory',
+    component: () =>
+      import(
+        /* webpackChunkName: "news_category" */ '../views/NewsCategory/index.vue'
+      ),
+  },
+  {
+    path: '/news',
+
+    name: 'News',
+    component: () =>
+      import(/* webpackChunkName: "news" */ '../views/News/index.vue'),
+  },
+
+  {
     path: '/products',
 
     name: 'Products',
@@ -99,15 +123,6 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "charts" */ '../views/Charts/index.vue'),
   },
-  {
-    path: '/home_carousel',
-
-    name: 'HomeCarousel',
-    component: () =>
-      import(
-        /* webpackChunkName: "home_carousel" */ '../views/HomeCarousel/index.vue'
-      ),
-  },
 
   {
     path: '/about',
@@ -122,22 +137,6 @@ const routes = [
     name: 'Discount',
     component: () =>
       import(/* webpackChunkName: "discount" */ '../views/Discount/index.vue'),
-  },
-  {
-    path: '/news',
-
-    name: 'News',
-    component: () =>
-      import(/* webpackChunkName: "news" */ '../views/News/index.vue'),
-  },
-  {
-    path: '/news_cover',
-
-    name: 'NewsCover',
-    component: () =>
-      import(
-        /* webpackChunkName: "news_cover" */ '../views/NewsCover/index.vue'
-      ),
   },
   {
     path: '/web_links',
@@ -159,47 +158,6 @@ const routes = [
     name: 'Shipping',
     component: () =>
       import(/* webpackChunkName: "shipping" */ '../views/Shipping/index.vue'),
-  },
-  {
-    path: '/questions',
-
-    name: 'Questions',
-    component: () =>
-      import(
-        /* webpackChunkName: "questions" */ '../views/Questions/index.vue'
-      ),
-  },
-  {
-    path: '/home_kol',
-
-    name: 'HomeKol',
-    component: () =>
-      import(/* webpackChunkName: "home_kol" */ '../views/HomeKol/index.vue'),
-  },
-  {
-    path: '/home_promote',
-
-    name: 'HomePromote',
-    component: () =>
-      import(
-        /* webpackChunkName: "home_promote" */ '../views/HomePromote/index.vue'
-      ),
-  },
-  {
-    path: '/mascot',
-
-    name: 'Mascot',
-    component: () =>
-      import(/* webpackChunkName: "mascot" */ '../views/Mascot/index.vue'),
-  },
-  {
-    path: '/advertisement',
-
-    name: 'Advertisement',
-    component: () =>
-      import(
-        /* webpackChunkName: "advertisement" */ '../views/Advertisement/index.vue'
-      ),
   },
   {
     path: '/privacy_page',

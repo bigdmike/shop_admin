@@ -1,13 +1,13 @@
 <template src="./template.html"></template>
 
 <script>
-import { get_all_data } from '@/api/news';
+import { get_categories } from '@/api/news';
 import ListShow from '@/components/News/ListShow/index';
 import Breadcrumb from '@/components/Breadcrumb/';
-import news_components from '@/components/News/news_components.js';
+import category_components from '@/components/NewsCategory/category_components.js';
 export default {
   name: 'NewsCover',
-  mixins: [news_components],
+  mixins: [category_components],
   components: {
     ListShow,
     Breadcrumb,
@@ -20,32 +20,31 @@ export default {
           link: '',
         },
         {
-          title: '最新消息',
+          title: '文章分類',
           link: '',
         },
       ],
       news_categories: [],
-      news_data: [],
     };
   },
   methods: {
-    async GetNewsData() {
-      get_all_data().then((res) => {
-        this.news_categories = res[0].data;
-        this.news_data = res[1].data;
+    async GetCategoryData() {
+      get_categories().then((res) => {
+        console.log(res);
+        this.news_categories = res.data;
         this.CheckSort();
       });
     },
     CheckSort() {
       let is_sort = true;
-      this.news_data.forEach((item, item_index) => {
+      this.news_categories.forEach((item, item_index) => {
         item.Seq == item_index + 1 ? '' : (is_sort = false);
       });
-      is_sort ? '' : this.UpdateNewsSort();
+      is_sort ? '' : this.UpdateNewsCategorySort();
     },
   },
   created() {
-    this.GetNewsData();
+    this.GetCategoryData();
   },
 };
 </script>

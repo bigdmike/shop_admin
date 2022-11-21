@@ -1,58 +1,61 @@
 <template src="./template.html"></template>
 
 <script>
-import { get_common_column, update_common_column } from "@/api/common_column";
-import Breadcrumb from "@/components/Breadcrumb/";
+import { get_common_column, updateData } from '@/api/common_column';
+import MainImageCard from '@/components/MainImageCard/';
+import Breadcrumb from '@/components/Breadcrumb/';
 export default {
-  name: "CompanyInfo",
+  name: 'CompanyInfo',
   components: {
     Breadcrumb,
+    MainImageCard,
   },
   data() {
     return {
       breadcrumb_data: [
         {
-          title: "頁面編輯",
-          link: "",
+          title: '頁面編輯',
+          link: '',
         },
         {
-          title: "公司資訊",
-          link: "",
+          title: '公司資訊',
+          link: '',
         },
       ],
       page_data: null,
     };
   },
   methods: {
-    async UpdateData(index = 0) {
-      let key = Object.keys(this.page_data)[index];
-      this.page_data[key].Front = "Y";
-      update_common_column(this.page_data[key]).then(() => {
-        if (index != Object.keys(this.page_data).length - 1) {
-          this.UpdateData(index + 1);
-        } else {
-          this.GetPageData();
-        }
+    async UpdateData() {
+      updateData(this.page_data).then((res) => {
+        console.log(res);
+        this.GetPageData();
       });
     },
     CancelEdit() {
       this.GetPageData();
     },
-    async GetPageData() {
+    GetPageData() {
       get_common_column([
-        "CompanyAddress",
-        "CompanyEmail",
-        "CompanyFBLink",
-        "CompanyIGLink",
-        "CompanyLineLink",
-        "CompanyPhone",
-        "CompanyTime",
+        'company_facebook',
+        'company_instagram',
+        'company_image',
+        'company_name',
+        'company_phone',
+        'company_email',
+        'company_address',
+        'company_time',
       ]).then((res) => {
+        res.company_image = this.$SetImageObj(
+          res.company_image,
+          res.company_image.Content
+        );
         this.page_data = res;
       });
     },
-    GetFormData(key) {
-      return this.page_data.filter((item) => item.column_name == key)[0];
+    UpdateImage(val, index, key) {
+      this.$set(this.page_data[key], 'PreviewImage', val.preview_url);
+      this.$set(this.page_data[key], 'Image1', val.file);
     },
   },
   created() {

@@ -1,9 +1,9 @@
 <template src="./template.html"></template>
 
 <script>
-import draggable from "vuedraggable";
+import draggable from 'vuedraggable';
 export default {
-  name: "CategoryListShow",
+  name: 'CategoryListShow',
   props: {
     value: {
       require: true,
@@ -18,14 +18,15 @@ export default {
       drag: false,
       headers: [
         {
-          text: "名稱",
-          align: "start",
+          text: '名稱',
+          align: 'start',
           sortable: false,
-          value: "Title",
+          value: 'Title',
         },
-        { text: "上架時間", value: "create_time" },
-        { text: "手續費", value: "create_time" },
-        { text: "啟用狀態", value: "create_time" },
+        { text: '上架時間', value: 'create_time' },
+        { text: '手續費', value: 'create_time' },
+        { text: '啟用狀態', value: 'create_time' },
+        { text: '操作', value: 'create_time' },
       ],
     };
   },
@@ -35,20 +36,20 @@ export default {
       let old_item = tmp_data[moved_log.oldIndex];
       tmp_data[moved_log.oldIndex] = tmp_data[moved_log.newIndex];
       tmp_data[moved_log.newIndex] = old_item;
-      this.$emit("input", tmp_data);
-      this.$emit("update-sort");
+      this.$emit('input', tmp_data);
+      this.$emit('update-sort');
     },
     GetChargeFee(item) {
-      return item.ChargeFee != "0"
-        ? item.ChargeFee + "元"
-        : item.ChargePercent + "%";
+      return item.ChargeFee != '0'
+        ? item.ChargeFee + '元'
+        : item.ChargePercent + '%';
     },
   },
   created() {},
 };
 </script>
 
-<style >
+<style>
 .opacity-0 {
   opacity: 0;
 }

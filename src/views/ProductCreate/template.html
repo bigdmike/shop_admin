@@ -1,142 +1,221 @@
 <div id="Products">
-    <DeleteDialog ref="DeleteDialog" v-on:load-data="$router.push('/products')" />
-    <div class="pa-lg-10 pa-5" v-if="product_data!=null">
-        <v-row>
-            <Breadcrumb :link_array="breadcrumb_data" />
-            <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
-                <div class="header d-flex justify-space-between align-center">
-                    <h3 class="my-0 text-h5 font-weight-black">商品 / {{product_data.Title}}
-                        <span class="text-body-2 grey--text text--darken-1 font-weight-regular ml-2">最後更新於
-                            : {{product_data.updated_at}}</span>
-                    </h3>
-                    <div class="d-flex align-center">
-                        <v-btn color="elevation-0 mx-3 px-0 font-weight-bold" icon large>
-                            <v-icon>mdi-chevron-left</v-icon>
-                        </v-btn>
-                        <v-btn color="elevation-0 mx-3 font-weight-bold" icon large>
-                            <v-icon>mdi-chevron-right</v-icon>
-                        </v-btn>
-                    </div>
-                </div>
-            </v-col>
-            <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
-                <v-btn @click="OpenDeleteDialog" class="px-0 mr-4" color="error" small text>
-                    <v-icon small>mdi-trash-can-outline</v-icon>刪除商品
-                </v-btn>
-                <!-- <v-btn class="px-0" color="primary" small text>
+  <DeleteDialog ref="DeleteDialog" v-on:load-data="$router.push('/products')" />
+  <div class="pa-lg-10 pa-5" v-if="product_data!=null">
+    <v-row>
+      <Breadcrumb :link_array="breadcrumb_data" />
+      <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+        <div class="header d-flex justify-space-between align-center">
+          <h3 class="my-0 text-h5 font-weight-black">
+            商品 / {{product_data.Title}}
+            <span
+              class="text-body-2 grey--text text--darken-1 font-weight-regular ml-2"
+              >最後更新於 : {{product_data.updated_at}}</span
+            >
+          </h3>
+          <div class="d-flex align-center">
+            <v-btn color="elevation-0 mx-3 px-0 font-weight-bold" icon large>
+              <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+            <v-btn color="elevation-0 mx-3 font-weight-bold" icon large>
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-btn>
+          </div>
+        </div>
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+        <v-btn
+          @click="OpenDeleteDialog"
+          class="px-0 mr-4"
+          color="error"
+          small
+          text
+        >
+          <v-icon small>mdi-trash-can-outline</v-icon>刪除商品
+        </v-btn>
+        <!-- <v-btn class="px-0" color="primary" small text>
                     <v-icon small>mdi-content-copy</v-icon>複製商品
                 </v-btn> -->
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="12" lg="8">
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <p class="mt-0 mb-2">商品名稱*</p>
-                    <v-text-field v-model="product_data.Title" dense outlined></v-text-field>
-                    <p class="mt-0 mb-2">商品描述</p>
-                    <FroalaEditor v-model="product_data.Description" />
-                </v-card>
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="mt-0 mb-2">商品詳細介紹</h3>
-                    <FroalaEditor v-model="product_data.Memo1" />
-                </v-card>
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="mt-0 mb-2">商品規格介紹</h3>
-                    <FroalaEditor v-model="product_data.Memo2" />
-                </v-card>
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="mt-0 mb-2">商品運送資訊</h3>
-                    <FroalaEditor v-model="product_data.Memo3" />
-                </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" lg="8">
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <p class="mt-0 mb-2">商品名稱*</p>
+          <v-text-field
+            v-model="product_data.Title"
+            dense
+            outlined
+          ></v-text-field>
+          <p class="mt-0 mb-2">SEO 頁面描述</p>
+          <FroalaEditor v-model="product_data.Description" />
+        </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="mt-0 mb-2">商品詳細介紹</h3>
+          <FroalaEditor v-model="product_data.Memo1" />
+        </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="mt-0 mb-2">下單流程</h3>
+          <FroalaEditor v-model="product_data.Memo2" />
+        </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="mt-0 mb-2">注意事項</h3>
+          <FroalaEditor v-model="product_data.Memo3" />
+        </v-card>
 
-                <!-- <ImageCard ref="ImageCard" v-model="product_images" v-on:delete-image="UpdateDeleteImages" elevation="2"
+        <!-- <ImageCard ref="ImageCard" v-model="product_images" v-on:delete-image="UpdateDeleteImages" elevation="2"
                     class="pa-8 mb-5 rounded-lg" /> -->
-                <!-- <OptionCard ref="OptionCard" v-on:delete-option="UpdateDeleteOptions"
+        <!-- <OptionCard ref="OptionCard" v-on:delete-option="UpdateDeleteOptions"
                     v-on:delete-type="UpdateDeleteOptionTypes" v-model="product_data.options" elevation="2"
                     class="pa-8 mb-5 rounded-lg" />
                 <OptionCombineCard ref="OptionCombineCard" :options="product_data.options"
                     v-on:update="UpdateOptionCombine" :option_combine="product_data.option_combine" elevation="2"
                     class="pa-8 mb-5 rounded-lg" /> -->
-            </v-col>
-            <v-col cols="12" lg="4">
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="d-flex align-center mb-4">
-                        <v-icon class="mr-2">mdi-list-status</v-icon>商品狀態
-                    </h3>
-                    <!-- <v-select v-model="product_data.Status" :items="status_data" item-text="label" item-value="value"
-                        hide-details dense outlined single-line></v-select> -->
-                    <div>
-                        <v-checkbox :hide-details="true" v-model="product_data.CombineDiscount" label="組合商品">
-                        </v-checkbox>
-                        <v-checkbox :hide-details="true" v-model="product_data.DeliveryFrozen" label="低溫商品">
-                        </v-checkbox>
-                    </div>
-                </v-card>
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="d-flex align-center">
-                        <v-icon class="mr-2">mdi-shape-outline</v-icon>商品分類
-                    </h3>
-                    <v-select class="mb-8" v-model="product_data.Menu" :items="category_data" item-text="Title"
-                        item-value="MenuID" chips hide-details multiple></v-select>
-                    <!-- multiple -->
-                    <h3 class="d-flex align-center mt-4">
-                        <v-icon class="mr-2">mdi-list-status</v-icon>推薦商品分類
-                    </h3>
-                    <v-select v-model="product_data.RecommendMenuID" :items="category_data" item-text="Title"
-                        item-value="MenuID" hide-details></v-select>
-                </v-card>
+      </v-col>
+      <v-col cols="12" lg="4">
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-list-status</v-icon>商品狀態
+          </h3>
+          <v-select
+            v-model="product_data.Status"
+            :items="status_data"
+            item-text="label"
+            item-value="value"
+            hide-details
+            dense
+            outlined
+            single-line
+          ></v-select>
+          <div>
+            <v-checkbox
+              :hide-details="true"
+              v-model="product_data.CombineDiscount"
+              label="組合商品"
+            >
+            </v-checkbox>
+            <v-checkbox
+              :hide-details="true"
+              v-model="product_data.DeliveryFrozen"
+              label="低溫商品"
+            >
+            </v-checkbox>
+          </div>
+        </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center">
+            <v-icon class="mr-2">mdi-shape-outline</v-icon>商品分類
+          </h3>
+          <v-select
+            class="mb-8"
+            v-model="product_data.Menu"
+            :items="category_data"
+            item-text="Title"
+            item-value="MenuID"
+            chips
+            hide-details
+            multiple
+          ></v-select>
+          <!-- multiple -->
+          <h3 class="d-flex align-center mt-4">
+            <v-icon class="mr-2">mdi-list-status</v-icon>推薦商品分類
+          </h3>
+          <v-select
+            v-model="product_data.RecommendMenuID"
+            :items="category_data"
+            item-text="Title"
+            item-value="MenuID"
+            hide-details
+          ></v-select>
+        </v-card>
 
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="d-flex align-center mb-4">
-                        <v-icon class="mr-2">mdi-image</v-icon>商品封面圖1
-                    </h3>
-                    <input style="display: none;" type="file" ref="ImageUpload1"
-                        @change="ChangeImageFile($event.target.files,1)" />
-                    <v-hover v-slot="{ hover }">
-                        <v-card class="image_card" elevation="0" :class="{ 'on-hover': hover }">
-                            <v-img :src="cover_file.cover_1_preview_url" aspect-ratio="1">
-                                <v-card-title :class="{'show':hover}"
-                                    class="text-h6 white--text fill-height img_card_control">
-                                    <div class="d-flex justify-space-between align-center my-auto mx-auto">
-                                        <v-btn @click="OpenUploadImage(1)" :class="{ 'show-btns': hover }"
-                                            color="rgba(255, 255, 255, 0)" icon>
-                                            <v-icon :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)">
-                                                mdi-pencil-outline
-                                            </v-icon>
-                                        </v-btn>
-                                    </div>
-                                </v-card-title>
-                            </v-img>
-                        </v-card>
-                    </v-hover>
-                </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-image</v-icon>商品封面圖
+          </h3>
+          <input
+            style="display: none;"
+            type="file"
+            ref="ImageUpload1"
+            @change="ChangeImageFile($event.target.files,1)"
+          />
+          <v-hover v-slot="{ hover }">
+            <v-card
+              class="image_card"
+              elevation="0"
+              :class="{ 'on-hover': hover }"
+            >
+              <v-img :src="cover_file.cover_1_preview_url" aspect-ratio="1">
+                <v-card-title
+                  :class="{'show':hover}"
+                  class="text-h6 white--text fill-height img_card_control"
+                >
+                  <div
+                    class="d-flex justify-space-between align-center my-auto mx-auto"
+                  >
+                    <v-btn
+                      @click="OpenUploadImage(1)"
+                      :class="{ 'show-btns': hover }"
+                      color="rgba(255, 255, 255, 0)"
+                      icon
+                    >
+                      <v-icon
+                        :class="{ 'show-btns': hover }"
+                        color="rgba(255, 255, 255, 0)"
+                      >
+                        mdi-pencil-outline
+                      </v-icon>
+                    </v-btn>
+                  </div>
+                </v-card-title>
+              </v-img>
+            </v-card>
+          </v-hover>
+        </v-card>
 
-                <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-                    <h3 class="d-flex align-center mb-4">
-                        <v-icon class="mr-2">mdi-image</v-icon>商品封面圖2
-                    </h3>
-                    <input style="display: none;" type="file" ref="ImageUpload2"
-                        @change="ChangeImageFile($event.target.files,2)" />
-                    <v-hover v-slot="{ hover }">
-                        <v-card class="image_card" elevation="0" :class="{ 'on-hover': hover }">
-                            <v-img :src="cover_file.cover_2_preview_url" aspect-ratio="1">
-                                <v-card-title :class="{'show':hover}"
-                                    class="text-h6 white--text fill-height img_card_control">
-                                    <div class="d-flex justify-space-between align-center my-auto mx-auto">
-                                        <v-btn @click="OpenUploadImage(2)" :class="{ 'show-btns': hover }"
-                                            color="rgba(255, 255, 255, 0)" icon>
-                                            <v-icon :class="{ 'show-btns': hover }" color="rgba(255, 255, 255, 0)">
-                                                mdi-pencil-outline
-                                            </v-icon>
-                                        </v-btn>
-                                    </div>
-                                </v-card-title>
-                            </v-img>
-                        </v-card>
-                    </v-hover>
-                </v-card>
-
-            </v-col>
-        </v-row>
-    </div>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-image</v-icon>SEO 分享圖片
+          </h3>
+          <input
+            style="display: none;"
+            type="file"
+            ref="ImageUpload2"
+            @change="ChangeImageFile($event.target.files,2)"
+          />
+          <v-hover v-slot="{ hover }">
+            <v-card
+              class="image_card"
+              elevation="0"
+              :class="{ 'on-hover': hover }"
+            >
+              <v-img :src="cover_file.cover_2_preview_url" aspect-ratio="1">
+                <v-card-title
+                  :class="{'show':hover}"
+                  class="text-h6 white--text fill-height img_card_control"
+                >
+                  <div
+                    class="d-flex justify-space-between align-center my-auto mx-auto"
+                  >
+                    <v-btn
+                      @click="OpenUploadImage(2)"
+                      :class="{ 'show-btns': hover }"
+                      color="rgba(255, 255, 255, 0)"
+                      icon
+                    >
+                      <v-icon
+                        :class="{ 'show-btns': hover }"
+                        color="rgba(255, 255, 255, 0)"
+                      >
+                        mdi-pencil-outline
+                      </v-icon>
+                    </v-btn>
+                  </div>
+                </v-card-title>
+              </v-img>
+            </v-card>
+          </v-hover>
+        </v-card>
+      </v-col>
+    </v-row>
+  </div>
 </div>

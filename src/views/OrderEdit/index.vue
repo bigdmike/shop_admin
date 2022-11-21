@@ -1,20 +1,20 @@
 <template src="./template.html"></template>
 
 <script>
-import Breadcrumb from "@/components/Breadcrumb/";
-import FroalaEditor from "@/components/FroalaEditor/";
-import CommentDialog from "@/components/OrderEdit/CommentDialog";
-import PrintOrder from "@/components/OrderEdit/PrintOrder";
-import PrintHCT from "@/components/OrderEdit/PrintHCT";
-import { hex_to_ascii } from "@/common/filter.js";
+import Breadcrumb from '@/components/Breadcrumb/';
+import FroalaEditor from '@/components/FroalaEditor/';
+import CommentDialog from '@/components/OrderEdit/CommentDialog';
+import PrintOrder from '@/components/OrderEdit/PrintOrder';
+import PrintHCT from '@/components/OrderEdit/PrintHCT';
+import { hex_to_ascii } from '@/common/filter.js';
 import {
   GetOrderAndProduct,
   UpdateOrderInfo,
   GetHCTOrder,
   GetCVSOrder,
-} from "@/api/order.js";
+} from '@/api/order.js';
 export default {
-  name: "OrderEdit",
+  name: 'OrderEdit',
   components: {
     Breadcrumb,
     FroalaEditor,
@@ -26,49 +26,49 @@ export default {
     return {
       breadcrumb_data: [
         {
-          title: "所有訂單",
-          link: "/orders",
+          title: '所有訂單',
+          link: '/orders',
         },
         {
-          title: "管理訂單",
-          link: "",
+          title: '管理訂單',
+          link: '',
         },
       ],
       status_array: {
         W: {
-          label: "尚未付款",
-          color: "",
-          "text-color": "",
+          label: '尚未付款',
+          color: '',
+          'text-color': '',
         },
         P: {
-          label: "完成付款",
-          color: "blue lighten-1",
-          "text-color": "white",
+          label: '完成付款',
+          color: 'blue lighten-1',
+          'text-color': 'white',
         },
         T: {
-          label: "理貨中",
-          color: "yellow darken-1",
-          "text-color": "white",
+          label: '理貨中',
+          color: 'yellow darken-1',
+          'text-color': 'white',
         },
         S: {
-          label: "已出貨",
-          color: "orange darken-3",
-          "text-color": "white",
+          label: '已出貨',
+          color: 'orange darken-3',
+          'text-color': 'white',
         },
         A: {
-          label: "已送達",
-          color: "deep-orange darken-3",
-          "text-color": "white",
+          label: '已送達',
+          color: 'deep-orange darken-3',
+          'text-color': 'white',
         },
         F: {
-          label: "已完成",
-          color: "green",
-          "text-color": "white",
+          label: '已完成',
+          color: 'green',
+          'text-color': 'white',
         },
         C: {
-          label: "已取消",
-          color: "black",
-          "text-color": "white",
+          label: '已取消',
+          color: 'black',
+          'text-color': 'white',
         },
       },
       products: [],
@@ -78,7 +78,7 @@ export default {
       shipway_list: [],
       zip_code: [],
       order_data: null,
-      HCT_image: "",
+      HCT_image: '',
     };
   },
   methods: {
@@ -142,9 +142,10 @@ export default {
       return this.zip_code.filter((item) => item.ZipCode == id)[0];
     },
     GetShipway() {
-      return this.shipway_list.filter(
+      let ship_way = this.shipway_list.filter(
         (item) => item.ShippingID == this.order_data.ShippingID
-      )[0];
+      );
+      return ship_way.length > 0 ? ship_way[0] : { Title: '查無配送方式' };
     },
     GetHCTOrder() {
       GetHCTOrder(this.order_data.TradeID).then((res) => {
@@ -157,16 +158,16 @@ export default {
       GetCVSOrder(this.order_data.TradeID).then((res) => {
         console.log(res);
         if (res.code == 200) {
-          let form = res.data.split("<form")[1].split("</form>")[0];
+          let form = res.data.split('<form')[1].split('</form>')[0];
           form =
-            "<form" +
-            res.data.split("<form")[1].split("</form>")[0] +
-            "</form>";
+            '<form' +
+            res.data.split('<form')[1].split('</form>')[0] +
+            '</form>';
           form = form.replace('target="_self"', 'target="_blank"');
-          document.querySelector(".form_area").innerHTML = "";
-          document.querySelector(".form_area").innerHTML += form;
-          document.querySelector(".form_area form").submit();
-          console.log(document.querySelector(".form_area form"));
+          document.querySelector('.form_area').innerHTML = '';
+          document.querySelector('.form_area').innerHTML += form;
+          document.querySelector('.form_area form').submit();
+          console.log(document.querySelector('.form_area form'));
         }
       });
     },
@@ -178,8 +179,8 @@ export default {
     },
     GetStatusActive(label) {
       return label == this.status_array[this.order_data.Status].label
-        ? "primary"
-        : "";
+        ? 'primary'
+        : '';
     },
     UpdateOrderInfo(comment = -1, status = -1) {
       if (status != -1) {
@@ -191,8 +192,8 @@ export default {
       UpdateOrderInfo(this.order_data).then(() => {
         this.$refs.CommentDialog.Close();
         this.GetOrders();
-        this.$store.commit("SetSnackbar", {
-          content: "商店備註已更新",
+        this.$store.commit('SetSnackbar', {
+          content: '商店備註已更新',
           status: true,
         });
       });
@@ -204,8 +205,8 @@ export default {
   },
   filters: {
     money_format(value) {
-      let val = (value / 1).toFixed(0).replace(".", ",");
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      let val = (value / 1).toFixed(0).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
 };

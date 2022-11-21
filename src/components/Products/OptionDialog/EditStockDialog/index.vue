@@ -113,16 +113,16 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="primary" text @click="Cancel"> 取消 </v-btn>
-        <v-btn color="primary" @click="CreateOption"> 新增 </v-btn>
+        <v-btn color="primary" @click="CreateOption"> 更新 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { validEmpty, validFileEmpty } from "@/common/validate.js";
+import { validEmpty, validFileEmpty } from '@/common/validate.js';
 export default {
-  name: "OptionCreateDialog",
+  name: 'OptionCreateDialog',
   props: {
     option_1: {
       require: true,
@@ -137,34 +137,35 @@ export default {
     return {
       size_id: -1,
       color_id: -1,
-      stock: "",
-      deliver_volume: "",
-      deliver_weight: "",
-      price: "",
-      sell_price: "",
-      title: "",
-      status: "Y",
+      stock: '',
+      deliver_volume: '',
+      deliver_weight: '',
+      price: '',
+      sell_price: '',
+      title: '',
+      status: 'Y',
+      position: 0,
       dialog: false,
       status_array: [
         {
-          title: "啟用",
-          value: "Y",
+          title: '啟用',
+          value: 'Y',
         },
         {
-          title: "停用",
-          value: "N",
+          title: '停用',
+          value: 'N',
         },
       ],
       errors: {
-        size_id: "",
-        color_id: "",
-        stock: "",
-        deliver_volume: "",
-        deliver_weight: "",
-        price: "",
-        sell_price: "",
-        title: "",
-        status: "",
+        size_id: '',
+        color_id: '',
+        stock: '',
+        deliver_volume: '',
+        deliver_weight: '',
+        price: '',
+        sell_price: '',
+        title: '',
+        status: '',
       },
     };
   },
@@ -178,77 +179,79 @@ export default {
       this.price = item.Price;
       this.sell_price = item.SellPrice;
       this.status = item.Status;
+      this.position = item.Seq;
       this.dialog = true;
       this.errors = {
-        size_id: "",
-        color_id: "",
-        stock: "",
-        deliver_volume: "",
-        deliver_weight: "",
-        price: "",
-        sell_price: "",
-        status: "",
+        size_id: '',
+        color_id: '',
+        stock: '',
+        deliver_volume: '',
+        deliver_weight: '',
+        price: '',
+        sell_price: '',
+        status: '',
       };
     },
     Cancel() {
       this.size_id = -1;
       this.color_id = -1;
-      this.stock = "";
-      this.deliver_volume = "";
-      this.deliver_weight = "";
-      this.price = "";
-      this.sell_price = "";
-      this.status = "Y";
+      this.stock = '';
+      this.deliver_volume = '';
+      this.deliver_weight = '';
+      this.price = '';
+      this.sell_price = '';
+      this.status = 'Y';
       this.dialog = false;
+      this.position = 0;
       this.errors = {
-        size_id: "",
-        color_id: "",
-        stock: "",
-        deliver_volume: "",
-        deliver_weight: "",
-        price: "",
-        sell_price: "",
-        status: "",
+        size_id: '',
+        color_id: '',
+        stock: '',
+        deliver_volume: '',
+        deliver_weight: '',
+        price: '',
+        sell_price: '',
+        status: '',
       };
     },
     CreateOption() {
       let error = false;
       this.errors = {
-        size_id: "",
-        color_id: "",
-        stock: "",
-        deliver_volume: "",
-        deliver_weight: "",
-        price: "",
-        sell_price: "",
-        status: "",
+        size_id: '',
+        color_id: '',
+        stock: '',
+        deliver_volume: '',
+        deliver_weight: '',
+        price: '',
+        sell_price: '',
+        status: '',
       };
       if (!validEmpty(this.color_id)) {
-        this.errors.color_id = "請選擇規格";
+        this.errors.color_id = '請選擇規格';
         error = true;
       }
       if (!validEmpty(this.size_id)) {
-        this.errors.size_id = "請選擇規格";
+        this.errors.size_id = '請選擇規格';
         error = true;
       }
       if (!validFileEmpty(this.stock)) {
-        this.errors.stock = "請輸入庫存量";
+        this.errors.stock = '請輸入庫存量';
         error = true;
       }
       if (!validFileEmpty(this.deliver_volume)) {
-        this.errors.deliver_volume = "請輸入積材尺寸";
+        this.errors.deliver_volume = '請輸入積材尺寸';
         error = true;
       }
       if (!validFileEmpty(this.deliver_weight)) {
-        this.errors.deliver_weight = "請輸入重量";
+        this.errors.deliver_weight = '請輸入重量';
         error = true;
       }
       if (!validFileEmpty(this.price)) {
-        this.errors.price = "請輸入建議售價";
+        this.errors.price = '請輸入建議售價';
         error = true;
       }
       if (!validFileEmpty(this.sell_price)) {
-        this.errors.sell_price = "請輸入實際售價";
+        this.errors.sell_price = '請輸入實際售價';
         error = true;
       }
       if (!error) {
@@ -261,7 +264,8 @@ export default {
         Data.DeliverWeight = this.deliver_weight;
         Data.Price = this.price;
         Data.SellPrice = this.sell_price;
-        this.$emit("update-stock", Data);
+        Data.Seq = parseInt(this.position);
+        this.$emit('update-stock', Data);
       }
     },
   },

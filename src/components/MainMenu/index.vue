@@ -33,37 +33,17 @@ export default {
               title: '關於我們頁面管理',
               link: '/about_page',
             },
-            // {
-            //   title: "廣告設定",
-            //   link: "/advertisement",
-            // },
             {
               title: '首頁大圖輪播',
               link: '/home_carousel',
             },
-            // {
-            //   title: '首頁網紅介紹',
-            //   link: '/home_kol',
-            // },
-            // {
-            //   title: '首頁底部連結',
-            //   link: '/home_promote',
-            // },
             {
-              title: '最新消息封面',
-              link: '/news_cover',
+              title: '最新消息分類',
+              link: '/news_category',
             },
             {
               title: '最新消息',
               link: '/news',
-            },
-            {
-              title: '常見問題',
-              link: '/questions',
-            },
-            {
-              title: '角色館',
-              link: '/mascot',
             },
             {
               title: '公司資訊',
