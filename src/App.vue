@@ -69,6 +69,7 @@ export default {
         'SeoSetting',
         'TermsOfCustomer',
         'NewsCover',
+        'NewsEdit',
       ];
       this.change_header =
         pages.filter((item) => item == this.$route.name).length > 0

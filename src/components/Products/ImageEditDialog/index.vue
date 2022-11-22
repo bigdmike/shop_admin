@@ -110,19 +110,19 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
-import CreateDialog from "./CreateDialog/index.vue";
-import DeleteDialog from "./DeleteDialog/index.vue";
-import InfoDialog from "./InfoDialog/index.vue";
+import draggable from 'vuedraggable';
+import CreateDialog from './CreateDialog/index.vue';
+import DeleteDialog from './DeleteDialog/index.vue';
+import InfoDialog from './InfoDialog/index.vue';
 import {
   getGoodsAndCategory,
   create_picture,
   update_picture_sort,
   delete_picture,
-} from "@/api/products_image.js";
-import { ImageUrl } from "@/common/filter.js";
+} from '@/api/products_image.js';
+import { ImageUrl } from '@/common/filter.js';
 export default {
-  name: "ProductImageCreateDialog",
+  name: 'ProductImageCreateDialog',
   components: {
     CreateDialog,
     DeleteDialog,
@@ -164,10 +164,18 @@ export default {
         this.color = res[0].data;
         this.size = res[1].data;
         this.images = res[2].data;
+        this.CheckSort();
       });
     },
     ConvertImage(image) {
       return ImageUrl(image);
+    },
+    CheckSort() {
+      let is_sort = true;
+      this.images.forEach((item, item_index) => {
+        item.Seq == item_index + 1 ? '' : (is_sort = false);
+      });
+      is_sort ? '' : this.SendSortData();
     },
     SendSortData() {
       // GoodsPictureID

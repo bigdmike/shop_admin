@@ -10,11 +10,12 @@ export default {
     };
   },
   methods: {
-    Open({ ShippingID }) {
-      this.id = ShippingID;
+    Open(id) {
+      this.id = id;
       this.dialog = true;
     },
     Cancel() {
+      console.log('cancel');
       this.id = -1;
       this.dialog = false;
     },

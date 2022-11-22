@@ -174,10 +174,11 @@ export default {
         this.product = res.data.filter((item) => item.GoodsID == this.id)[0];
         getOptionStock(this.product.GoodsID).then((res) => {
           console.log(res);
+          console.log(res[0].data);
           this.option_1 = res[0].data.filter((item) => {
             return item.GoodsID == this.product.GoodsID || item.GoodsID == 0;
           });
-          this.option_1 = this.SortOption(this.option_1, 'ColorTitle');
+          // this.option_1 = this.SortOption(this.option_1, 'ColorTitle');
           this.option_2 = res[1].data.filter(
             (item) => item.GoodsID == this.product.GoodsID || item.GoodsID == 0
           );
@@ -202,11 +203,13 @@ export default {
     async SendUpdateData(data) {
       data.GoodsID = this.id;
       if (data.ColorTitle) {
+        data.ID = data.ColorID;
         update_color(data).then(() => {
           this.$refs.EditDialog.Cancel();
           this.GetGoodsStockData();
         });
       } else {
+        data.ID = data.SizeID;
         update_size(data).then(() => {
           this.$refs.EditDialog.Cancel();
           this.GetGoodsStockData();
@@ -214,6 +217,9 @@ export default {
       }
     },
     async SendDeleteData(data) {
+      // // 改成停用
+      // data.Status = 'N';
+      // this.SendUpdateData(data);
       if (data.ColorTitle) {
         delete_color(data.ColorID).then(() => {
           this.$refs.DeleteDialog.Cancel();

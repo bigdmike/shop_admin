@@ -1,11 +1,11 @@
 <template src="./template.html"></template>
 
 <script>
-import draggable from "vuedraggable";
-import { update_goods, getStockAndImage } from "@/api/products";
-import { ImageUrl } from "@/common/filter.js";
+import draggable from 'vuedraggable';
+import { update_goods, getStockAndImage } from '@/api/products';
+import { ImageUrl } from '@/common/filter.js';
 export default {
-  name: "ProductListShow",
+  name: 'ProductListShow',
   props: {
     filter_data: {
       require: true,
@@ -36,17 +36,17 @@ export default {
       product_sort_array: [],
       drag: false,
       headers: [
-        { text: "", value: "" },
-        { text: "商品縮圖", value: "" },
+        { text: '', value: '' },
+        { text: '商品縮圖', value: '' },
         {
-          text: "商品名稱",
-          align: "start",
+          text: '商品名稱',
+          align: 'start',
           sortable: false,
-          value: "name",
+          value: 'name',
         },
-        { text: "上架時間", value: "category" },
-        { text: "上架狀態", value: "status" },
-        { text: "動作", value: "action" },
+        { text: '上架時間', value: 'category' },
+        { text: '上架狀態', value: 'status' },
+        { text: '動作', value: 'action' },
       ],
     };
   },
@@ -59,8 +59,8 @@ export default {
       this.value.forEach((item) => {
         this.product_sort_array.push(item.sort);
       });
-      this.$emit("input", this.filter_value);
-      this.$emit("update-sort", this.filter_value);
+      this.$emit('input', this.filter_value);
+      this.$emit('update-sort', this.filter_value);
     },
     GetCategoryName(item) {
       let data = [];
@@ -84,16 +84,16 @@ export default {
         }
         if (enable) {
           let tmp_data = Object.assign({}, item);
-          tmp_data.Status = tmp_data.Status ? "Y" : "N";
+          tmp_data.Status = tmp_data.Status ? 'Y' : 'N';
           tmp_data.ID = tmp_data.GoodsID;
           update_goods(tmp_data).then(() => {
-            this.$emit("re-load");
+            this.$emit('re-load');
           });
         } else {
-          this.$emit("re-load");
-          this.$store.commit("SetDialog", {
-            title: "發生錯誤",
-            content: "請至少新增一張圖片與一個產品選項後才能啟用商品",
+          this.$emit('re-load');
+          this.$store.commit('SetDialog', {
+            title: '發生錯誤',
+            content: '請至少新增一張圖片與一個產品選項後才能啟用商品',
             status: true,
           });
         }
@@ -111,17 +111,17 @@ export default {
       get() {
         {
           let data = JSON.parse(JSON.stringify(this.value));
-          if (this.key_word != "") {
+          if (this.key_word != '') {
             data = data.filter(
-              (item) => item.name.indexOf(this.key_word) != -1
+              (item) => item.Title.indexOf(this.key_word) != -1
             );
           }
-          if (this.filter_data.status != "all") {
+          if (this.filter_data.status != 'all') {
             data = data.filter(
               (item) => item.Status == this.filter_data.status
             );
           }
-          if (this.filter_data.category != "all") {
+          if (this.filter_data.category != 'all') {
             data = data.filter((item) => {
               return (
                 item.Menu.filter(
@@ -141,26 +141,26 @@ export default {
 
         original.forEach((item, item_index) => {
           tmp_data.forEach((data) => {
-            data.id == val[item_index].id ? (data.sort = item.sort) : "";
+            data.id == val[item_index].id ? (data.sort = item.sort) : '';
           });
         });
         tmp_data.sort((a, b) => {
           return a.sort - b.sort;
         });
-        this.$emit("input", tmp_data);
+        this.$emit('input', tmp_data);
       },
     },
   },
   filters: {
     money_format(value) {
-      let val = (value / 1).toFixed(0).replace(".", ",");
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      let val = (value / 1).toFixed(0).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
 };
 </script>
 
-<style >
+<style>
 .opacity-0 {
   opacity: 0;
 }

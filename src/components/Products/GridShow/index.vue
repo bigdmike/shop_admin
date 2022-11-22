@@ -1,10 +1,10 @@
 <template src="./template.html"></template>
 
 <script>
-import draggable from "vuedraggable";
-import { ImageUrl, DataSort } from "@/common/filter.js";
+import draggable from 'vuedraggable';
+import { ImageUrl, DataSort } from '@/common/filter.js';
 export default {
-  name: "ProductsGridShow",
+  name: 'ProductsGridShow',
   props: {
     filter_data: {
       require: true,
@@ -42,13 +42,13 @@ export default {
     },
     ChangeSort(moved_log) {
       let tmp_data = JSON.parse(JSON.stringify(this.filter_product_data));
-      this.$emit("update-sort", DataSort(moved_log, tmp_data));
+      this.$emit('update-sort', DataSort(moved_log, tmp_data));
     },
     GetCategoryName(item) {
       let text = this.product_category_data.filter(
         (category_item) => category_item.MenuID == item.MenuID
       );
-      return text.length > 0 ? text[0].Title : "";
+      return text.length > 0 ? text[0].Title : '';
     },
   },
   created() {
@@ -62,17 +62,17 @@ export default {
       get() {
         {
           let data = JSON.parse(JSON.stringify(this.value));
-          if (this.key_word != "") {
+          if (this.key_word != '') {
             data = data.filter(
-              (item) => item.name.indexOf(this.key_word) != -1
+              (item) => item.Title.indexOf(this.key_word) != -1
             );
           }
-          if (this.filter_data.status != "all") {
+          if (this.filter_data.status != 'all') {
             data = data.filter(
               (item) => item.Status == this.filter_data.status
             );
           }
-          if (this.filter_data.category != "all") {
+          if (this.filter_data.category != 'all') {
             data = data.filter(
               (item) =>
                 item.Menu.filter(
@@ -91,26 +91,26 @@ export default {
 
         original.forEach((item, item_index) => {
           tmp_data.forEach((data) => {
-            data.id == val[item_index].id ? (data.sort = item.sort) : "";
+            data.id == val[item_index].id ? (data.sort = item.sort) : '';
           });
         });
         tmp_data.sort((a, b) => {
           return a.sort - b.sort;
         });
-        this.$emit("input", tmp_data);
+        this.$emit('input', tmp_data);
       },
     },
   },
   filters: {
     money_format(value) {
-      let val = (value / 1).toFixed(0).replace(".", ",");
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      let val = (value / 1).toFixed(0).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
 };
 </script>
 
-<style >
+<style>
 .opacity-0 {
   opacity: 0;
 }

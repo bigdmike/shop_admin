@@ -97,8 +97,7 @@ export default {
         imageUploadURL: process.env.VUE_APP_BASE_API + 'editor/upload',
         imageUploadMethod: 'POST',
         imageStyles: {
-          class1: 'Class 1',
-          class2: 'Class 2',
+          'w-full': 'w-full',
         },
         requestHeaders: {
           Authorization: `${this.$cookie.get('account_token')}`,
@@ -123,6 +122,9 @@ export default {
 </script>
 
 <style>
+.w-full {
+  width: 100%;
+}
 .fr-toolbar .fr-command.fr-btn,
 .fr-popup .fr-command.fr-btn,
 .fr-modal .fr-command.fr-btn {

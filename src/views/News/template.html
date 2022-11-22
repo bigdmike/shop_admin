@@ -1,34 +1,68 @@
 <div id="Products">
-  <template>
-    <!-- QUESTION DIALOG -->
-    <CreateDialog
-      ref="CreateDialog"
-      :category_list="news_categories"
-      v-on:create-news="SendCreateData"
-    />
-    <EditDialog
-      ref="EditDialog"
-      :category_list="news_categories"
-      v-on:update-news="SendUpdateData"
-    />
-    <DeleteDialog ref="DeleteDialog" v-on:delete-news="SendDeleteData" />
-  </template>
+  <DeleteDialog ref="DeleteDialog" @delete-action="DeleteData" />
   <Breadcrumb :link_array="breadcrumb_data" />
   <v-container v-if="news_data!=null">
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-space-between align-center">
           <h3>文章列表</h3>
-          <v-btn @click="OpenCreateDialog" color="primary font-weight-bold"
+          <v-btn
+            @click="$router.push('/news/new')"
+            color="primary font-weight-bold"
             >新增</v-btn
           >
         </div>
-        <ListShow
-          v-on:update-sort="UpdateNewsSort"
-          v-on:delete-data="OpenDeleteDialog"
-          v-on:set-edit="OpenEditDialog"
-          v-model="news_data"
-        />
+
+        <v-container class="product_list px-0">
+          <v-data-table
+            :disable-sort="true"
+            :headers="headers"
+            :items="news_data"
+            :disable-pagination="true"
+            :hide-default-footer="true"
+            sort-by="calories"
+            class="elevation-1 pb-10"
+          >
+            <template v-slot:body="props">
+              <draggable
+                :list="news_data"
+                @change="ChangeSort"
+                tag="tbody"
+                handle=".page__grab-icon"
+                @end="drag=false"
+              >
+                <tr v-for="(item, index) in news_data" :key="index">
+                  <td>
+                    <v-icon small class="page__grab-icon">
+                      mdi-dots-grid
+                    </v-icon>
+                  </td>
+                  <td>
+                    <router-link :to="`news/${item.NewsID}`"
+                      >{{ item.Title }}</router-link
+                    >
+                  </td>
+
+                  <td>
+                    {{item.created_at}}
+                  </td>
+                  <td>
+                    <v-btn
+                      @click="OpenDeleteDialog(item.NewsID)"
+                      small
+                      color="error"
+                      >刪除</v-btn
+                    >
+                  </td>
+                </tr>
+              </draggable>
+            </template>
+
+            <template v-slot:no-data>
+              <p>目前沒有資料可以顯示</p>
+            </template>
+          </v-data-table>
+        </v-container>
       </v-col>
     </v-row>
   </v-container>

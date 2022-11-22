@@ -45,6 +45,7 @@ export default {
         'company_email',
         'company_address',
         'company_time',
+        'company_messenger',
       ]).then((res) => {
         res.company_image = this.$SetImageObj(
           res.company_image,

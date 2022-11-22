@@ -59,6 +59,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "news" */ '../views/News/index.vue'),
   },
+  {
+    path: '/news/:id',
+    name: 'NewsEdit',
+    component: () =>
+      import(/* webpackChunkName: "news_edit" */ '../views/NewsEdit/index.vue'),
+  },
 
   {
     path: '/products',
@@ -124,13 +130,6 @@ const routes = [
       import(/* webpackChunkName: "charts" */ '../views/Charts/index.vue'),
   },
 
-  {
-    path: '/about',
-
-    name: 'About',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About/index.vue'),
-  },
   {
     path: '/discount',
 
