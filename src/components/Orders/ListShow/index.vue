@@ -1,6 +1,7 @@
 <template src="./template.html"></template>
 
 <script>
+import ExcelExport from '@/components/Orders/ExcelExport/';
 import draggable from 'vuedraggable';
 export default {
   name: 'OrderListShow',
@@ -32,6 +33,7 @@ export default {
   },
   components: {
     draggable,
+    ExcelExport,
   },
   data() {
     return {
@@ -80,6 +82,7 @@ export default {
           'text-color': 'white',
         },
       },
+      selected: [],
     };
   },
   methods: {
@@ -89,8 +92,10 @@ export default {
       );
       return ship_way.length > 0 ? ship_way[0] : { Title: '查無配送方式' };
     },
+    ExcelExport() {
+      this.$refs.ExcelExport.Export();
+    },
   },
-  created() {},
   computed: {
     filter_value: {
       get() {

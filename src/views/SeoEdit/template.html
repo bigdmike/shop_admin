@@ -1,0 +1,33 @@
+<div id="Products">
+  <Breadcrumb :link_array="breadcrumb_data" />
+
+  <v-container v-if="page_data!=null">
+    <v-row>
+      <v-col cols="12">
+        <p class="mt-0 mb-0">
+          {{page_list[$route.params.id]}} SEO設定
+        </p>
+      </v-col>
+      <v-col cols="12" md="8">
+        <v-card class="pa-5">
+          <v-text-field
+            label="標題"
+            v-model="page_data[`meta_title_${$route.params.id}`].Content"
+            dense
+            outlined
+          ></v-text-field>
+          <FroalaEditor
+            v-model="page_data[`meta_content_${$route.params.id}`].Content"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4">
+        <MainImageCard
+          :image_data="page_data[`meta_image_${$route.params.id}`]"
+          :upload_key="`meta_image_${$route.params.id}`"
+          @update-action="UpdateImage"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

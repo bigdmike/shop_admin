@@ -1,63 +1,144 @@
 <div id="OrderPrint">
-    <div id="PrintArea" v-if="order_data!=null">
-        <div class="header" style="width: 100%;text-align: center;margin-bottom: 30px;">
-            <img src="@/assets/logo.png?v2" style="width: 150px;margin: 0 auto;" />
-        </div>
-        <div
-            style="display: flex;flex-wrap: wrap;width: 100%;border-top: 1px solid #666;border-bottom: 1px solid #666;padding:30px 10px;">
-            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">訂單編號:</span>
-                #{{order_data.TradeID}}</p>
-            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">訂單建立日期:</span>
-                {{order_data.created_at}}</p>
-            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">收件人姓名:</span>
-                {{order_data.ReceiverName}}</p>
-            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">收件人地址:</span>
-                {{GetZipCity(order_data.ReceiverAddressCode).City + GetZipCity(order_data.ReceiverAddressCode).Area}}{{order_data.ReceiverAddress}}
-            </p>
-            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">收件人電話:</span>
-                {{order_data.ReceiverPhone}}</p>
-            <p style="width: 50%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">收件人信箱:</span>
-                {{order_data.ReceiverEmail}}</p>
-        </div>
-        <div style="width:100%;padding:30px 10px;">
-            <table
-                style="width:100%;border: 1px solid black;border-collapse: collapse;font-size: 14px;margin-bottom: 10px;">
-                <tr style="text-align: left;">
-                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">序號</th>
-                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">商品名稱</th>
-                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">商品規格</th>
-                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">數量</th>
-                    <th style="border: 1px solid black;border-collapse: collapse;padding: 5px;">小計</th>
-                </tr>
-                <tr v-for="(item,item_index) in products" :key="`print_product_${item_index}`">
-                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">{{item_index+1}}</td>
-                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">
-                        {{  item.Info.Title}}</td>
-                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">
-                        {{item.Option.SizeTitle}} / {{item.Option.ColorTitle}}</td>
-                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">{{item.Amount}} </td>
-                    <td style="border: 1px solid black;border-collapse: collapse;padding: 5px;">
-                        {{item.FinalPrice * item.Amount | money_format}} <span style="font-size: 12px;">TWD</span></td>
-                </tr>
-            </table>
-            <p style="font-size: 14px;margin-bottom: 10px;">運費:
-                {{order_data.ShippingFree==1? 0 : order_data.ShippingFee | money_format}} <span
-                    style="font-size: 12px;">TWD</span></p>
-            <p style="font-size: 14px;margin-bottom: 10px;">金流手續費:
-                {{order_data.PaymentSubtotalFee | money_format}} <span style="font-size: 12px;">TWD</span></p>
-
-            <p style="font-size: 14px;margin-bottom: 10px;" v-if="order_data.CouponMoney">優惠券折扣:
-                - {{order_data.CouponMoney | money_format}} <span style="font-size: 12px;">TWD</span></p>
-
-            <p style="font-size: 14px;">總計: {{order_data.Price | money_format}} <span
-                    style="font-size: 12px;">TWD</span></p>
-        </div>
-        <div style="width: 100%;border-top: 1px solid #000;padding: 30px 10px;">
-            <p style="width: 100%;margin-bottom: 10px;font-size: 14px;"><span style="font-size: 12px;">訂單備註:</span><br>
-                <span style="padding-top: 5px;display: block;" v-html="order_data.ReceiverMemo"></span>
-            </p>
-        </div>
+  <div id="PrintArea" v-if="order_data!=null">
+    <div
+      class="header"
+      style="width: 100%;text-align: center;margin-bottom: 30px;"
+    >
+      <img src="@/assets/logo.png?v2" style="width: 150px;margin: 0 auto;" />
     </div>
+    <div
+      style="display: flex;flex-wrap: wrap;width: 100%;border-top: 1px solid #666;border-bottom: 1px solid #666;padding:30px 10px;"
+    >
+      <p style="width: 50%;margin-bottom: 10px;font-size: 14px;">
+        <span style="font-size: 12px;">訂單編號:</span> #{{order_data.TradeID}}
+      </p>
+      <p style="width: 50%;margin-bottom: 10px;font-size: 14px;">
+        <span style="font-size: 12px;">訂單建立日期:</span>
+        {{order_data.created_at}}
+      </p>
+      <p style="width: 50%;margin-bottom: 10px;font-size: 14px;">
+        <span style="font-size: 12px;">收件人姓名:</span>
+        {{order_data.ReceiverName}}
+      </p>
+      <p style="width: 50%;margin-bottom: 10px;font-size: 14px;">
+        <span style="font-size: 12px;">收件人地址:</span>
+        {{GetZipCity(order_data.ReceiverAddressCode).City +
+        GetZipCity(order_data.ReceiverAddressCode).Area}}{{order_data.ReceiverAddress}}
+      </p>
+      <p style="width: 50%;margin-bottom: 10px;font-size: 14px;">
+        <span style="font-size: 12px;">收件人電話:</span>
+        {{order_data.ReceiverPhone}}
+      </p>
+      <p style="width: 50%;margin-bottom: 10px;font-size: 14px;">
+        <span style="font-size: 12px;">收件人信箱:</span>
+        {{order_data.ReceiverEmail}}
+      </p>
+    </div>
+    <div style="width:100%;padding:30px 10px;">
+      <table
+        style="width:100%;border: 1px solid black;border-collapse: collapse;font-size: 14px;margin-bottom: 10px;"
+      >
+        <tr style="text-align: left;">
+          <th
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            序號
+          </th>
+          <th
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            商品名稱
+          </th>
+          <th
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            商品規格
+          </th>
+          <th
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            數量
+          </th>
+          <th
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            小計
+          </th>
+        </tr>
+        <tr
+          v-for="(item,item_index) in products"
+          :key="`print_product_${item_index}`"
+        >
+          <td
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            {{item_index+1}}
+          </td>
+          <td
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            {{ item.Info.Title}}
+          </td>
+          <td
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            {{item.Option.SizeTitle}} / {{item.Option.ColorTitle}}
+          </td>
+          <td
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            {{item.Amount}}
+          </td>
+          <td
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            {{item.FinalPrice * item.Amount | money_format}}
+            <span style="font-size: 12px;">TWD</span>
+          </td>
+        </tr>
+      </table>
 
-    <button style="display: none;" ref="PrintBtn" v-print="'#PrintArea'">Print local range</button>
+      <p style="font-size: 14px;margin-bottom: 10px;">
+        運費: {{order_data.ShippingFree==1? 0 : order_data.ShippingFee |
+        money_format}} <span style="font-size: 12px;">TWD</span>
+      </p>
+      <p style="font-size: 14px;margin-bottom: 10px;">
+        金流手續費: {{order_data.PaymentSubtotalFee | money_format}}
+        <span style="font-size: 12px;">TWD</span>
+      </p>
+
+      <p
+        style="font-size: 14px;margin-bottom: 10px;"
+        v-if="order_data.CouponMoney"
+      >
+        優惠券折扣: - {{order_data.CouponMoney | money_format}}
+        <span style="font-size: 12px;">TWD</span>
+      </p>
+
+      <p style="font-size: 14px;">
+        總計: {{order_data.Price | money_format}}
+        <span style="font-size: 12px;">TWD</span>
+      </p>
+    </div>
+    <div style="width: 100%;border-top: 1px solid #000;padding: 30px 10px;">
+      <p style="width: 100%;margin-bottom: 20px;font-size: 14px;">
+        <span style="font-size: 12px;">客戶備註:</span><br />
+        <span
+          style="padding-top: 5px;display: block;"
+          v-html="order_data.ReceiverMemo"
+        ></span>
+      </p>
+      <p style="width: 100%;margin-bottom: 10px;font-size: 14px;">
+        <span style="font-size: 12px;">訂單備註:</span><br />
+        <span
+          style="padding-top: 5px;display: block;"
+          v-html="order_data.AdminMemo"
+        ></span>
+      </p>
+    </div>
+  </div>
+
+  <button style="display: none;" ref="PrintBtn" v-print="'#PrintArea'">
+    Print local range
+  </button>
 </div>

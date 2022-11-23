@@ -1,9 +1,15 @@
 <v-container class="product_list px-0">
+  <ExcelExport ref="ExcelExport" :order_data="selected" class="d-none" />
+  <button @click="ExcelExport">test</button>
   <v-data-table
     :headers="headers"
     :items="filter_value"
     sort-by="calories"
+    :single-select="false"
     class="elevation-1 pb-10"
+    item-key="TradeID"
+    show-select
+    v-model="selected"
     :footer-props="{
            'items-per-page-text':'每頁筆數'
       }"

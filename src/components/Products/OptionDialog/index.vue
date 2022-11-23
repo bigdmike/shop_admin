@@ -71,9 +71,20 @@
         <v-col cols="12">
           <div class="d-flex justify-space-between align-center">
             <h3>庫存設定</h3>
-            <v-btn @click="OpenCreateStock()" color="primary font-weight-bold"
-              >新增</v-btn
-            >
+            <div class="d-flex align-center">
+              <v-select
+                class="mr-5"
+                v-model="stock_filter"
+                :items="stock_filter_list"
+                label="篩選設定"
+                dense
+                hide-details=""
+                outlined
+              ></v-select>
+              <v-btn @click="OpenCreateStock()" color="primary font-weight-bold"
+                >新增</v-btn
+              >
+            </div>
           </div>
           <StockList
             v-if="stocks != null"
@@ -81,7 +92,7 @@
             :option_2="option_2"
             v-on:set-edit="OpenEditStock"
             v-on:sort-update="SendUpdateSortData"
-            v-model="stocks"
+            v-model="filter_stock"
           />
         </v-col>
       </v-row>
@@ -94,9 +105,7 @@ import { get_goods } from '@/api/products.js';
 import {
   getOptionStock,
   create_color,
-  delete_color,
   create_size,
-  delete_size,
   update_color,
   update_size,
   create_stock,
@@ -128,11 +137,25 @@ export default {
       option_2: null,
       stocks: null,
       dialog: false,
+      stock_filter_list: ['全部顯示', '只顯示啟用', '只顯示停用'],
+      stock_filter: '只顯示啟用',
     };
   },
   computed: {
     product_name() {
       return this.product == null ? '' : this.product.Title;
+    },
+    filter_stock() {
+      if (this.stocks == null) {
+        return null;
+      }
+      if (this.stock_filter == '全部顯示') {
+        return this.stocks;
+      } else if (this.stock_filter == '只顯示啟用') {
+        return this.stocks.filter((item) => item.Status == 'Y');
+      } else {
+        return this.stocks.filter((item) => item.Status == 'N');
+      }
     },
   },
   methods: {
@@ -169,19 +192,24 @@ export default {
       this.$refs.EditStockDialog.Open(item);
     },
     async GetGoodsStockData() {
-      //   let vm = this;
       get_goods().then((res) => {
         this.product = res.data.filter((item) => item.GoodsID == this.id)[0];
         getOptionStock(this.product.GoodsID).then((res) => {
-          console.log(res);
-          console.log(res[0].data);
           this.option_1 = res[0].data.filter((item) => {
-            return item.GoodsID == this.product.GoodsID || item.GoodsID == 0;
+            return item.GoodsID == this.product.GoodsID || item.GoodsID == 0
+              ? item.Status == 'Y'
+                ? item
+                : ''
+              : '';
           });
           // this.option_1 = this.SortOption(this.option_1, 'ColorTitle');
-          this.option_2 = res[1].data.filter(
-            (item) => item.GoodsID == this.product.GoodsID || item.GoodsID == 0
-          );
+          this.option_2 = res[1].data.filter((item) => {
+            return item.GoodsID == this.product.GoodsID || item.GoodsID == 0
+              ? item.Status == 'Y' && item.SizeTitle != 'F'
+                ? item
+                : ''
+              : '';
+          });
           this.option_2 = this.SortOption(this.option_2, 'SizeTitle');
           this.stocks = res[2].data;
         });
@@ -217,27 +245,30 @@ export default {
       }
     },
     async SendDeleteData(data) {
-      // // 改成停用
-      // data.Status = 'N';
-      // this.SendUpdateData(data);
+      // 停用相關庫存
       if (data.ColorTitle) {
-        delete_color(data.ColorID).then(() => {
-          this.$refs.DeleteDialog.Cancel();
-          this.GetGoodsStockData();
-        });
+        for (let item of this.stocks) {
+          if (item.ColorID == data.ColorID) {
+            item.Status = 'N';
+            await this.SendCreateStock(item);
+          }
+        }
       } else {
-        delete_size(data.SizeID).then(() => {
-          this.$refs.DeleteDialog.Cancel();
-          this.GetGoodsStockData();
-        });
+        for (let item of this.stocks) {
+          if (item.SizeID == data.SizeID) {
+            item.Status = 'N';
+            await this.SendCreateStock(item);
+          }
+        }
       }
+
+      // 停用該選項
+      data.Status = 'N';
+      this.SendUpdateData(data);
+      this.$refs.DeleteDialog.Cancel();
     },
     async SendCreateStock(data) {
       data.GoodsID = this.id;
-      // this.axios.put(
-      //   'https://kitchen.yongxin-demo.com/admin/goods/stock',
-      //   data
-      // );
       create_stock(data).then(() => {
         this.$refs.CreateStockDialog.Cancel();
         this.$refs.EditStockDialog.Cancel();
@@ -251,6 +282,5 @@ export default {
       });
     },
   },
-  created() {},
 };
 </script>

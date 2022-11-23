@@ -191,18 +191,16 @@ const routes = [
       ),
   },
   {
-    path: '/settings',
-    name: 'Settings',
+    path: '/seo_list',
+    name: 'SeoList',
     component: () =>
-      import(/* webpackChunkName: "settings" */ '../views/Setting/index.vue'),
+      import(/* webpackChunkName: "seo_list" */ '../views/SeoList/index.vue'),
   },
   {
-    path: '/seo_setting',
-    name: 'SeoSetting',
+    path: '/seo_edit/:id',
+    name: 'SeoEdit',
     component: () =>
-      import(
-        /* webpackChunkName: "seo_setting" */ '../views/SeoMetaSetting/index.vue'
-      ),
+      import(/* webpackChunkName: "seo_edit" */ '../views/SeoEdit/index.vue'),
   },
 ];
 

@@ -1,88 +1,105 @@
 <template src="./template.html"></template>
 
 <script>
+import VueApexCharts from 'vue-apexcharts';
 export default {
-  name: "TotalPriceChart",
+  name: 'ProductSellChart',
   components: {
+    VueApexCharts,
   },
   props: {
-    order_data: {
+    product_data: {
       require: true,
-      type: Array
+      type: Array,
     },
-    date_between: {
-      require: true,
-      type: Array
-    }
   },
   data() {
     return {
-      product_data: [],
-      headers: [
-        {
-          text: '#',
-          align: 'start',
-          sortable: false,
-          value: 'index',
+      MoneyChartOptions: {
+        chart: {
+          id: 'vuechart-example',
+          toolbar: {
+            show: false,
+          },
         },
-        {
-          text: '商品', value: 'name',
-          sortable: false,
+        xaxis: {
+          categories: [
+            'South Korea',
+            'Canada',
+            'United Kingdom',
+            'Netherlands',
+            'Italy',
+            'France',
+            'Japan',
+            'United States',
+            'China',
+            'Germany',
+          ],
         },
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            horizontal: true,
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+      },
+      MoneyChartSeries: [
         {
-          text: '銷售總額', value: 'price',
-          align: 'end',
-          sortable: false,
+          name: '金額總計',
+          data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
         },
       ],
-    }
+    };
   },
   methods: {
-
     SetChart() {
-      this.order_data.forEach(order => {
-        if (order.products != null) {
-          order.products.forEach(product => {
-            let product_in_array = this.product_data.filter(item => item.name == product.name)
-            if (product_in_array.length <= 0) {
-              this.product_data.push(
-                {
-                  name: product.name,
-                  price: parseInt(product.price)
-                }
-              )
-            }
-            else {
-              product_in_array[0].price += parseInt(product.price)
-            }
-          })
-        }
-
-      })
+      this.MoneyChartOptions.xaxis.categories = [];
+      this.MoneyChartSeries[0].data = [];
+      this.product_data.forEach((product) => {
+        this.MoneyChartOptions.xaxis.categories.push(product.Title);
+        this.MoneyChartSeries[0].data.push(product.Price);
+      });
     },
+    SetSeries() {
+      let data = [];
+      this.MoneyChartOptions.xaxis.categories.forEach((date, date_index) => {
+        data[date_index] = 0;
+        this.order_data.forEach((item) => {
+          if (item.created_at.substring(5, 10) == date) {
+            data[date_index] += parseInt(item.Price);
+          }
+        });
+        if (data[date_index] == 0) {
+          this.MoneyChartOptions.xaxis.categories[date_index] = ' ';
+        }
+      });
+      this.MoneyChartSeries[0].data = data;
+    },
+  },
+  created() {
+    this.SetChart();
   },
   watch: {
-    order_data() {
-      this.order_data.length <= 0 ? "" : this.SetChart()
+    product_data() {
+      this.SetChart();
     },
-    date_between() {
-      this.SetChart()
-    }
   },
-  created() { },
   computed: {
     total_money() {
-      let count = 0
-      this.MoneyChartSeries[0].data.forEach(item => {
-        count += parseInt(item)
-      })
-      return count
-    }
+      let count = 0;
+      this.MoneyChartSeries[0].data.forEach((item) => {
+        count += parseInt(item);
+      });
+      return count;
+    },
   },
   filters: {
     formatPrice(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    }
-  }
-}
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+  },
+};
 </script>

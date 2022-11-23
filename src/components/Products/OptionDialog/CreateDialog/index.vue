@@ -35,17 +35,17 @@
 </template>
 
 <script>
-import { validEmpty } from "@/common/validate.js";
+import { validEmpty } from '@/common/validate.js';
 export default {
-  name: "OptionCreateDialog",
+  name: 'OptionCreateDialog',
   data() {
     return {
       id: -1,
-      type: "",
-      title: "",
+      type: '',
+      title: '',
       dialog: false,
       errors: {
-        title: "",
+        title: '',
       },
     };
   },
@@ -53,35 +53,36 @@ export default {
     Open(id, type) {
       this.id = id;
       this.type = type;
-      this.title = "";
+      this.title = '';
       this.dialog = true;
       this.errors = {
-        title: "",
+        title: '',
       };
     },
     Cancel() {
       this.id = -1;
-      this.type = "";
-      this.title = "";
+      this.type = '';
+      this.title = '';
       this.dialog = false;
       this.errors = {
-        title: "",
+        title: '',
       };
     },
     CreateOption() {
       let error = false;
       this.errors = {
-        title: "",
+        title: '',
       };
       if (!validEmpty(this.title)) {
-        this.errors.title = "請填寫規格名稱";
+        this.errors.title = '請填寫規格名稱';
         error = true;
       }
       if (!error) {
         let Data = {};
         Data[`${this.type}Title`] = this.title;
         Data.GoodsID = this.id;
-        this.$emit("create-option", Data);
+        Data.Status = 'Y';
+        this.$emit('create-option', Data);
       }
     },
   },

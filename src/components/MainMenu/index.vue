@@ -57,6 +57,10 @@ export default {
               title: '會員責任規範條款',
               link: '/terms_of_customer',
             },
+            {
+              title: 'SEO設定',
+              link: '/seo_list',
+            },
           ],
         },
         {

@@ -1,58 +1,91 @@
 <div id="Order">
-    <v-container>
-        <v-row>
-            <Breadcrumb :link_array="breadcrumb_data" />
-            <v-col cols="12" md="12" lg="12" class="mx-auto">
-                <div class="header d-flex justify-end align-center">
-                    <div class="d-flex align-center">
-                        <v-dialog ref="dialog" v-model="modal" :return-value.sync="date_between" persistent
-                            width="320px">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-text-field :value="dateRangeText()" :hide-details="true" style="width:200px"
-                                    class="text-caption" prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" dense
-                                    solo v-on="on">
-                                </v-text-field>
-                            </template>
-                            <v-date-picker v-model="date_between" range scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="modal = false">
-                                    Cancel
-                                </v-btn>
-                                <v-btn text color="primary" @click="ChangeDate(date_between)">
-                                    OK
-                                </v-btn>
-                            </v-date-picker>
-                        </v-dialog>
-                    </div>
-                </div>
-            </v-col>
+  <v-container v-if="product_data!=null">
+    <v-row>
+      <Breadcrumb :link_array="breadcrumb_data" />
+      <v-col cols="12" md="12" lg="12" class="mx-auto">
+        <div class="header d-flex justify-end align-center">
+          <div class="d-flex align-center">
+            <v-dialog
+              ref="dialog"
+              v-model="modal"
+              :return-value.sync="date_between"
+              persistent
+              width="320px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  :value="dateRangeText()"
+                  :hide-details="true"
+                  style="width:200px"
+                  class="text-caption"
+                  prepend-inner-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  dense
+                  solo
+                  v-on="on"
+                >
+                </v-text-field>
+              </template>
+              <v-date-picker v-model="date_between" range scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="modal = false">
+                  Cancel
+                </v-btn>
+                <v-btn text color="primary" @click="ChangeDate(date_between)">
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-dialog>
+          </div>
+        </div>
+      </v-col>
 
-            <v-col cols="6" md="6">
-                <TotalPriceChart ref="TotalPriceChart" elevation="2" class="pa-8 mb-5 rounded-lg"
-                    :order_data="date_orders" :date_between="date_between" />
-            </v-col>
-            <v-col cols="6" md="6">
-                <OrderCountChart ref="OrderCountChart" elevation="2" class="pa-8 mb-5 rounded-lg"
-                    :order_data="date_orders" :date_between="date_between" />
-            </v-col>
-            <v-col cols="6" md="6">
-                <TotalPriceAccumulationChart ref="TotalPriceAccumulationChart" elevation="2"
-                    class="pa-8 mb-5 rounded-lg" :order_data="date_orders" :date_between="date_between" />
-            </v-col>
-            <v-col cols="6" md="6">
-                <OrderAccumulationChart ref="OrderAccumulationChart" elevation="2" class="pa-8 mb-5 rounded-lg"
-                    :order_data="date_orders" :date_between="date_between" />
-            </v-col>
-            <v-col cols="6" md="6">
-                <ProductPriceChart ref="ProductPriceChart" elevation="2" class="pa-8 mb-5 rounded-lg"
-                    :order_data="date_orders" :date_between="date_between" />
-            </v-col>
-            <v-col cols="6" md="6">
-                <ProductCountChart ref="ProductCountChart" elevation="2" class="pa-8 mb-5 rounded-lg"
-                    :order_data="date_orders" :date_between="date_between" />
-            </v-col>
-
-
-        </v-row>
-    </v-container>
+      <v-col cols="12" md="12">
+        <TotalPriceChart
+          ref="TotalPriceChart"
+          elevation="2"
+          class="pa-8 mb-5 rounded-lg"
+          :order_data="date_trade_data"
+          :date_between="date_between"
+        />
+      </v-col>
+      <v-col cols="12" md="12">
+        <ProductPriceChart
+          ref="ProductPriceChart"
+          elevation="2"
+          class="pa-8 mb-5 rounded-lg"
+          :product_data="date_product_data"
+        />
+      </v-col>
+      <!-- 
+      <v-col cols="6" md="6">
+        <TotalPriceAccumulationChart
+          ref="TotalPriceAccumulationChart"
+          elevation="2"
+          class="pa-8 mb-5 rounded-lg"
+          :order_data="date_orders"
+          :date_between="date_between"
+        />
+      </v-col>
+      <v-col cols="6" md="6">
+        <OrderAccumulationChart
+          ref="OrderAccumulationChart"
+          elevation="2"
+          class="pa-8 mb-5 rounded-lg"
+          :order_data="date_orders"
+          :date_between="date_between"
+        />
+      </v-col>
+      <v-col cols="6" md="6">
+        <ProductCountChart
+          ref="ProductCountChart"
+          elevation="2"
+          class="pa-8 mb-5 rounded-lg"
+          :order_data="date_orders"
+          :date_between="date_between"
+        />
+      </v-col> -->
+    </v-row>
+  </v-container>
 </div>
