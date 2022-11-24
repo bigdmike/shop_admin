@@ -29,8 +29,7 @@ export default {
   },
   methods: {
     UpdateData() {
-      updateData(this.page_data).then((res) => {
-        console.log(res);
+      updateData(this.page_data).then(() => {
         this.GetPageData();
       });
     },
@@ -56,10 +55,8 @@ export default {
         'about_section_4_content',
         'about_section_4_image',
       ]).then((res) => {
-        console.log(res);
         this.page_data = {};
         for (let i = 1; i <= 4; i++) {
-          console.log(i);
           res[`about_section_${i}_image`].type = 'image';
           res[`about_section_${i}_image`].Image1 = null;
           res[`about_section_${i}_image`].PreviewImage = this.$ImageUrl(
@@ -79,22 +76,3 @@ export default {
   },
 };
 </script>
-<style>
-.image_card {
-  transition: opacity 0.4s ease-in-out;
-  cursor: grab;
-}
-
-.img_card_control {
-  background-color: rgba(0, 0, 0, 0.541);
-  transition: opacity 0.4s ease-in-out;
-  opacity: 0;
-}
-.img_card_control.show {
-  opacity: 1;
-}
-
-.show-btns {
-  color: rgba(255, 255, 255, 1) !important;
-}
-</style>

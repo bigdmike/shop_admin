@@ -1,7 +1,6 @@
 <template src="./template.html"></template>
 
 <script>
-import ExcelExport from '@/components/Orders/ExcelExport/';
 import draggable from 'vuedraggable';
 export default {
   name: 'OrderListShow',
@@ -30,10 +29,13 @@ export default {
       require: true,
       type: Array,
     },
+    select_order: {
+      require: true,
+      type: Array,
+    },
   },
   components: {
     draggable,
-    ExcelExport,
   },
   data() {
     return {
@@ -96,6 +98,11 @@ export default {
       this.$refs.ExcelExport.Export();
     },
   },
+  watch: {
+    selected() {
+      this.$emit('select-action', this.selected);
+    },
+  },
   computed: {
     filter_value: {
       get() {
@@ -108,13 +115,13 @@ export default {
                 item.ReceiverPhone.indexOf(this.key_word) != -1 ||
                 item.ReceiverAddress.indexOf(this.key_word) != -1 ||
                 item.ReceiverEmail.indexOf(this.key_word) != -1 ||
-                item.TradeID == this.key_word
+                item.TradeID.indexOf(this.key_word) != -1
               );
             });
           }
           if (this.filter_data.status != 'all') {
             data = data.filter(
-              (item) => item.status == this.filter_data.Status
+              (item) => item.Status == this.filter_data.status
             );
           }
           return data;

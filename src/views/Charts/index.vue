@@ -4,11 +4,8 @@
 import VueApexCharts from 'vue-apexcharts';
 import Breadcrumb from '@/components/Breadcrumb/';
 import TotalPriceChart from '@/components/Charts/TotalPriceChart';
-import OrderCountChart from '@/components/Charts/OrderCountChart';
-import TotalPriceAccumulationChart from '@/components/Charts/TotalPriceAccumulationChart';
-import OrderAccumulationChart from '@/components/Charts/OrderAccumulationChart';
 import ProductPriceChart from '@/components/Charts/ProductPriceChart';
-import ProductCountChart from '@/components/Charts/ProductCountChart';
+
 import { GetOrderAndProduct } from '@/api/order.js';
 export default {
   name: 'Charts',
@@ -16,11 +13,7 @@ export default {
     VueApexCharts,
     Breadcrumb,
     TotalPriceChart,
-    OrderCountChart,
-    TotalPriceAccumulationChart,
-    OrderAccumulationChart,
     ProductPriceChart,
-    ProductCountChart,
   },
   data() {
     return {

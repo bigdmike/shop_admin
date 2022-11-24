@@ -6,7 +6,7 @@
       :data="export_order_data"
       :fields="columns"
       type="csv"
-      name="耀聞水果世界-訂單匯出.csv"
+      name="耀聞水果世界-黑貓訂單匯出.csv"
     ></DownloadExcel>
   </div>
 </template>
@@ -31,10 +31,6 @@ export default {
       require: true,
       type: Array,
     },
-    payment_list: {
-      require: true,
-      type: Array,
-    },
     product_data: {
       require: true,
       type: Array,
@@ -43,34 +39,29 @@ export default {
   data() {
     return {
       columns: {
-        排序: 'Index',
         訂單編號: 'TradeID',
-        顧客姓名: 'ReceiverName',
-        顧客電話: 'ReceiverPhone',
-        顧客Email手機: 'ReceiverEmail',
-        顧客地址: 'ReceiverAddress',
-        訂單狀態: 'Status',
-        付款方式: 'PaymentInfo',
-        付款狀態: 'PaymentStatus',
-        出貨貨運: 'ShippingInfo',
-        查貨號碼: 'ShippingCode',
-        訂單金額: 'Price',
-        金流手續費: 'PaymentSubtotalFee',
-        物流運費: 'ShippingFee',
+        溫層: 'DeliveryFrozen',
+        距離: 'OutlyDelivery',
+        規格: 'DeliverySize',
+        '收件人-姓名': 'ReceiverName',
+        '收件人-電話': 'ReceiverPhone',
+        '收件人-手機': 'ReceiverPhone',
+        '收件人-地址': 'ReceiverAddress',
+        '寄件人-姓名': 'SendName',
+        '寄件人-電話': 'SendPhone',
+        '寄件人-地址': 'SendAddress',
+        希望配達日: 'Empty',
+        品類代碼: 'Empty',
         品名: 'ProductName',
-        客戶備註: 'ReceiverMemo',
-        商店備註: 'AdminMemo',
+        易碎物品: 'FragileItem',
+        精密儀器: 'PrecisionInstrument',
+        備註: 'AdminMemo',
+        '報值(Y|N)': 'PriceCount',
+        報值金額: 'Price',
+        到付單: 'Empty',
       },
+      outly_city_area: ['蘭嶼鄉', '連江縣', '綠島鄉', '澎湖縣', '金門縣'],
       export_order_data: null,
-      status_list: {
-        W: '等待回應',
-        P: '已付款',
-        T: '理貨中',
-        S: '已出貨',
-        A: '已到貨',
-        F: '訂單完成',
-        C: '已取消',
-      },
     };
   },
   methods: {
@@ -80,53 +71,58 @@ export default {
     SetExportData() {
       let order_data = JSON.parse(JSON.stringify(this.order_data));
       order_data.forEach((item, item_index) => {
-        // 排序編號
-        order_data[item_index].Index = item_index;
-        // 地址
-        order_data[item_index].ReceiverAddress = this.GetFullAddress(
-          order_data[item_index].ReceiverAddress,
-          order_data[item_index].ReceiverAddressCode
+        //預設規格，包裹尺寸
+        order_data[item_index].DeliverySize = '0001';
+        //運送距離
+        order_data[item_index].OutlyDelivery = this.GetShipDistance(
+          item.ReceiverAddressCode
         );
-        // 訂單狀態
-        order_data[item_index].Status = this.status_list[
-          order_data[item_index].Status
-        ];
-        // 運送方式
-        order_data[item_index].ShippingInfo = this.GetShippingInfo(
-          order_data[item_index].ShippingID
+        //溫層
+        order_data[item_index].DeliveryFrozen = this.GetDeliveryForzen(
+          item.ShippingID
         );
-        // 付款方式
-        order_data[item_index].PaymentInfo = this.GetPaymentInfo(
-          order_data[item_index].PaymentID
-        );
-        // 付款狀態
-        order_data[item_index].PaymentStatus =
-          order_data[item_index].PaymentTime == null
-            ? '尚未付款'
-            : order_data[item_index].PaymentTime + '已付款';
         // 商品名
         order_data[item_index].ProductName = this.GetOrderProducts(
           item.SubTradeList
         );
+        //易碎物品
+        order_data[item_index].FragileItem = 'N';
+        // 精密儀器
+        order_data[item_index].PrecisionInstrument = 'N';
+        // 報值
+        order_data[item_index].PriceCount = 'Y';
+        // 寄件人
+        order_data[item_index].SendName = '耀聞水果世界';
+        order_data[item_index].SendPhone = '04-2382-1555';
+        order_data[item_index].SendAddress = '臺中市南屯區公益路二段931號';
+        // 空值
+        order_data[item_index].Empty = '';
       });
       this.export_order_data = order_data;
       this.$nextTick(() => {
         this.Export();
       });
     },
-    GetFullAddress(address, zip_code) {
+    GetShipDistance(zip_code) {
       const zip_data = this.zip_code_data.filter(
         (item) => item.ZipCode == zip_code
       )[0];
-      return zip_code + zip_data.City + zip_data.Area + address;
+      if (zip_data.City == '台中市') {
+        return '00';
+      } else if (
+        this.outly_city_area.indexOf(zip_data.City) != -1 ||
+        this.outly_city_area.indexOf(zip_data.Area) != -1
+      ) {
+        return '02';
+      } else {
+        return '01';
+      }
     },
-    GetShippingInfo(ship_id) {
-      return this.shipping_list.filter((item) => item.ShippingID == ship_id)[0]
-        .Title;
-    },
-    GetPaymentInfo(payment_id) {
-      return this.payment_list.filter((item) => item.PaymentID == payment_id)[0]
-        .Title;
+    GetDeliveryForzen(ship_id) {
+      const ship_way = this.shipping_list.filter(
+        (item) => (item.ShippingID = ship_id)
+      )[0];
+      return ship_way.DeliveryFrozen == 'N' ? '0001' : '0002';
     },
     GetOrderProducts(trade_product_list) {
       let order_products = [];

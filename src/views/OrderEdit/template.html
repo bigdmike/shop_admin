@@ -1,6 +1,7 @@
 <div id="Order">
   <v-container v-if="order_data!=null">
     <CommentDialog v-on:send-data="UpdateOrderInfo" ref="CommentDialog" />
+    <ShipCodeDialog v-on:send-data="UpdateOrdeShipCode" ref="ShipCodeDialog" />
     <PrintOrder
       :order_data="order_data"
       :products="GetOrderProducts()"
@@ -273,6 +274,25 @@
             {{order_data.ReceiverEmail}}
           </p>
         </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-truck</v-icon>物流編號
+          </h3>
+          <p class="mb-0 font-weight-black">
+            {{order_data.ShippingCode}}
+          </p>
+          <v-row>
+            <v-col class="d-flex justify-end mt-4">
+              <v-btn
+                @click="OpenShipCodeDialog"
+                class="elevation-0 "
+                color="grey lighten-3"
+                >編輯</v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-card>
+        <!-- ShippingCode -->
         <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
           <h3 class="d-flex align-center mb-4">
             <v-icon class="mr-2">mdi-store</v-icon>商家備註欄

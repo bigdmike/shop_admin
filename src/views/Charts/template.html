@@ -27,13 +27,18 @@
                 >
                 </v-text-field>
               </template>
-              <v-date-picker v-model="date_between" range scrollable>
+              <v-date-picker
+                v-model="date_between"
+                range
+                scrollable
+                locale="zh-tw"
+              >
                 <v-spacer></v-spacer>
                 <v-btn text color="primary" @click="modal = false">
-                  Cancel
+                  取消
                 </v-btn>
                 <v-btn text color="primary" @click="ChangeDate(date_between)">
-                  OK
+                  確認
                 </v-btn>
               </v-date-picker>
             </v-dialog>
@@ -58,34 +63,6 @@
           :product_data="date_product_data"
         />
       </v-col>
-      <!-- 
-      <v-col cols="6" md="6">
-        <TotalPriceAccumulationChart
-          ref="TotalPriceAccumulationChart"
-          elevation="2"
-          class="pa-8 mb-5 rounded-lg"
-          :order_data="date_orders"
-          :date_between="date_between"
-        />
-      </v-col>
-      <v-col cols="6" md="6">
-        <OrderAccumulationChart
-          ref="OrderAccumulationChart"
-          elevation="2"
-          class="pa-8 mb-5 rounded-lg"
-          :order_data="date_orders"
-          :date_between="date_between"
-        />
-      </v-col>
-      <v-col cols="6" md="6">
-        <ProductCountChart
-          ref="ProductCountChart"
-          elevation="2"
-          class="pa-8 mb-5 rounded-lg"
-          :order_data="date_orders"
-          :date_between="date_between"
-        />
-      </v-col> -->
     </v-row>
   </v-container>
 </div>

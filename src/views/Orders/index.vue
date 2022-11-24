@@ -3,12 +3,16 @@
 <script>
 import FilterDialog from '@/components/Orders/FilterDialog/index';
 import ListShow from '@/components/Orders/ListShow/index';
+import TCATExcelExport from '@/components/Orders/TCATExcelExport/';
+import ExcelExport from '@/components/Orders/ExcelExport/';
 import { GetOrderList } from '@/api/order.js';
 export default {
   name: 'Products',
   components: {
     FilterDialog,
     ListShow,
+    ExcelExport,
+    TCATExcelExport,
   },
   data() {
     return {
@@ -52,9 +56,13 @@ export default {
         },
       ],
       order_data: [],
+      product_data: [],
       key_word: '',
       show_type: 'list',
       shipping_list: [],
+      payment_list: [],
+      select_order: [],
+      zip_code_data: null,
     };
   },
   methods: {
@@ -63,12 +71,40 @@ export default {
     },
     async GetOrders() {
       GetOrderList(-1, -1, 'all', -1).then((res) => {
+        this.payment_list = res[4].data;
+        this.product_data = res[3].data;
+        this.zip_code_data = res[2].data;
         this.shipping_list = res[1].data;
         res[0].data.List = res[0].data.List.sort((a, b) => {
           return new Date(b.created_at) - new Date(a.created_at);
         });
         this.order_data = res[0].data.List;
       });
+    },
+    UpdateSelectOrder(val) {
+      this.select_order = val;
+    },
+    TCATExcelExport() {
+      if (this.select_order.length > 0) {
+        this.$refs.TCATExcelExport.SetExportData();
+      } else {
+        this.$store.commit('SetDialog', {
+          title: '發生錯誤',
+          content: '請先選擇要匯出的訂單',
+          status: true,
+        });
+      }
+    },
+    ExcelExport() {
+      if (this.select_order.length > 0) {
+        this.$refs.ExcelExport.SetExportData();
+      } else {
+        this.$store.commit('SetDialog', {
+          title: '發生錯誤',
+          content: '請先選擇要匯出的訂單',
+          status: true,
+        });
+      }
     },
   },
   created() {

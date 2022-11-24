@@ -4,7 +4,8 @@
     <MainLoading />
     <MainDialog />
     <v-navigation-drawer
-      class="grey lighten-3 border-none"
+      style="z-index:99"
+      class="elevation-1"
       v-model="drawer"
       v-if="$route.name != 'Login'"
       app
@@ -12,27 +13,27 @@
       <MainMenu />
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      class="elevation-0 grey lighten-3"
-      v-if="$route.name != 'Login'"
-      style="z-index: 99"
-    >
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <AccountMenu v-if="change_header == 'account'" />
-      <EditButtonGroup
-        v-on:CallCancelFunction="CallCancelFunction"
-        v-on:CallUpdateFunction="CallUpdateFunction"
-        :show="change_header == 'edit'"
-      />
-    </v-app-bar>
-
-    <v-main class="grey lighten-3">
-      <router-view ref="RouterView" class="lg-pa-10"></router-view>
+    <v-main class="blue-grey lighten-5" style="z-index:10">
+      <v-app-bar
+        class="white elevation-2 pl-5"
+        app
+        v-if="$route.name != 'Login'"
+        style="z-index: 120"
+      >
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+        <AccountMenu v-if="change_header == 'account'" />
+        <EditButtonGroup
+          v-on:CallCancelFunction="CallCancelFunction"
+          v-on:CallUpdateFunction="CallUpdateFunction"
+          :show="change_header == 'edit'"
+        />
+      </v-app-bar>
+      <v-container class="pa-6">
+        <router-view ref="RouterView" class=""></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>
-
 <script>
 import MainMenu from '@/components/MainMenu/index';
 import AccountMenu from '@/components/MainHeader/AccountMenu';

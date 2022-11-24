@@ -1,6 +1,4 @@
 <v-container class="product_list px-0">
-  <ExcelExport ref="ExcelExport" :order_data="selected" class="d-none" />
-  <button @click="ExcelExport">test</button>
   <v-data-table
     :headers="headers"
     :items="filter_value"

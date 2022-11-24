@@ -4,6 +4,7 @@
 import Breadcrumb from '@/components/Breadcrumb/';
 import FroalaEditor from '@/components/FroalaEditor/';
 import CommentDialog from '@/components/OrderEdit/CommentDialog';
+import ShipCodeDialog from '@/components/OrderEdit/ShipCodeDialog';
 import PrintOrder from '@/components/OrderEdit/PrintOrder';
 import PrintHCT from '@/components/OrderEdit/PrintHCT';
 import { hex_to_ascii } from '@/common/filter.js';
@@ -19,6 +20,7 @@ export default {
     Breadcrumb,
     FroalaEditor,
     CommentDialog,
+    ShipCodeDialog,
     PrintOrder,
     PrintHCT,
   },
@@ -91,9 +93,10 @@ export default {
         this.payment_list = res[4].data;
         this.shipway_list = res[5].data;
         this.zip_code = res[6].data;
-        this.order_data = res[1].data.List.filter(
+        let order_data = res[1].data.List.filter(
           (item) => item.TradeID == this.$route.params.id
         )[0];
+        this.order_data = order_data;
       });
     },
     GetOrderProducts() {
@@ -125,6 +128,7 @@ export default {
           order_products.push(tmp_product);
         }
       });
+      console.log(order_products);
       return order_products;
     },
     GetProductDiscount(id) {
@@ -174,6 +178,9 @@ export default {
     OpenCommentDialog() {
       this.$refs.CommentDialog.Open(this.order_data.AdminMemo);
     },
+    OpenShipCodeDialog() {
+      this.$refs.ShipCodeDialog.Open(this.order_data.ShippingCode);
+    },
     Print() {
       this.$refs.PrintOrder.Print();
     },
@@ -181,6 +188,17 @@ export default {
       return label == this.status_array[this.order_data.Status].label
         ? 'primary'
         : '';
+    },
+    UpdateOrdeShipCode(val) {
+      this.order_data.ShippingCode = val;
+      UpdateOrderInfo(this.order_data).then(() => {
+        this.$refs.ShipCodeDialog.Close();
+        this.GetOrders();
+        this.$store.commit('SetSnackbar', {
+          content: '物流編號已更新',
+          status: true,
+        });
+      });
     },
     UpdateOrderInfo(comment = -1, status = -1) {
       if (status != -1) {

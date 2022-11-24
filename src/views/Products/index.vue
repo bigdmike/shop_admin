@@ -1,12 +1,12 @@
 <template src="./template.html"></template>
 
 <script>
-import FilterDialog from "@/components/Products/FilterDialog/index";
-import DeleteDialog from "@/components/Products/DeleteDialog/index";
-import GridShow from "@/components/Products/GridShow/index";
-import ListShow from "@/components/Products/ListShow/index";
-import OptionDialog from "@/components/Products/OptionDialog/index";
-import ImageEditDialog from "@/components/Products/ImageEditDialog/index.vue";
+import FilterDialog from '@/components/Products/FilterDialog/index';
+import DeleteDialog from '@/components/Products/DeleteDialog/index';
+import GridShow from '@/components/Products/GridShow/index';
+import ListShow from '@/components/Products/ListShow/index';
+import OptionDialog from '@/components/Products/OptionDialog/index';
+import ImageEditDialog from '@/components/Products/ImageEditDialog/index.vue';
 import {
   getGoodsAndCategory,
   // create_good,
@@ -15,9 +15,9 @@ import {
   // update_good_sort,
   // update_good_image,
   update_goods_sort,
-} from "@/api/products";
+} from '@/api/products';
 export default {
-  name: "Products",
+  name: 'Products',
   components: {
     FilterDialog,
     DeleteDialog,
@@ -29,27 +29,27 @@ export default {
   data() {
     return {
       filter_data: {
-        status: "all",
-        category: "all",
+        status: 'all',
+        category: 'all',
       },
       product_status_data: [
         {
-          label: "全部",
-          value: "all",
+          label: '全部',
+          value: 'all',
         },
         {
-          label: "未上架",
-          value: "N",
+          label: '未上架',
+          value: 'N',
         },
         {
-          label: "已上架",
-          value: "Y",
+          label: '已上架',
+          value: 'Y',
         },
       ],
       product_category_data: [],
       product_data: null,
-      key_word: "",
-      show_type: "list",
+      key_word: '',
+      show_type: 'list',
     };
   },
   methods: {
@@ -60,9 +60,9 @@ export default {
       this.$refs.DeleteDialog.Open(id);
     },
     ChangeShowType() {
-      this.show_type == "list"
-        ? (this.show_type = "grid")
-        : (this.show_type = "list");
+      this.show_type == 'list'
+        ? (this.show_type = 'grid')
+        : (this.show_type = 'list');
     },
     OpenStockDialog(id) {
       this.$refs.OptionDialog.Open(id);
@@ -74,17 +74,19 @@ export default {
       getGoodsAndCategory().then((res) => {
         this.product_category_data = res[0].data;
         res[1].data.forEach((item) => {
-          item.Status = item.Status == "Y" ? true : false;
+          item.Status = item.Status == 'Y' ? true : false;
         });
-        this.product_data = res[1].data;
+        this.product_data = res[1].data.filter(
+          (item) => item.deleted_at == null
+        );
       });
     },
     CheckSort() {
       let is_sort = true;
       this.product_data.forEach((item, item_index) => {
-        item.position == item_index + 1 ? "" : (is_sort = false);
+        item.position == item_index + 1 ? '' : (is_sort = false);
       });
-      is_sort ? "" : this.UpdateProductSort();
+      is_sort ? '' : this.UpdateProductSort();
     },
     async UpdateProductSort(data) {
       let tmp_data = [];
@@ -114,7 +116,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 .searchbar .filter_btn {
   height: 40px !important;
   border-radius: 5px 0 0 5px;

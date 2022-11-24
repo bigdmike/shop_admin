@@ -30,6 +30,16 @@
                 dense
               ></v-select>
             </v-col>
+            <v-col cols="12" sm="12" md="12">
+              <v-text-field
+                label="查詢連結"
+                v-model="query_link"
+                hide-details="auto"
+                outlined
+                dense
+                required
+              ></v-text-field>
+            </v-col>
 
             <v-col cols="6">
               <v-text-field
@@ -180,6 +190,7 @@ export default {
       this.shipping_fee_outlying = item.ShippingFeeOutlying;
       this.status_outlying = item.StatusOutlying;
       this.status = item.Status;
+      this.query_link = item.QueryLink;
       this.dialog = true;
     },
     Cancel() {
@@ -207,6 +218,7 @@ export default {
         DeliverVolumeMax: this.deliver_volume_max,
         DeliverWeightMax: this.deliver_weight_max,
         DeliveryFrozen: this.delivery_frozen,
+        QueryLink: this.query_link,
       });
     },
   },
