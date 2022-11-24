@@ -1,5 +1,5 @@
-<div class="mx-0 py-6 text-button">
-  <h2 class="display-1">這是頁面標題</h2>
+<div class="mx-0 py-6 text-body-2">
+  <h2 class="display-1 font-weight-bold mb-4">{{$route.name}}</h2>
   <div>
     <template v-for="(item,item_index) in link_array">
       <router-link v-if="item.link!=''" :to="item.link"

@@ -133,7 +133,7 @@ const routes = [
   {
     path: '/discount',
 
-    name: 'Discount',
+    name: '折扣與贈品',
     component: () =>
       import(/* webpackChunkName: "discount" */ '../views/Discount/index.vue'),
   },

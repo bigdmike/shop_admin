@@ -1,32 +1,31 @@
-<div id="Products">
+<div>
   <template>
-    <!-- QUESTION DIALOG -->
-    <CreateDialog
-      ref="CreateDialog"
-      :category_list="category_data"
-      v-on:create-discount="SendCreateData"
-    />
     <EditDialog
       ref="EditDialog"
       :category_list="category_data"
-      v-on:update-discount="SendUpdateData"
+      @update-action="UpdateData"
+      @create-action="CreateData"
     />
-    <DeleteDialog ref="DeleteDialog" v-on:delete-discount="SendDeleteData" />
+    <DeleteDialog ref="DeleteDialog" v-on:delete-action="DeleteData" />
   </template>
   <v-container v-if="discount_data!=null">
     <v-row>
       <v-col cols="12" class="d-flex justify-space-between">
         <Breadcrumb :link_array="breadcrumb_data" />
         <div class="d-flex justify-space-between align-center">
-          <v-btn @click="OpenCreateDialog" color="primary font-weight-bold"
-            >新增</v-btn
+          <v-btn
+            @click="OpenCreateDialog"
+            color="light-blue lighten-1 white--text font-weight-bold elevation-0"
+            >新增優惠</v-btn
           >
         </div>
       </v-col>
       <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-0 px-4">
-        <ListShow
-          v-on:delete-data="OpenDeleteDialog"
-          v-on:set-edit="OpenEditDialog"
+        <MainList
+          :options="options"
+          :headers="headers"
+          @delete-action="OpenDeleteDialog"
+          @title-action="OpenEditDialog"
           v-model="discount_data"
         />
       </v-col>

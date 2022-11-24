@@ -1,11 +1,11 @@
 <template>
   <v-dialog v-model="dialog" width="800">
-    <v-card>
+    <v-card v-if="discount_data != null">
       <v-card-title
         class="d-flex justify-space-between"
         style="border-bottom: 1px solid rgb(218, 218, 218)"
       >
-        修改優惠代碼
+        {{ type == 'edit' ? '編輯' : '新增' }}優惠代碼
       </v-card-title>
 
       <v-card-text class="pt-5">
@@ -14,7 +14,7 @@
             <v-col cols="12" sm="12" md="12">
               <v-text-field
                 label="優惠名稱"
-                v-model="title"
+                v-model="discount_data.Title"
                 hide-details="auto"
                 outlined
                 dense
@@ -24,7 +24,7 @@
             </v-col>
             <v-col cols="6">
               <v-select
-                v-model="discount_type"
+                v-model="discount_data.DiscountType"
                 :items="type_list"
                 item-text="title"
                 item-value="value"
@@ -37,7 +37,7 @@
             <v-col cols="6">
               <v-text-field
                 label="優惠門檻"
-                v-model="discount_threshold"
+                v-model="discount_data.Threshold"
                 hide-details="auto"
                 outlined
                 dense
@@ -46,10 +46,15 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" sm="12" md="12" v-if="discount_type == 'P'">
+            <v-col
+              cols="12"
+              sm="12"
+              md="12"
+              v-if="discount_data.DiscountType == 'P'"
+            >
               <v-text-field
                 label="打折%數(80 = 8折)"
-                v-model="discount_percent"
+                v-model="discount_data.DiscountPercent"
                 hide-details="auto"
                 outlined
                 dense
@@ -58,10 +63,10 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="6" v-if="discount_type == 'G'">
+            <v-col cols="6" v-if="discount_data.DiscountType == 'G'">
               <v-text-field
                 label="贈品名稱"
-                v-model="give_name"
+                v-model="discount_data.GiveName"
                 hide-details="auto"
                 outlined
                 dense
@@ -69,14 +74,11 @@
                 :error-messages="errors.give_name"
               ></v-text-field>
             </v-col>
-            <v-col cols="6" v-if="discount_type == 'G'">
+            <v-col cols="6" v-if="discount_data.DiscountType == 'G'">
               <v-file-input
-                v-model="give_image_file"
+                v-model="discount_data.Image1"
                 prepend-icon=""
                 label="贈品圖片"
-                :placeholder="
-                  give_image.split('/')[give_image.split('/').length - 1]
-                "
                 :persistent-placeholder="true"
                 hide-details="auto"
                 dense
@@ -84,8 +86,11 @@
                 :error-messages="errors.give_image"
                 show-size
               ></v-file-input>
-            </v-col>
 
+              <a :href="discount_data.PreviewImage" target="_blank"
+                >查看目前贈品圖片</a
+              >
+            </v-col>
             <v-col cols="6">
               <v-menu
                 v-model="start_date_menu"
@@ -97,7 +102,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="discount_start_date"
+                    v-model="discount_data.StartDate"
                     label="優惠開始日期"
                     prepend-icon="mdi-calendar"
                     hide-details="auto"
@@ -109,7 +114,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="discount_start_date"
+                  v-model="discount_data.StartDate"
                   @input="start_date_menu = false"
                 ></v-date-picker>
               </v-menu>
@@ -120,7 +125,7 @@
                 v-model="start_time_menu"
                 :close-on-content-click="false"
                 :nudge-right="40"
-                :return-value.sync="discount_start_time"
+                :return-value.sync="discount_data.StartTime"
                 transition="scale-transition"
                 offset-y
                 max-width="290px"
@@ -128,7 +133,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="discount_start_time"
+                    v-model="discount_data.StartTime"
                     label="優惠開始時間"
                     prepend-icon=""
                     hide-details="auto"
@@ -141,11 +146,11 @@
                 </template>
                 <v-time-picker
                   v-if="start_time_menu"
-                  v-model="discount_start_time"
+                  v-model="discount_data.StartTime"
                   use-seconds
                   full-width
                   @click:second="
-                    $refs.start_time_menu.save(discount_start_time)
+                    $refs.start_time_menu.save(discount_data.StartTime)
                   "
                 ></v-time-picker>
               </v-menu>
@@ -161,7 +166,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="discount_end_date"
+                    v-model="discount_data.EndDate"
                     label="優惠結束時間"
                     prepend-icon="mdi-calendar"
                     hide-details="auto"
@@ -173,7 +178,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="discount_end_date"
+                  v-model="discount_data.EndDate"
                   @input="end_date_menu = false"
                 ></v-date-picker>
               </v-menu>
@@ -184,7 +189,7 @@
                 v-model="end_time_menu"
                 :close-on-content-click="false"
                 :nudge-right="40"
-                :return-value.sync="discount_end_time"
+                :return-value.sync="discount_data.EndTime"
                 transition="scale-transition"
                 offset-y
                 max-width="290px"
@@ -192,7 +197,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="discount_end_time"
+                    v-model="discount_data.EndTime"
                     label="優惠結束時間"
                     prepend-icon=""
                     hide-details="auto"
@@ -205,16 +210,18 @@
                 </template>
                 <v-time-picker
                   v-if="end_time_menu"
-                  v-model="discount_end_time"
+                  v-model="discount_data.EndTime"
                   use-seconds
                   full-width
-                  @click:second="$refs.end_time_menu.save(discount_end_time)"
+                  @click:second="
+                    $refs.end_time_menu.save(discount_data.EndTime)
+                  "
                 ></v-time-picker>
               </v-menu>
             </v-col>
             <v-col cols="6">
               <v-select
-                v-model="active_menu"
+                v-model="discount_data.MenuID"
                 :items="category_list"
                 item-text="Title"
                 item-value="MenuID"
@@ -227,7 +234,7 @@
 
             <v-col cols="6">
               <v-select
-                v-model="status"
+                v-model="discount_data.Status"
                 :items="status_list"
                 item-text="title"
                 item-value="value"
@@ -257,17 +264,21 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" text @click="Cancel"> 取消 </v-btn>
-        <v-btn color="primary" @click="CreateNews"> 更新 </v-btn>
+        <v-btn class="elevation-0" @click="Cancel"> 取消 </v-btn>
+        <v-btn
+          color="light-blue lighten-1 white--text font-weight-bold elevation-0"
+          @click="Validate"
+        >
+          {{ type == 'edit' ? '更新' : '新增' }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { validFileEmpty } from "@/common/validate.js";
 export default {
-  name: "DiscountEditDialog",
+  name: 'DiscountEditDialog',
   props: {
     category_list: {
       require: true,
@@ -276,167 +287,171 @@ export default {
   },
   data() {
     return {
-      id: -1,
-      title: "",
-      status: false,
+      // picker dialog
       start_date_menu: false,
       start_time_menu: false,
       end_date_menu: false,
       end_time_menu: false,
-      active_menu: -1,
-      discount_percent: 0,
-      discount_type: "P",
-      give_name: "",
-      give_image: "",
-      give_image_file: null,
-      discount_threshold: "",
-      discount_start_date: new Date().Format("yyyy-MM-dd"),
-      discount_start_time: "00:00:00",
-      discount_end_date: new Date().Format("yyyy-MM-dd"),
-      discount_end_time: "00:00:00",
+      // checkbox
       discount_member_only: false,
       combine_product: false,
+      // data
       dialog: false,
+      discount_data: null,
+      type: 'edit',
       type_list: [
         {
-          title: "打折",
-          value: "P",
+          title: '打折',
+          value: 'P',
         },
         {
-          title: "贈品",
-          value: "G",
+          title: '贈品',
+          value: 'G',
         },
         {
-          title: "免運",
-          value: "D",
+          title: '免運',
+          value: 'D',
         },
       ],
       status_list: [
         {
-          title: "已啟用",
-          value: "Y",
+          title: '已啟用',
+          value: 'Y',
         },
         {
-          title: "已停用",
-          value: "N",
+          title: '已停用',
+          value: 'N',
         },
       ],
       errors: {
-        title: "",
-        active_menu: "",
-        discount_percent: "",
-        give_name: "",
-        give_image: "",
-        discount_threshold: "",
+        title: '',
+        active_menu: '',
+        discount_percent: '',
+        give_name: '',
+        give_image: '',
+        discount_threshold: '',
       },
     };
   },
   methods: {
-    Open(item) {
-      this.Init();
-      this.dialog = true;
-      this.id = item.DiscountID;
-      this.title = item.Title;
-      this.status = item.Status;
-      this.discount_percent = item.DiscountPercent;
-      this.discount_type = item.DiscountType;
-      this.give_image = item.Image1;
-      this.give_name = item.GiveName;
-      this.active_menu = item.MenuID;
-      this.discount_threshold = item.Threshold;
-      this.discount_start_date = item.StartTime.slice(0, 10);
-      this.discount_end_date = item.EndTime.slice(0, 10);
-      this.discount_start_time = item.StartTime.slice(11, 20);
-      this.discount_end_time = item.EndTime.slice(11, 20);
-      this.discount_member_only = item.LimitMember == "N" ? false : true;
-      this.combine_product = item.Combine == "N" ? false : true;
-    },
-    Init() {
-      this.id = -1;
-      this.title = "";
-      this.status = false;
+    // 圖片上傳問題 路徑顯示
+    Open(item, type) {
       this.start_date_menu = false;
       this.start_time_menu = false;
       this.end_date_menu = false;
       this.end_time_menu = false;
-      this.active_menu = -1;
-      this.discount_percent = 0;
-      this.discount_type = "P";
-      this.give_name = "";
-      this.give_image = "";
-      this.give_image_file = null;
-      this.discount_threshold = "";
-      this.discount_start_date = new Date().Format("yyyy-MM-dd");
-      this.discount_start_time = "00:00:00";
-      this.discount_end_date = new Date().Format("yyyy-MM-dd");
-      this.discount_end_time = "00:00:00";
+      this.type = type;
+      if (type == 'edit') {
+        this.discount_data = Object.assign({}, item);
+        this.discount_data = this.$SetImageObj(
+          this.discount_data,
+          this.discount_data.Image1
+        );
+        this.discount_data.ID = this.discount_data.DiscountID;
+        this.discount_data.StartDate = item.StartTime.slice(0, 10);
+        this.discount_data.StartTime = item.StartTime.slice(11, 20);
+        this.discount_data.EndDate = item.EndTime.slice(0, 10);
+        this.discount_data.EndTime = item.EndTime.slice(11, 20);
+        // 會員限定checkbox
+        this.discount_member_only =
+          this.discount_data.LimitMember == 'Y' ? true : false;
+        // 組合商品checkbox
+        this.combine_product = this.discount_data.Combine == 'Y' ? true : false;
+      } else {
+        this.Reset();
+      }
+      this.dialog = true;
+    },
+    Reset() {
+      this.discount_data = Object.assign(
+        {},
+        {
+          Title: '',
+          Status: 'Y',
+          MenuID: '',
+          DiscountType: 'P',
+          DiscountPercent: 0,
+          GiveName: '',
+          Image1: null,
+          PreviewImage: '',
+          Threshold: '',
+          StartDate: new Date().Format('yyyy-MM-dd'),
+          StartTime: '00:00:00',
+          EndDate: new Date().Format('yyyy-MM-dd'),
+          EndTime: '00:00:00',
+          LimitMember: 'N',
+          Combine: 'N',
+        }
+      );
       this.discount_member_only = false;
       this.combine_product = false;
-      this.ErrorInit();
-    },
-    ErrorInit() {
-      this.errors = {
-        title: "",
-        active_menu: "",
-        discount_percent: "",
-        give_name: "",
-        give_image: "",
-        discount_threshold: "",
-      };
     },
     Cancel() {
-      this.Init();
+      this.Reset();
       this.dialog = false;
     },
-    CreateNews() {
-      let error = false;
-      this.ErrorInit();
-      if (!validFileEmpty(this.title)) {
-        this.errors.title = "請輸入優惠名稱";
-        error = true;
+    Validate() {
+      console.log('Here');
+      let error_msg = '';
+      if (this.discount_data.Title == '') {
+        error_msg += '- 請輸入優惠名稱<br/>';
       }
-      if (!validFileEmpty(this.discount_threshold)) {
-        this.errors.discount_threshold = "請輸入使用門檻金額";
-        error = true;
+      if (this.discount_data.Threshold == '') {
+        error_msg += '- 請輸入使用門檻金額<br/>';
       }
-      if (this.discount_type == "P") {
-        if (!validFileEmpty(this.discount_percent)) {
-          this.errors.discount_percent = "請輸入打折%數";
-          error = true;
-        }
+      if (
+        this.discount_data.DiscountType == 'P' &&
+        this.discount_data.DiscountPercent == ''
+      ) {
+        error_msg += '- 請輸入打折%數<br/>';
+      }
+      if (
+        this.discount_data.DiscountType == 'G' &&
+        this.discount_data.GiveName == ''
+      ) {
+        error_msg += '- 請輸入贈品名稱<br/>';
+      }
+      if (
+        this.discount_data.DiscountType == 'G' &&
+        this.discount_data.Image1 == null
+      ) {
+        error_msg += '- 請上傳贈品圖片<br/>';
       }
 
-      if (this.discount_type == "G") {
-        if (!validFileEmpty(this.give_name)) {
-          this.errors.give_name = "請輸入贈品名稱";
-          error = true;
-        }
-        if (
-          !validFileEmpty(this.give_image) &&
-          !validFileEmpty(this.give_image_file)
-        ) {
-          this.errors.give_image = "請上傳贈品圖片";
-          error = true;
-        }
-      }
-      if (!error) {
-        this.$emit("update-discount", {
-          ID: this.id,
-          DiscountType: this.discount_type,
-          Title: this.title,
-          DiscountPercent:
-            this.discount_type == "P" ? this.discount_percent : 0,
-          GiveName: this.discount_type == "G" ? this.give_name : "",
-          Image1: this.discount_type == "G" ? this.give_image_file : null,
-          Combine: this.combine_product ? "Y" : "N",
-          Threshold: this.discount_threshold,
-          LimitMember: this.discount_member_only ? "Y" : "N",
-          StartTime: this.discount_start_date + " " + this.discount_start_time,
-          EndTime: this.discount_end_date + " " + this.discount_end_time,
-          Status: this.status ? "Y" : "N",
-          MenuID: this.active_menu,
+      //
+      console.log(error_msg);
+      if (error_msg == '') {
+        this.SendData();
+      } else {
+        error_msg = '無法儲存資料，請修正以下問題：<br>' + error_msg;
+        this.$store.commit('SetDialog', {
+          title: '發生錯誤',
+          content: error_msg,
+          status: true,
         });
       }
+    },
+    SendData() {
+      let tmp_data = Object.assign({}, this.discount_data);
+      tmp_data.StartTime = tmp_data.StartDate + ' ' + tmp_data.StartTime;
+      tmp_data.EndTime = tmp_data.EndDate + ' ' + tmp_data.EndTime;
+      tmp_data.DiscountPercent = parseInt(tmp_data.DiscountPercent);
+      tmp_data.Threshold = parseInt(tmp_data.Threshold);
+      tmp_data.MenuID = parseInt(tmp_data.MenuID);
+      delete tmp_data.StartDate;
+      delete tmp_data.EndDate;
+      delete tmp_data.PreviewImage;
+      this.type == 'edit'
+        ? this.$emit('update-action', tmp_data)
+        : this.$emit('create-action', tmp_data);
+    },
+  },
+  watch: {
+    discount_member_only() {
+      this.discount_data.LimitMember = this.discount_member_only ? 'Y' : 'N';
+    },
+    combine_product() {
+      this.discount_data.Combine = this.combine_product ? 'Y' : 'N';
     },
   },
 };

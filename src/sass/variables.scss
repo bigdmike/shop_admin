@@ -134,3 +134,21 @@
 .v-list-item {
   min-height: 40px;
 }
+
+.theme--light.v-data-table > .v-data-table__wrapper > table > tbody > tr {
+  background-color: #ffffff;
+  transition: all 0.3s;
+}
+.theme--light.v-data-table
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper) {
+  background: #ffffff;
+  transform: translateY(-5px);
+  box-shadow: 0 2px 10px -1px rgba(85, 85, 85, 0.08),
+    0 1px 10px 0 rgba(85, 85, 85, 0.06), 0 1px 30px 0 rgba(85, 85, 85, 0.03) !important;
+}
+.table_item_title {
+  border-bottom: 1px dashed;
+}

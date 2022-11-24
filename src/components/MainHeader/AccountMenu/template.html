@@ -1,31 +1,31 @@
 <v-menu rounded="Large" @input="IfPopUp" offset-y>
-    <template v-slot:activator="{ attrs, on }">
-        <div v-bind="attrs" v-on="on" id="MainHeaderAccountMenuBtn" class="d-flex ml-auto align-center">
-            <v-avatar class="mr-4" color="green" size="36">
-                <span class="white--text text-body-1">{{user_data.name.slice(0,1)}}</span>
-            </v-avatar>
-            <div class="text-left mr-2">
-                <span class="d-block font-weight-black body-1">網紅廚房</span>
-                <span class="d-block body-2">{{user_data.name}}</span>
-            </div>
-            <v-icon>{{arrow_icon}}</v-icon>
-        </div>
-    </template>
+  <template v-slot:activator="{ attrs, on }">
+    <div
+      v-bind="attrs"
+      v-on="on"
+      id="MainHeaderAccountMenuBtn"
+      class="d-flex ml-auto align-center"
+    >
+      <v-avatar class="mr-4" color="green" size="36">
+        <span class="white--text text-body-1"
+          >{{user_data.name.slice(0,1)}}</span
+        >
+      </v-avatar>
+      <div class="text-left mr-2">
+        <span class="d-block font-weight-black body-2">耀聞水果世界</span>
+        <span class="d-block body-2">{{user_data.name}}</span>
+      </div>
+      <v-icon>{{arrow_icon}}</v-icon>
+    </div>
+  </template>
 
-    <v-list>
-        <!-- <v-list-item v-for="(item,item_index) in menu" :key="`main_account-${item_index}`" link :to="item.link">
-            <v-list-item-icon class="mr-4 my-4">
-                <v-icon small>{{item.icon}}</v-icon>
-            </v-list-item-icon>
+  <v-list>
+    <v-list-item link @click="Logout">
+      <v-list-item-icon class="mr-4 my-4">
+        <v-icon small>mdi-logout</v-icon>
+      </v-list-item-icon>
 
-            <v-list-item-title class="body-2">{{item.title}}</v-list-item-title>
-        </v-list-item> -->
-        <v-list-item link @click="Logout">
-            <v-list-item-icon class="mr-4 my-4">
-                <v-icon small>mdi-logout</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-title class="body-2">登出</v-list-item-title>
-        </v-list-item>
-    </v-list>
+      <v-list-item-title class="body-2">登出</v-list-item-title>
+    </v-list-item>
+  </v-list>
 </v-menu>
