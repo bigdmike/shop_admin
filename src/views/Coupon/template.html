@@ -1,20 +1,33 @@
 <div id="Products">
-    <template>
-        <!-- QUESTION DIALOG -->
-        <CreateDialog ref="CreateDialog" v-on:create-coupon="SendCreateData" />
-        <EditDialog ref="EditDialog" v-on:update-coupon="SendUpdateData" />
-        <DeleteDialog ref="DeleteDialog" v-on:delete-coupon="SendDeleteData" />
-    </template>
-    <Breadcrumb :link_array="breadcrumb_data" />
-    <v-container v-if="coupon_data!=null">
-        <v-row>
-            <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-8 px-4">
-                <div class="d-flex justify-space-between align-center">
-                    <h3>優惠代碼列表</h3>
-                    <v-btn @click="OpenCreateDialog" color="primary font-weight-bold">新增</v-btn>
-                </div>
-                <ListShow v-on:delete-data="OpenDeleteDialog" v-on:set-edit="OpenEditDialog" v-model="coupon_data" />
-            </v-col>
-        </v-row>
-    </v-container>
+  <template>
+    <EditDialog
+      ref="EditDialog"
+      @update-action="UpdateData"
+      @create-action="CreateData"
+    />
+    <DeleteDialog ref="DeleteDialog" @delete-action="DeleteData" />
+  </template>
+  <v-container v-if="coupon_data!=null">
+    <v-row>
+      <v-col cols="12" class="d-flex justify-space-between">
+        <Breadcrumb :link_array="breadcrumb_data" />
+        <div class="d-flex justify-space-between align-center">
+          <v-btn
+            @click="OpenCreateDialog"
+            color="light-blue lighten-1 white--text font-weight-bold elevation-0"
+            >新增代碼</v-btn
+          >
+        </div>
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto pa-0  px-4">
+        <MainList
+          :options="options"
+          :headers="headers"
+          @delete-action="OpenDeleteDialog"
+          @title-action="OpenEditDialog"
+          v-model="coupon_data"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
 </div>

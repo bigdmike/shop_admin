@@ -391,7 +391,6 @@ export default {
       this.dialog = false;
     },
     Validate() {
-      console.log('Here');
       let error_msg = '';
       if (this.discount_data.Title == '') {
         error_msg += '- 請輸入優惠名稱<br/>';
@@ -418,8 +417,6 @@ export default {
         error_msg += '- 請上傳贈品圖片<br/>';
       }
 
-      //
-      console.log(error_msg);
       if (error_msg == '') {
         this.SendData();
       } else {

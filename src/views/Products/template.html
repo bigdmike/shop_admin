@@ -10,41 +10,17 @@
     <DeleteDialog ref="DeleteDialog" v-on:delete-product="SendDeleteData" />
     <ImageEditDialog ref="ImageEditDialog" />
     <v-row>
-      <v-col cols="12" md="12" lg="12" class="mx-auto">
-        <div class="header d-flex justify-space-between align-center">
-          <h3 class="my-0 text-h5 font-weight-bold">所有商品</h3>
-          <div class="d-flex align-center">
-            <!-- <v-menu offset-y>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn class="mr-4 grey lighten-2 elevation-0" v-bind="attrs" v-on="on">
-                                    更多
-                                    <v-icon class="ml-2">mdi-menu-down</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item link>
-                                    <v-list-item-title>匯入商品</v-list-item-title>
-                                </v-list-item>
-                                <v-list-item link>
-                                    <v-list-item-title>匯出商品</v-list-item-title>
-                                </v-list-item>
-                                <v-list-item link>
-                                    <v-list-item-title>商品設定</v-list-item-title>
-                                </v-list-item>
-                                <v-list-item link>
-                                    <v-list-item-title>管理標籤</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu> -->
-            <v-btn
-              @click="$router.push('/products/new/')"
-              color="primary font-weight-bold"
-              >新增商品</v-btn
-            >
-          </div>
+      <v-col cols="12" class="d-flex justify-space-between">
+        <Breadcrumb :link_array="breadcrumb_data" />
+        <div class="d-flex justify-end align-center">
+          <v-btn
+            color="light-blue lighten-1 white--text font-weight-bold elevation-0"
+            >新增商品</v-btn
+          >
         </div>
-
-        <div class="searchbar d-flex align-stretch pt-5 pb-2">
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto">
+        <div class="searchbar d-flex align-stretch pb-2">
           <v-btn
             @click="OpenFilterDialog"
             class="ma-0 py-0 filter_btn  black--text"

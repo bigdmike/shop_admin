@@ -12,10 +12,8 @@ import MainList from '@/components/MainList/index';
 import DeleteDialog from '@/components/MainDeleteDialog/index';
 import EditDialog from '@/components/Discount/EditDialog/';
 import Breadcrumb from '@/components/Breadcrumb/';
-// import discount_components from '@/components/Discount/discount_components.js';
 export default {
   name: 'Discount',
-  // mixins: [discount_components],
   components: {
     Breadcrumb,
     MainList,

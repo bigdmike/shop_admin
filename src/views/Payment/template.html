@@ -1,17 +1,20 @@
 <div id="Products">
-    <template>
-        <!-- QUESTION DIALOG -->
-        <EditDialog ref="EditDialog" v-on:update-payment="SendUpdateData" />
-    </template>
-    <Breadcrumb :link_array="breadcrumb_data" />
-    <v-container v-if="payment_data!=null">
-        <v-row>
-            <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-8 px-4">
-                <div class="d-flex justify-space-between align-center">
-                    <h3>金流付款方式</h3>
-                </div>
-                <ListShow v-on:edit-payment="OpenEditDialog" v-model="payment_data" />
-            </v-col>
-        </v-row>
-    </v-container>
+  <template>
+    <EditDialog ref="EditDialog" @update-action="UpdateData" />
+  </template>
+  <v-container v-if="payment_data!=null">
+    <v-row>
+      <v-col cols="12" class="d-flex justify-space-between">
+        <Breadcrumb :link_array="breadcrumb_data" />
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 px-4">
+        <MainList
+          :options="options"
+          :headers="headers"
+          v-model="payment_data"
+          @title-action="OpenEditDialog"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
 </div>

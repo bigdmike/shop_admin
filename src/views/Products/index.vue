@@ -7,13 +7,10 @@ import GridShow from '@/components/Products/GridShow/index';
 import ListShow from '@/components/Products/ListShow/index';
 import OptionDialog from '@/components/Products/OptionDialog/index';
 import ImageEditDialog from '@/components/Products/ImageEditDialog/index.vue';
+import Breadcrumb from '@/components/Breadcrumb/';
 import {
   getGoodsAndCategory,
-  // create_good,
-  // update_good,
   delete_goods,
-  // update_good_sort,
-  // update_good_image,
   update_goods_sort,
 } from '@/api/products';
 export default {
@@ -24,10 +21,17 @@ export default {
     GridShow,
     ListShow,
     OptionDialog,
+    Breadcrumb,
     ImageEditDialog,
   },
   data() {
     return {
+      breadcrumb_data: [
+        {
+          title: '商品管理',
+          link: '',
+        },
+      ],
       filter_data: {
         status: 'all',
         category: 'all',

@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="dialog" width="500">
-    <v-card>
+    <v-card v-if="delivery_data != null">
       <v-card-title style="border-bottom: 1px solid rgb(218, 218, 218)">
-        更新付款方式
+        {{ type_title }}付款方式
       </v-card-title>
 
       <v-card-text class="pt-5">
@@ -11,8 +11,8 @@
             <v-col cols="12" sm="12" md="12">
               <v-text-field
                 label="物流名稱"
-                v-model="title"
-                hide-details="auto"
+                v-model="delivery_data.Title"
+                hide-details
                 outlined
                 dense
                 required
@@ -21,9 +21,9 @@
             <v-col cols="12" sm="12" md="12">
               <v-select
                 label="物流類型"
-                v-model="shipping_type"
+                v-model="delivery_data.ShippingType"
                 :items="shipping_type_data"
-                hide-details="auto"
+                hide-details
                 item-text="title"
                 item-value="value"
                 outlined
@@ -33,8 +33,8 @@
             <v-col cols="12" sm="12" md="12">
               <v-text-field
                 label="查詢連結"
-                v-model="query_link"
-                hide-details="auto"
+                v-model="delivery_data.QueryLink"
+                hide-details
                 outlined
                 dense
                 required
@@ -44,8 +44,8 @@
             <v-col cols="6">
               <v-text-field
                 label="積材尺寸限制"
-                v-model="deliver_volume_max"
-                hide-details="auto"
+                v-model="delivery_data.DeliverVolumeMax"
+                hide-details
                 outlined
                 dense
                 required
@@ -55,8 +55,8 @@
             <v-col cols="6">
               <v-text-field
                 label="重量限制"
-                v-model="deliver_weight_max"
-                hide-details="auto"
+                v-model="delivery_data.DeliverWeightMax"
+                hide-details
                 outlined
                 dense
                 required
@@ -65,9 +65,9 @@
             <v-col cols="6">
               <v-select
                 label="低溫物流"
-                v-model="delivery_frozen"
+                v-model="delivery_data.DeliveryFrozen"
                 :items="status_list"
-                hide-details="auto"
+                hide-details
                 item-text="label"
                 item-value="value"
                 outlined
@@ -77,7 +77,7 @@
             <v-col cols="6">
               <v-select
                 label="外島物流"
-                v-model="status_outlying"
+                v-model="delivery_data.StatusOutlying"
                 :items="status_list"
                 hide-details="auto"
                 item-text="label"
@@ -90,17 +90,17 @@
             <v-col cols="12">
               <v-text-field
                 label="運費"
-                v-model="shipping_fee"
+                v-model="delivery_data.ShippingFee"
                 hide-details="auto"
                 outlined
                 dense
                 required
               ></v-text-field>
             </v-col>
-            <v-col v-if="status_outlying == 'Y'" cols="12">
+            <v-col v-if="delivery_data.StatusOutlying == 'Y'" cols="12">
               <v-text-field
                 label="運費(外島)"
-                v-model="shipping_fee_outlying"
+                v-model="delivery_data.ShippingFeeOutlying"
                 hide-details="auto"
                 outlined
                 dense
@@ -110,7 +110,7 @@
             <v-col cols="12">
               <v-select
                 label="啟用狀態"
-                v-model="status"
+                v-model="delivery_data.Status"
                 :items="status_list"
                 hide-details="auto"
                 item-text="label"
@@ -128,7 +128,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="primary" text @click="Cancel"> 取消 </v-btn>
-        <v-btn color="primary" @click="UpdatePayment"> 更新 </v-btn>
+        <v-btn color="primary" @click="Validate"> {{ type_action }} </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -156,7 +156,9 @@ export default {
       deliver_weight_max: 0,
       delivery_frozen: 'N',
       query_link: '',
+      delivery_data: null,
       dialog: false,
+      type: 'edit',
       status_list: [
         {
           label: '已啟用',
@@ -169,57 +171,83 @@ export default {
       ],
     };
   },
-  watch: {
-    charge_fee_type(new_val) {
-      if (new_val == 'amount') {
-        this.charge_fee_percent = 0;
+  methods: {
+    Open(item, type) {
+      this.type = type;
+      if (type == 'edit') {
+        this.delivery_data = Object.assign({}, item);
+        this.delivery_data.ID = this.delivery_data.ShippingID;
       } else {
-        this.charge_fee = 0;
+        this.Reset();
+      }
+      this.dialog = true;
+    },
+    Reset() {
+      this.delivery_data = Object.assign(
+        {},
+        {
+          ID: 0,
+          ShippingID: 0,
+          Title: '',
+          ShippingType: '',
+          DeliverVolumeMax: 0,
+          DeliverWeightMax: 0,
+          DeliveryFrozen: 'N',
+          StatusOutlying: 'N',
+          ShippingFee: 0,
+          ShippingFeeOutlying: 0,
+          Status: 'Y',
+          QueryLink: '',
+        }
+      );
+    },
+    Cancel() {
+      this.Reset();
+      this.dialog = false;
+    },
+    Validate() {
+      let error_msg = '';
+      if (this.delivery_data.Title == '') {
+        error_msg += '- 請輸入物流名稱<br/>';
+      }
+      if (this.delivery_data.Status == '') {
+        error_msg += '- 請選擇啟用狀態<br/>';
+      }
+      if (this.delivery_data.ShippingType == '') {
+        error_msg += '- 請選擇物流類型<br/>';
+      }
+      if (this.delivery_data.StatusOutlying == '') {
+        error_msg += '- 請選擇外島配送啟用狀態<br/>';
+      }
+      if (this.delivery_data.DeliveryFrozen == '') {
+        error_msg += '- 請選擇是否啟用低溫配送<br/>';
+      }
+
+      if (error_msg == '') {
+        this.SendData();
+      } else {
+        error_msg = '無法儲存資料，請修正以下問題：<br>' + error_msg;
+        this.$store.commit('SetDialog', {
+          title: '發生錯誤',
+          content: error_msg,
+          status: true,
+        });
+      }
+    },
+    SendData() {
+      if (this.type == 'edit') {
+        this.$emit('update-action', this.delivery_data);
+      } else {
+        this.$emit('create-action', this.delivery_data);
       }
     },
   },
-  methods: {
-    Open(item) {
-      this.id = item.ShippingID;
-      this.title = item.Title;
-      this.shipping_type = item.ShippingType;
-      this.deliver_volume_max = item.DeliverVolumeMax;
-      this.deliver_weight_max = item.DeliverWeightMax;
-      this.delivery_frozen = item.DeliveryFrozen;
-      this.shipping_fee = item.ShippingFee;
-      this.shipping_fee_outlying = item.ShippingFeeOutlying;
-      this.status_outlying = item.StatusOutlying;
-      this.status = item.Status;
-      this.query_link = item.QueryLink;
-      this.dialog = true;
+  computed: {
+    type_title() {
+      return this.type == 'edit' ? '編輯' : '新增';
     },
-    Cancel() {
-      this.id = -1;
-      this.title = '';
-      this.deliver_volume_max = 0;
-      this.deliver_weight_max = 0;
-      this.delivery_frozen = 'N';
-      this.shipping_fee = 0;
-      this.shipping_fee_outlying = 0;
-      this.status_outlying = 'N';
-      this.status = 'N';
-      this.dialog = false;
-    },
-    UpdatePayment() {
-      this.$emit('update-shipping', {
-        ID: this.id,
-        Title: this.title,
-        Status: this.status,
-        ShippingType: this.shipping_type,
-        StatusOutlying: this.status_outlying,
-        ShippingFee: this.shipping_fee,
-        ShippingFeeOutlying:
-          this.status_outlying == 'Y' ? this.shipping_fee_outlying : 0,
-        DeliverVolumeMax: this.deliver_volume_max,
-        DeliverWeightMax: this.deliver_weight_max,
-        DeliveryFrozen: this.delivery_frozen,
-        QueryLink: this.query_link,
-      });
+    type_action() {
+      return this.type == 'edit' ? '更新' : '新增';
     },
   },
 };

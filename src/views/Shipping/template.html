@@ -1,32 +1,30 @@
-<div id="Products">
-  <template>
-    <!-- QUESTION DIALOG -->
-    <MainDeleteDialog ref="DeleteDialog" v-on:delete-action="SendDeleteData" />
+<div>
+  <v-container v-if="shipping_data!=null">
+    <DeleteDialog ref="DeleteDialog" v-on:delete-action="DeleteData" />
     <EditDialog
       ref="EditDialog"
-      v-on:update-shipping="SendUpdateData"
+      @update-action="UpdateData"
+      @create-action="CreateData"
       :shipping_type_data="shipping_type_data"
     />
-    <CreateDialog
-      ref="CreateDialog"
-      v-on:create-shipping="SendCreateData"
-      :shipping_type_data="shipping_type_data"
-    />
-  </template>
-  <Breadcrumb :link_array="breadcrumb_data" />
-  <v-container v-if="shipping_data!=null">
     <v-row>
-      <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-8 px-4">
+      <v-col cols="12" class="d-flex justify-space-between">
+        <Breadcrumb :link_array="breadcrumb_data" />
         <div class="d-flex justify-space-between align-center">
-          <h3>物流運送方式</h3>
-          <v-btn @click="OpenCreateDialog" color="primary font-weight-bold"
-            >新增</v-btn
+          <v-btn
+            @click="OpenCreateDialog"
+            color="light-blue lighten-1 white--text font-weight-bold elevation-0"
+            >新增物流</v-btn
           >
         </div>
-        <ListShow
-          v-on:edit-shipping="OpenEditDialog"
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 px-4">
+        <MainList
+          :options="options"
+          :headers="headers"
+          @delete-action="OpenDeleteDialog"
+          @title-action="OpenEditDialog"
           v-model="shipping_data"
-          v-on:delete-action="OpenDeleteDialog"
         />
       </v-col>
     </v-row>

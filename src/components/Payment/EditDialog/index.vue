@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" width="500">
-    <v-card>
+    <v-card v-if="payment_data != null">
       <v-card-title style="border-bottom: 1px solid rgb(218, 218, 218)">
         更新付款方式
       </v-card-title>
@@ -11,7 +11,7 @@
             <v-col cols="12" sm="12" md="12">
               <v-text-field
                 label="支付方式"
-                v-model="title"
+                v-model="payment_data.Title"
                 hide-details="auto"
                 outlined
                 readonly
@@ -39,7 +39,7 @@
             >
               <v-text-field
                 label="手續費(%)"
-                v-model="charge_fee_percent"
+                v-model="payment_data.ChargePercent"
                 hide-details="auto"
                 outlined
                 dense
@@ -49,7 +49,7 @@
             <v-col v-else cols="12" sm="12" md="12">
               <v-text-field
                 label="手續費(元)"
-                v-model="charge_fee"
+                v-model="payment_data.ChargeFee"
                 hide-details="auto"
                 outlined
                 dense
@@ -59,7 +59,7 @@
             <v-col cols="12">
               <v-select
                 label="啟用狀態"
-                v-model="status"
+                v-model="payment_data.Status"
                 :items="status_list"
                 hide-details="auto"
                 item-text="label"
@@ -77,7 +77,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="primary" text @click="Cancel"> 取消 </v-btn>
-        <v-btn color="primary" @click="UpdatePayment"> 更新 </v-btn>
+        <v-btn color="primary" @click="Validate"> 更新 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -85,81 +85,77 @@
 
 <script>
 export default {
-  name: "PaymentEditDialog",
+  name: 'PaymentEditDialog',
   data() {
     return {
-      id: -1,
-      title: "",
-      status: "N",
       dialog: false,
-      charge_fee: 0,
-      charge_fee_percent: 0,
-      charge_fee_type: "",
+      charge_fee_type: 'amount',
+      payment_data: null,
       charge_fee_type_list: [
         {
-          label: "百分比",
-          value: "percent",
+          label: '百分比',
+          value: 'percent',
         },
         {
-          label: "固定金額",
-          value: "amount",
+          label: '固定金額',
+          value: 'amount',
         },
       ],
       status_list: [
         {
-          label: "已啟用",
-          value: "Y",
+          label: '已啟用',
+          value: 'Y',
         },
         {
-          label: "已停用",
-          value: "N",
+          label: '已停用',
+          value: 'N',
         },
       ],
     };
   },
   watch: {
-    charge_fee_type(new_val) {
-      if (new_val == "amount") {
-        this.charge_fee_percent = 0;
+    charge_fee_type() {
+      if (this.charge_fee_type == 'amount') {
+        this.payment_data.ChargeFeePercent = 0;
       } else {
-        this.charge_fee = 0;
+        this.payment_data.ChargeFee = 0;
       }
     },
   },
   methods: {
     Open(item) {
-      this.id = item.PaymentID;
-      this.title = item.Title;
-      this.status = item.Status;
-      this.charge_fee = item.ChargeFee;
-      this.charge_fee_percent = item.ChargePercent;
-      if (this.charge_fee != 0) {
-        this.charge_fee_type = "amount";
+      this.payment_data = Object.assign({}, item);
+      this.payment_data.ID = this.payment_data.PaymentID;
+      if (this.payment_data.ChargeFee != 0) {
+        this.charge_fee_type = 'amount';
       } else {
-        this.charge_fee_type = "percent";
+        this.charge_fee_type = 'percent';
       }
       this.dialog = true;
     },
     Cancel() {
-      this.id = 0;
-      this.title = "";
-      this.charge_fee = 0;
-      this.charge_fee_percent = 0;
-      this.charge_fee_type = "";
+      this.payment_data = null;
       this.dialog = false;
     },
-    UpdatePayment() {
-      this.$emit("update-payment", {
-        ID: this.id,
-        Status: this.status,
-        ChargeFee:
-          this.charge_fee == "" || this.charge_fee < 0 ? 0 : this.charge_fee,
-        ChargePercent:
-          this.charge_fee_percent == "" || this.charge_fee_percent < 0
-            ? 0
-            : this.charge_fee_percent,
-        DeliveryFrozen: "Y",
-      });
+    Validate() {
+      let error_msg = '';
+      if (this.payment_data.Title == '') {
+        error_msg += '- 請輸入付款方式名稱<br/>';
+      }
+
+      if (error_msg == '') {
+        this.SendData();
+      } else {
+        error_msg = '無法儲存資料，請修正以下問題：<br>' + error_msg;
+        this.$store.commit('SetDialog', {
+          title: '發生錯誤',
+          content: error_msg,
+          status: true,
+        });
+      }
+    },
+    SendData() {
+      this.$emit('update-action', this.payment_data);
     },
   },
 };

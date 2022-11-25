@@ -69,7 +69,7 @@ const routes = [
   {
     path: '/products',
 
-    name: 'Products',
+    name: '所有商品',
     component: () =>
       import(/* webpackChunkName: "products" */ '../views/Products/index.vue'),
   },
@@ -147,14 +147,14 @@ const routes = [
   {
     path: '/payment',
 
-    name: 'PayMent',
+    name: '付款方式管理',
     component: () =>
       import(/* webpackChunkName: "payment" */ '../views/Payment/index.vue'),
   },
   {
     path: '/shipping',
 
-    name: 'Shipping',
+    name: '配送方式管理',
     component: () =>
       import(/* webpackChunkName: "shipping" */ '../views/Shipping/index.vue'),
   },
@@ -178,7 +178,7 @@ const routes = [
   },
   {
     path: '/coupon',
-    name: 'Coupon',
+    name: '優惠券代碼',
     component: () =>
       import(/* webpackChunkName: "coupon" */ '../views/Coupon/index.vue'),
   },
