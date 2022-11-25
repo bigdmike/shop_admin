@@ -54,6 +54,49 @@ export default {
       product_data: null,
       key_word: '',
       show_type: 'list',
+      options: {
+        action: [
+          {
+            title: '圖片設定',
+            class: 'primary',
+            action: 'image-action',
+          },
+          {
+            title: '庫存設定',
+            class: 'success',
+            action: 'stock-action',
+          },
+          {
+            title: '刪除',
+            class: 'error',
+            action: 'delete-action',
+          },
+        ],
+        status: [
+          {
+            title: '已啟用',
+            class: 'success',
+            condition: 'Y',
+          },
+          {
+            title: '已停用',
+            class: '',
+            condition: 'N',
+          },
+        ],
+      },
+      headers: [
+        { text: '商品縮圖', value: 'TableImage' },
+        {
+          text: '商品名稱',
+          align: 'start',
+          sortable: false,
+          value: 'TableTitle',
+        },
+        { text: '上架時間', value: 'created_at' },
+        { text: '上架狀態', value: 'Status' },
+        { text: '動作', value: 'action' },
+      ],
     };
   },
   methods: {
@@ -74,15 +117,18 @@ export default {
     OpenImageDialog(id) {
       this.$refs.ImageEditDialog.Open(id);
     },
-    async GetProductData() {
+    GetProductData() {
       getGoodsAndCategory().then((res) => {
         this.product_category_data = res[0].data;
         res[1].data.forEach((item) => {
           item.Status = item.Status == 'Y' ? true : false;
         });
-        this.product_data = res[1].data.filter(
-          (item) => item.deleted_at == null
-        );
+        res[1].data = res[1].data.filter((item) => item.deleted_at == null);
+        res[1].data.forEach((item, item_index) => {
+          res[1].data[item_index].TableTitle = item.Title;
+          res[1].data[item_index].TableImage = item.Image1;
+        });
+        this.product_data = res[1].data;
       });
     },
     CheckSort() {
