@@ -2,9 +2,9 @@
 
 <script>
 import FilterDialog from '@/components/Products/FilterDialog/index';
-import DeleteDialog from '@/components/Products/DeleteDialog/index';
+import DeleteDialog from '@/components/MainDeleteDialog';
 import GridShow from '@/components/Products/GridShow/index';
-import ListShow from '@/components/Products/ListShow/index';
+import MainDragList from '@/components/MainDragList/index';
 import OptionDialog from '@/components/Products/OptionDialog/index';
 import ImageEditDialog from '@/components/Products/ImageEditDialog/index.vue';
 import Breadcrumb from '@/components/Breadcrumb/';
@@ -19,10 +19,10 @@ export default {
     FilterDialog,
     DeleteDialog,
     GridShow,
-    ListShow,
     OptionDialog,
     Breadcrumb,
     ImageEditDialog,
+    MainDragList,
   },
   data() {
     return {
@@ -42,11 +42,11 @@ export default {
           value: 'all',
         },
         {
-          label: '未上架',
+          label: '已停用',
           value: 'N',
         },
         {
-          label: '已上架',
+          label: '已啟用',
           value: 'Y',
         },
       ],
@@ -58,12 +58,12 @@ export default {
         action: [
           {
             title: '圖片設定',
-            class: 'primary',
+            class: 'primary mr-2',
             action: 'image-action',
           },
           {
             title: '庫存設定',
-            class: 'success',
+            class: 'success mr-2',
             action: 'stock-action',
           },
           {
@@ -103,8 +103,8 @@ export default {
     OpenFilterDialog() {
       this.$refs.FilterDialog.Open();
     },
-    OpenDeleteDialog(id) {
-      this.$refs.DeleteDialog.Open(id);
+    OpenDeleteDialog(item) {
+      this.$refs.DeleteDialog.Open(item.GoodsID);
     },
     ChangeShowType() {
       this.show_type == 'list'
@@ -120,9 +120,6 @@ export default {
     GetProductData() {
       getGoodsAndCategory().then((res) => {
         this.product_category_data = res[0].data;
-        res[1].data.forEach((item) => {
-          item.Status = item.Status == 'Y' ? true : false;
-        });
         res[1].data = res[1].data.filter((item) => item.deleted_at == null);
         res[1].data.forEach((item, item_index) => {
           res[1].data[item_index].TableTitle = item.Title;
@@ -162,7 +159,31 @@ export default {
   created() {
     this.GetProductData();
   },
-  computed: {},
+  computed: {
+    filter_product_data() {
+      let product_data = JSON.parse(JSON.stringify(this.product_data));
+      if (this.key_word != '') {
+        product_data = product_data.filter((item) => {
+          return item.Title.indexOf(this.key_word) != -1;
+        });
+      }
+      if (this.filter_data.status != 'all') {
+        product_data = product_data.filter((item) => {
+          return item.Status == this.filter_data.status;
+        });
+      }
+      if (this.filter_data.category != 'all') {
+        product_data = product_data.filter((item) => {
+          return (
+            item.Menu.filter((menu) => menu.MenuID == this.filter_data.category)
+              .length > 0
+          );
+        });
+      }
+
+      return product_data;
+    },
+  },
 };
 </script>
 

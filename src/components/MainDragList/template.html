@@ -1,88 +1,88 @@
-<v-data-table
-  :disable-sort="true"
-  :headers="drag_headers"
-  :items="value"
-  :disable-pagination="true"
-  :hide-default-footer="true"
-  class="elevation-1 pb-10"
-  :hide-default-footer="true"
->
-  <template v-slot:body="props">
-    <draggable
-      :list="value"
-      tag="tbody"
-      handle=".page__grab-icon"
-      @end="drag=false"
-      :move="ChangeSort"
-    >
-      <tr v-for="(item, index) in value" :key="index">
-        <td>
-          <v-icon small class="page__grab-icon">
-            mdi-dots-grid
-          </v-icon>
-        </td>
-        <template v-for="(column,column_index) in headers">
-          <td
-            v-if="column.value == 'TableImage'"
-            :key="`column_${column_index}`"
-            class="d-flex align-center"
-          >
-            <img
-              style="aspect-ratio:1;width:40px;"
-              class="rounded-lg"
-              :src="$ImageUrl(TableImage)"
-            />
+<div v-if="value!=null">
+  <v-data-table
+    :disable-sort="true"
+    :headers="drag_headers"
+    :items="value"
+    :disable-pagination="true"
+    :hide-default-footer="true"
+    class="elevation-1 pb-10"
+  >
+    <template v-slot:body="props">
+      <draggable
+        :list="value"
+        tag="tbody"
+        handle=".page__grab-icon"
+        @end="ChangeSort"
+      >
+        <tr v-for="(item, index) in value" :key="index">
+          <td>
+            <v-icon small class="page__grab-icon">
+              mdi-dots-grid
+            </v-icon>
           </td>
-          <td
-            v-else-if="column.value == 'TableTitle'"
-            :key="`column_${column_index}`"
-          >
-            <a class="table_item_title" @click="$emit('title-action',item)"
-              >{{ item.TableTitle }}
-              <v-icon small color="primary">mdi-open-in-new</v-icon>
-            </a>
-          </td>
-          <td
-            v-else-if="column.value == 'Status'"
-            :key="`column_${column_index}`"
-          >
-            <template v-for="(label,label_index) in options.status">
-              <v-chip
-                v-if="item.Status == label.condition"
-                :class="label.class"
-                label
-                small
-                :key="`label_${label_index}`"
-              >
-                {{label.title}}
-              </v-chip>
-            </template>
-          </td>
+          <template v-for="(column,column_index) in headers">
+            <td
+              v-if="column.value == 'TableImage'"
+              :key="`column_${column_index}`"
+              class="d-flex align-center"
+            >
+              <img
+                style="aspect-ratio:1;width:40px;"
+                class="rounded-lg"
+                :src="$ImageUrl(item.TableImage)"
+              />
+            </td>
+            <td
+              v-else-if="column.value == 'TableTitle'"
+              :key="`column_${column_index}`"
+            >
+              <a class="table_item_title" @click="$emit('title-action',item)"
+                >{{ item.TableTitle }}
+                <v-icon small color="primary">mdi-open-in-new</v-icon>
+              </a>
+            </td>
+            <td
+              v-else-if="column.value == 'Status'"
+              :key="`column_${column_index}`"
+            >
+              <template v-for="(label,label_index) in options.status">
+                <v-chip
+                  v-if="item.Status == label.condition"
+                  :class="label.class"
+                  label
+                  small
+                  :key="`label_${label_index}`"
+                >
+                  {{label.title}}
+                </v-chip>
+              </template>
+            </td>
 
-          <td
-            v-else-if="column.value == 'action'"
-            :key="`column_${column_index}`"
-          >
-            <template v-for="(action,action_index) in options.action">
-              <v-btn
-                :key="`action_${action_index}`"
-                @click="$emit(action.action,item)"
-                small
-                :class="action.class"
-                class="elevation-0"
-                >{{action.title}}</v-btn
-              >
-            </template>
-          </td>
-          <td v-else :key="`column_${column_index}`">
-            {{item[column.value]}}
-          </td>
-        </template>
-      </tr>
-    </draggable>
-  </template>
+            <td
+              v-else-if="column.value == 'action'"
+              :key="`column_${column_index}`"
+            >
+              <template v-for="(action,action_index) in options.action">
+                <v-btn
+                  :key="`action_${action_index}`"
+                  @click="$emit(action.action,item)"
+                  small
+                  :class="action.class"
+                  class="elevation-0"
+                  >{{action.title}}</v-btn
+                >
+              </template>
+            </td>
+            <td v-else :key="`column_${column_index}`">
+              {{item[column.value]}}
+            </td>
+          </template>
+        </tr>
+      </draggable>
+    </template>
 
-  <template v-slot:no-data>
-    <p>目前沒有任何資料可以顯示</p>
-  </template>
-</v-data-table>
+    <template v-slot:no-data>
+      <p>目前沒有任何資料可以顯示</p>
+    </template>
+  </v-data-table>
+</div>

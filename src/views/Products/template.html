@@ -7,13 +7,14 @@
       :product_category_data="product_category_data"
       v-model="filter_data"
     />
-    <DeleteDialog ref="DeleteDialog" v-on:delete-product="SendDeleteData" />
+    <DeleteDialog ref="DeleteDialog" v-on:delete-action="SendDeleteData" />
     <ImageEditDialog ref="ImageEditDialog" />
     <v-row>
       <v-col cols="12" class="d-flex justify-space-between">
         <Breadcrumb :link_array="breadcrumb_data" />
         <div class="d-flex justify-end align-center">
           <v-btn
+            @click="$router.push('/products/new/')"
             color="light-blue lighten-1 white--text font-weight-bold elevation-0"
             >新增商品</v-btn
           >
@@ -95,18 +96,15 @@
           :key_word="key_word"
           v-on:re-load="GetProductData"
         />
-        <ListShow
-          v-if="show_type=='list'"
-          :filter_data="filter_data"
-          :product_status_data="product_status_data"
-          :product_category_data="product_category_data"
-          v-on:update-sort="UpdateProductSort"
-          v-on:delete-data="OpenDeleteDialog"
-          v-on:open-stock="OpenStockDialog"
-          v-on:open-image="OpenImageDialog"
-          v-model="product_data"
-          :key_word="key_word"
-          v-on:re-load="GetProductData"
+        <MainDragList
+          :options="options"
+          :headers="headers"
+          @delete-action="OpenDeleteDialog"
+          @title-action="$router.push(`/product/${$event.GoodsID}`)"
+          @sort-action="UpdateProductSort"
+          @image-action="OpenImageDialog($event.GoodsID)"
+          @stock-action="OpenStockDialog($event.GoodsID)"
+          v-model="filter_product_data"
         />
       </v-col>
     </v-row>

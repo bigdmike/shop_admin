@@ -30,22 +30,9 @@ export default {
     };
   },
   methods: {
-    ChangeSort(dragResult) {
-      const { index, element, futureIndex } = dragResult.draggedContext;
-      if (index === null && futureIndex === null) return this.value;
-
-      const result = [...this.value];
-      let itemToAdd = element;
-
-      if (index !== null) {
-        itemToAdd = result.splice(index, 1)[0];
-      }
-
-      if (futureIndex !== null) {
-        result.splice(futureIndex, 0, itemToAdd);
-      }
-      console.log(result);
-      this.$emit('sort-action', result);
+    ChangeSort() {
+      this.drag = false;
+      this.$emit('sort-action', this.value);
     },
   },
   computed: {
