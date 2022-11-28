@@ -7,10 +7,14 @@
   class="elevation-1 pb-10"
 >
   <template v-slot:item.TableTitle="{item}">
-    <a class="table_item_title" @click="$emit('title-action',item)"
+    <a
+      v-if="!item.TitleActionDisable"
+      class="table_item_title"
+      @click="$emit('title-action',item)"
       >{{ item.TableTitle }}
       <v-icon small color="primary">mdi-open-in-new</v-icon>
     </a>
+    <p v-else class="pa-0 ma-0">{{ item.TableTitle }}</p>
   </template>
 
   <template
@@ -36,6 +40,7 @@
   >
     <template v-for="(action,action_index) in options.action">
       <v-btn
+        v-if="!item.ActionDisable"
         :key="`action_${action_index}`"
         @click="$emit(action.action,item)"
         small

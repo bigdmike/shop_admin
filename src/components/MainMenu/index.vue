@@ -21,10 +21,10 @@ export default {
           type: 'U',
           group: true,
           list: [
-            {
-              title: '網站選單',
-              link: '/web_links',
-            },
+            // {
+            //   title: '網站選單',
+            //   link: '/web_links',
+            // },
             {
               title: '首頁管理',
               link: '/home_page',
@@ -74,10 +74,6 @@ export default {
               title: '所有訂單',
               link: '/orders',
             },
-            // {
-            //   title: "遺棄的購物車",
-            //   link: "/checkout"
-            // }
           ],
         },
         {
@@ -95,18 +91,10 @@ export default {
               title: '商品分類',
               link: '/product_menu',
             },
-            {
-              title: '商品目錄',
-              link: '/categories',
-            },
             // {
-            //   title: "庫存管理",
-            //   link: "/products/inventories"
+            //   title: '商品目錄',
+            //   link: '/categories',
             // },
-            // {
-            //   title: "商品描述模板",
-            //   link: "/products/templates"
-            // }
           ],
         },
         {
@@ -151,13 +139,6 @@ export default {
           group: false,
           list: [],
         },
-        // {
-        //   title: "銷售管道",
-        //   icon: "mdi-store",
-        //   link: "/channels",
-        //   group: false,
-        //   list: []
-        // }
       ],
     };
   },

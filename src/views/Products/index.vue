@@ -114,8 +114,8 @@ export default {
     OpenStockDialog(id) {
       this.$refs.OptionDialog.Open(id);
     },
-    OpenImageDialog(id) {
-      this.$refs.ImageEditDialog.Open(id);
+    OpenImageDialog(item) {
+      this.$refs.ImageEditDialog.Open(item);
     },
     GetProductData() {
       getGoodsAndCategory().then((res) => {

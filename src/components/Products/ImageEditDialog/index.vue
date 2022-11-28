@@ -5,22 +5,27 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
-    <InfoDialog ref="InfoDialog" :color="color" :size="size" />
-    <CreateDialog
-      :color="color"
-      :size="size"
-      :id="id"
-      v-on:create-image="SendCreateData"
-      ref="CreateDialog"
+    <input
+      ref="ImageUpload"
+      @change="CreateData($event.target.files)"
+      type="file"
+      accept=".jpg,.jpeg,.png,.gif,.webp"
+      style="display: none;"
+      multiple
     />
-    <DeleteDialog ref="DeleteDialog" v-on:delete-image="SendDeleteData" />
+    <DeleteDialog ref="DeleteDialog" @delete-action="DeleteData" />
 
     <v-card class="grey lighten-3 overflow-hidden">
-      <v-toolbar dark color="primary">
-        <v-toolbar-title>商品圖片設定</v-toolbar-title>
+      <v-toolbar class="white primary--text elevation-1">
+        <v-toolbar-title>
+          <p class="ma-0 font-weight-bold">商品圖片設定</p>
+          <p class="ma-0 text-caption">{{ title }}</p>
+        </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn dark text @click="Cancel"> 關閉 </v-btn>
+          <div class="d-flex align-center">
+            <v-btn class="elevation-0" outlined @click="Cancel"> 關閉 </v-btn>
+          </div>
         </v-toolbar-items>
       </v-toolbar>
 
@@ -28,7 +33,9 @@
         <div class="product_list mx-auto px-10 pt-10">
           <div class="header d-flex justify-end align-center mb-5">
             <div class="d-flex align-center">
-              <v-btn @click="OpenCreateDialog" color="primary font-weight-bold"
+              <v-btn
+                @click="OpenCreateDialog"
+                class="light-blue lighten-1 white--text font-weight-bold elevation-0"
                 >新增圖片</v-btn
               >
             </div>
@@ -38,69 +45,24 @@
             v-model="images"
             @start="drag = true"
             @end="drag = false"
-            @change="SendSortData"
+            @change="SortData"
           >
             <v-col
               cols="12"
               sm="6"
               md="4"
               lg="3"
-              v-for="item in images"
+              v-for="(item, item_index) in images"
               :key="item.title"
             >
-              <v-hover v-slot="{ hover }">
-                <v-card
-                  class="image_card"
-                  :elevation="hover ? 12 : 2"
-                  :class="{ 'on-hover': hover }"
-                >
-                  <v-img :src="ConvertImage(item.Image)" :aspect-ratio="1">
-                    <v-card-title
-                      :class="{ show: hover }"
-                      class="text-h6 white--text fill-height img_card_control"
-                    >
-                      <div
-                        class="
-                          d-flex
-                          justify-space-between
-                          align-center
-                          my-auto
-                          mx-auto
-                        "
-                      >
-                        <v-btn
-                          @click="OpenInfoDialog(item)"
-                          :class="{ 'show-btns': hover }"
-                          color="rgba(255, 255, 255, 0)"
-                          icon
-                        >
-                          <v-icon
-                            :class="{ 'show-btns': hover }"
-                            small
-                            color="rgba(255, 255, 255, 0)"
-                          >
-                            mdi-eye
-                          </v-icon>
-                        </v-btn>
-                        <v-btn
-                          @click="OpenDeleteDialog(item.GoodsPictureID)"
-                          :class="{ 'show-btns': hover }"
-                          color="rgba(255, 255, 255, 0)"
-                          icon
-                        >
-                          <v-icon
-                            :class="{ 'show-btns': hover }"
-                            small
-                            color="rgba(255, 255, 255, 0)"
-                          >
-                            mdi-trash-can-outline
-                          </v-icon>
-                        </v-btn>
-                      </div>
-                    </v-card-title>
-                  </v-img>
-                </v-card>
-              </v-hover>
+              <MainImageCard
+                :image_data="item"
+                :upload_key="item_index"
+                aspect_ratio="1"
+                :delete_mode="true"
+                @delete-action="OpenDeleteDialog"
+                @update-action="UpdateImage"
+              />
             </v-col>
           </draggable>
         </div>
@@ -111,117 +73,109 @@
 
 <script>
 import draggable from 'vuedraggable';
-import CreateDialog from './CreateDialog/index.vue';
-import DeleteDialog from './DeleteDialog/index.vue';
-import InfoDialog from './InfoDialog/index.vue';
+import DeleteDialog from '@/components/MainDeleteDialog/index.vue';
+import MainImageCard from '@/components/MainImageCard/';
 import {
-  getGoodsAndCategory,
+  get_picture,
   create_picture,
   update_picture_sort,
   delete_picture,
 } from '@/api/products_image.js';
-import { ImageUrl } from '@/common/filter.js';
 export default {
   name: 'ProductImageCreateDialog',
   components: {
-    CreateDialog,
     DeleteDialog,
     draggable,
-    InfoDialog,
+    MainImageCard,
   },
   data() {
     return {
       id: -1,
+      title: '',
       images: [],
-      color: [],
-      size: [],
       dialog: false,
     };
   },
   methods: {
-    Open(id) {
-      this.id = id;
-      this.GetImages();
-      this.dialog = true;
+    Open(item) {
       this.images = [];
+      this.id = item.GoodsID;
+      this.title = item.Title;
+      this.GetData();
+      this.dialog = true;
     },
     Cancel() {
       this.dialog = false;
       this.images = [];
-    },
-    OpenInfoDialog(item) {
-      this.$refs.InfoDialog.Open(item);
+      this.title = '';
     },
     OpenCreateDialog() {
-      this.$refs.CreateDialog.Open();
+      this.$refs.ImageUpload.click();
     },
-    OpenDeleteDialog(id) {
-      this.$refs.DeleteDialog.Open(id);
+    OpenDeleteDialog(index, key) {
+      this.$refs.DeleteDialog.Open(this.images[key].GoodsPictureID);
     },
-    GetImages() {
-      getGoodsAndCategory(this.id).then((res) => {
-        console.log(res);
-        this.color = res[0].data;
-        this.size = res[1].data;
-        this.images = res[2].data;
-        this.CheckSort();
-      });
-    },
-    ConvertImage(image) {
-      return ImageUrl(image);
+    async UpdateImage(val, index, key) {
+      let tmp_image_data = Object.assign({}, this.images[key]);
+      let new_image_data = {
+        GoodsID: this.id,
+        ColorID: 0,
+        SizeID: 0,
+        Seq: tmp_image_data.Seq,
+        Image: val.file,
+      };
+      await delete_picture(tmp_image_data.GoodsPictureID);
+      await create_picture(new_image_data);
+      this.GetData();
     },
     CheckSort() {
       let is_sort = true;
       this.images.forEach((item, item_index) => {
-        item.Seq == item_index + 1 ? '' : (is_sort = false);
+        item.Seq == item_index + 2 ? '' : (is_sort = false);
       });
-      is_sort ? '' : this.SendSortData();
+      is_sort ? '' : this.SortData();
     },
-    SendSortData() {
-      // GoodsPictureID
+    GetData() {
+      get_picture(this.id).then((res) => {
+        res.data.forEach((item, item_index) => {
+          res.data[item_index] = this.$SetImageObj(item, item.Image);
+        });
+        this.$set(this, 'images', res.data);
+        this.CheckSort();
+      });
+    },
+    async CreateData(files) {
+      files = [...files];
+      for (let index in files) {
+        let image_data = {
+          GoodsID: this.id,
+          ColorID: 0,
+          SizeID: 0,
+          Seq: index,
+          Image: files[index],
+        };
+        await create_picture(image_data);
+      }
+      this.GetData();
+    },
+    SortData() {
       let data = [];
       this.images.forEach((item, item_index) => {
         data.push({
           ID: item.GoodsPictureID,
-          Seq: item_index + 1,
+          Seq: item_index + 2,
         });
       });
       update_picture_sort(data).then(() => {
-        this.GetImages();
+        this.GetData();
       });
     },
-    SendCreateData(data) {
-      data.GoodsID = this.id;
-      create_picture(data).then(() => {
-        this.$refs.CreateDialog.Cancel();
-        this.GetImages();
-      });
-    },
-    SendDeleteData(id) {
+    DeleteData(id) {
       delete_picture(id).then(() => {
         this.$refs.DeleteDialog.Cancel();
-        this.GetImages();
+        this.GetData();
       });
     },
   },
 };
 </script>
-<style>
-.image_card {
-  transition: opacity 0.4s ease-in-out;
-  cursor: grab;
-}
-
-.img_card_control {
-  background-color: rgba(0, 0, 0, 0.541);
-  transition: opacity 0.4s ease-in-out;
-  opacity: 0;
-}
-.img_card_control.show {
-  opacity: 1;
-}
-
-.show-btns {
-  color: rgba(255, 255, 255, 1) !important;
-}
-</style>

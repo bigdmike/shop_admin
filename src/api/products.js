@@ -64,7 +64,10 @@ export function getGoodsAndCategory(id = -1) {
 }
 
 export function create_goods_all(goods_item, images) {
-  const menu_list = goods_item.Menu;
+  // 更新商品資訊
+  // 更新商品分類
+  // 更新商品圖片
+  const menu_list = goods_item.MenuID;
   // delete goods_item.Image1;
   // delete goods_item.Image2;
   // delete goods_item.Menu;
@@ -72,6 +75,7 @@ export function create_goods_all(goods_item, images) {
   var goods_info = put('admin/goods', goods_item, '已成功更新商品');
 
   return goods_info.then((res) => {
+    console.log(res);
     if (res.code == 200) {
       var goods_menu = patch(
         'admin/menu2goods/goods/' + res.data.GoodsID,

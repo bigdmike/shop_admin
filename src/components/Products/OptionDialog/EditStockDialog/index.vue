@@ -1,14 +1,14 @@
 <template>
   <v-dialog v-model="dialog" width="500">
-    <v-card>
+    <v-card v-if="stock_data != null">
       <v-card-title style="border-bottom: 1px solid rgb(218, 218, 218)">
-        編輯商品庫存
+        {{ type_title }}商品庫存
       </v-card-title>
 
       <v-card-text class="pt-5">
         <v-container>
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" v-if="edit_type == 'create'">
               <v-select
                 :items="option_1"
                 label="請選擇規格一"
@@ -17,11 +17,10 @@
                 item-value="ColorID"
                 dense
                 outlined
-                v-model="color_id"
-                :error-messages="errors.color_id"
+                v-model="stock_data.ColorID"
               ></v-select>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" v-if="edit_type == 'create'">
               <v-select
                 :items="option_2"
                 label="請選擇規格二"
@@ -30,65 +29,66 @@
                 item-value="SizeID"
                 dense
                 outlined
-                v-model="size_id"
-                :error-messages="errors.size_id"
+                v-model="stock_data.SizeID"
               ></v-select>
+            </v-col>
+            <v-col cols="12" v-else>
+              <p class="text-body primary--text ma-0">
+                庫存規格： {{ stock_data.ColorTitle }}/{{
+                  stock_data.SizeTitle
+                }}
+              </p>
             </v-col>
             <v-col cols="12">
               <v-text-field
                 label="庫存量"
-                v-model="stock"
+                v-model="stock_data.Stock"
                 hide-details="auto"
                 outlined
                 dense
                 required
-                :error-messages="errors.stock"
               ></v-text-field>
             </v-col>
 
             <v-col cols="6">
               <v-text-field
                 label="積材尺寸"
-                v-model="deliver_volume"
+                v-model="stock_data.DeliverVolume"
                 hide-details="auto"
                 outlined
                 dense
                 required
-                :error-messages="errors.deliver_volume"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
                 label="商品重量"
-                v-model="deliver_weight"
+                v-model="stock_data.DeliverWeight"
                 hide-details="auto"
                 outlined
                 dense
                 required
-                :error-messages="errors.deliver_weight"
               ></v-text-field>
             </v-col>
 
             <v-col cols="6">
               <v-text-field
                 label="建議售價"
-                v-model="price"
+                v-model="stock_data.Price"
                 hide-details="auto"
                 outlined
                 dense
                 required
-                :error-messages="errors.price"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
                 label="實際售價"
-                v-model="sell_price"
+                v-model="stock_data.SellPrice"
                 hide-details="auto"
                 outlined
                 dense
                 required
-                :error-messages="errors.sell_price"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
@@ -100,8 +100,7 @@
                 item-value="value"
                 dense
                 outlined
-                v-model="status"
-                :error-messages="errors.status"
+                v-model="stock_data.Status"
               ></v-select>
             </v-col>
           </v-row>
@@ -113,14 +112,13 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="primary" text @click="Cancel"> 取消 </v-btn>
-        <v-btn color="primary" @click="CreateOption"> 更新 </v-btn>
+        <v-btn color="primary" @click="Validate"> {{ type_action }} </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { validEmpty, validFileEmpty } from '@/common/validate.js';
 export default {
   name: 'OptionCreateDialog',
   props: {
@@ -135,16 +133,7 @@ export default {
   },
   data() {
     return {
-      size_id: -1,
-      color_id: -1,
-      stock: '',
-      deliver_volume: '',
-      deliver_weight: '',
-      price: '',
-      sell_price: '',
-      title: '',
-      status: 'Y',
-      position: 0,
+      stock_data: null,
       dialog: false,
       status_array: [
         {
@@ -156,117 +145,81 @@ export default {
           value: 'N',
         },
       ],
-      errors: {
-        size_id: '',
-        color_id: '',
-        stock: '',
-        deliver_volume: '',
-        deliver_weight: '',
-        price: '',
-        sell_price: '',
-        title: '',
-        status: '',
-      },
+      edit_type: 'edit',
     };
   },
   methods: {
-    Open(item) {
-      this.size_id = item.SizeID;
-      this.color_id = item.ColorID;
-      this.stock = item.Stock;
-      this.deliver_volume = item.DeliverVolume;
-      this.deliver_weight = item.DeliverVolume;
-      this.price = item.Price;
-      this.sell_price = item.SellPrice;
-      this.status = item.Status;
-      this.position = item.Seq;
+    Open(item, edit_type) {
+      this.edit_type = edit_type;
+      if (edit_type == 'edit') {
+        this.stock_data = Object.assign({}, item);
+      } else {
+        this.stock_data = Object.assign(
+          {},
+          {
+            SizeID: 0,
+            ColorID: 0,
+            Stock: 0,
+            DeliverVolume: 0,
+            DeliverWeight: 0,
+            Price: 0,
+            SellPrice: 0,
+            Status: 'Y',
+            Seq: 1,
+          }
+        );
+      }
       this.dialog = true;
-      this.errors = {
-        size_id: '',
-        color_id: '',
-        stock: '',
-        deliver_volume: '',
-        deliver_weight: '',
-        price: '',
-        sell_price: '',
-        status: '',
-      };
     },
     Cancel() {
-      this.size_id = -1;
-      this.color_id = -1;
-      this.stock = '';
-      this.deliver_volume = '';
-      this.deliver_weight = '';
-      this.price = '';
-      this.sell_price = '';
-      this.status = 'Y';
+      this.stock_data = null;
       this.dialog = false;
-      this.position = 0;
-      this.errors = {
-        size_id: '',
-        color_id: '',
-        stock: '',
-        deliver_volume: '',
-        deliver_weight: '',
-        price: '',
-        sell_price: '',
-        status: '',
-      };
     },
-    CreateOption() {
-      let error = false;
-      this.errors = {
-        size_id: '',
-        color_id: '',
-        stock: '',
-        deliver_volume: '',
-        deliver_weight: '',
-        price: '',
-        sell_price: '',
-        status: '',
-      };
-      if (!validEmpty(this.color_id)) {
-        this.errors.color_id = '請選擇規格';
-        error = true;
+    Validate() {
+      let error_msg = '';
+
+      if (this.stock_data.ColorID == '') {
+        error_msg += '- 請選擇規格一';
       }
-      if (!validEmpty(this.size_id)) {
-        this.errors.size_id = '請選擇規格';
-        error = true;
+      if (this.stock_data.SizeID == '') {
+        error_msg += '- 請選擇規格二';
       }
-      if (!validFileEmpty(this.stock)) {
-        this.errors.stock = '請輸入庫存量';
-        error = true;
+      if (this.stock_data.Stock == '') {
+        error_msg += '- 請輸入庫存量';
       }
-      if (!validFileEmpty(this.deliver_volume)) {
-        this.errors.deliver_volume = '請輸入積材尺寸';
-        error = true;
+      if (this.stock_data.DeliverVolume == '') {
+        error_msg += '- 請輸入積材尺寸';
       }
-      if (!validFileEmpty(this.deliver_weight)) {
-        this.errors.deliver_weight = '請輸入重量';
-        error = true;
+      if (this.stock_data.DeliverWeight == '') {
+        error_msg += '- 請輸入重量';
       }
-      if (!validFileEmpty(this.price)) {
-        this.errors.price = '請輸入建議售價';
-        error = true;
+      if (this.stock_data.Price == '') {
+        error_msg += '- 請輸入建議售價';
       }
-      if (!validFileEmpty(this.sell_price)) {
-        this.errors.sell_price = '請輸入實際售價';
-        error = true;
+      if (this.stock_data.SellPrice == '') {
+        error_msg += '- 請輸入實際售價';
       }
-      if (!error) {
-        let Data = {};
-        Data.ColorID = this.color_id;
-        Data.SizeID = this.size_id;
-        Data.Stock = this.stock;
-        Data.Status = this.status;
-        Data.DeliverVolume = this.deliver_volume;
-        Data.DeliverWeight = this.deliver_weight;
-        Data.Price = this.price;
-        Data.SellPrice = this.sell_price;
-        Data.Seq = parseInt(this.position);
-        this.$emit('update-stock', Data);
+      if (error_msg == '') {
+        this.SendData();
+      } else {
+        error_msg = '無法儲存資料，請修正以下問題：<br>' + error_msg;
+        this.$store.commit('SetDialog', {
+          title: '發生錯誤',
+          content: error_msg,
+          status: true,
+        });
       }
+    },
+    SendData() {
+      this.$emit('update-stock', this.stock_data);
+    },
+  },
+  computed: {
+    type_title() {
+      return this.edit_type == 'edit' ? '編輯' : '新增';
+    },
+    type_action() {
+      return this.edit_type == 'edit' ? '更新' : '新增';
     },
   },
 };

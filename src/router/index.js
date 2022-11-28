@@ -75,8 +75,7 @@ const routes = [
   },
   {
     path: '/product/:id',
-
-    name: 'ProductEdit',
+    name: '編輯商品',
     component: () =>
       import(
         /* webpackChunkName: "product_edit" */ '../views/ProductEdit/index.vue'
@@ -84,17 +83,16 @@ const routes = [
   },
   {
     path: '/products/new/',
-
-    name: 'ProductCreate',
+    name: '新增商品',
     component: () =>
       import(
-        /* webpackChunkName: "product_create" */ '../views/ProductCreate/index.vue'
+        /* webpackChunkName: "product_edit" */ '../views/ProductEdit/index.vue'
       ),
   },
   {
     path: '/product_menu',
 
-    name: 'ProductMenu',
+    name: '商品分類管理',
     component: () =>
       import(
         /* webpackChunkName: "product_menu" */ '../views/ProductMenu/index.vue'

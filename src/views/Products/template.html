@@ -84,7 +84,7 @@
         </div>
 
         <GridShow
-          v-if="show_type=='grid'"
+          v-show="show_type=='grid'"
           :filter_data="filter_data"
           :product_status_data="product_status_data"
           :product_category_data="product_category_data"
@@ -97,12 +97,13 @@
           v-on:re-load="GetProductData"
         />
         <MainDragList
+          v-show="show_type=='list'"
           :options="options"
           :headers="headers"
           @delete-action="OpenDeleteDialog"
           @title-action="$router.push(`/product/${$event.GoodsID}`)"
           @sort-action="UpdateProductSort"
-          @image-action="OpenImageDialog($event.GoodsID)"
+          @image-action="OpenImageDialog"
           @stock-action="OpenStockDialog($event.GoodsID)"
           v-model="filter_product_data"
         />

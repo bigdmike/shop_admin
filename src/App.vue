@@ -62,7 +62,7 @@ export default {
       let pages = [
         'HomePageEdit',
         'AboutPageEdit',
-        'ProductEdit',
+        '商品編輯',
         'ProductCreate',
         'About',
         'CompanyInfo',
