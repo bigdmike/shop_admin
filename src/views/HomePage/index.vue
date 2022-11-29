@@ -37,6 +37,7 @@ export default {
     },
     GetPageData() {
       get_common_column([
+        'event_announcement',
         'home_main_product_bg',
         'home_new_product_bg',
         'home_promote_1_image',

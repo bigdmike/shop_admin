@@ -4,6 +4,20 @@
       <v-col cols="12">
         <Breadcrumb :link_array="breadcrumb_data" />
       </v-col>
+
+      <v-col cols="12">
+        <v-card class="pa-5 elevation-1">
+          <p class="mt-0 mb-2 primary--text font-weight-bold">
+            網站頂部公告文字
+          </p>
+          <v-text-field
+            v-model="page_data.event_announcement.Content"
+            dense
+            hide-details
+            outlined
+          ></v-text-field>
+        </v-card>
+      </v-col>
       <v-col cols="12">
         <p class="mt-0 mb-2 primary--text font-weight-bold">主打商品背景圖片</p>
         <MainImageCard
