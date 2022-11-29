@@ -139,6 +139,14 @@ export default {
           group: false,
           list: [],
         },
+        {
+          title: '會員管理',
+          icon: 'mdi-account',
+          type: 'U',
+          link: '/members',
+          group: false,
+          list: [],
+        },
       ],
     };
   },

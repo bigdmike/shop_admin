@@ -7,66 +7,29 @@
     />
     <DeleteDialog ref="DeleteDialog" v-on:delete-action="DeleteData" />
   </template>
-  <Breadcrumb :link_array="breadcrumb_data" />
   <v-container>
     <v-row>
-      <v-col cols="12" md="12" lg="12" class="mx-auto pa-0 mt-8 px-4">
+      <v-col cols="12">
+        <div class="d-flex justify-space-between align-end">
+          <Breadcrumb :link_array="breadcrumb_data" class="pb-0" />
+          <v-btn
+            @click="OpenCreateDialog"
+            color="light-blue lighten-1 white--text elevation-0 font-weight-bold"
+            >新增分類</v-btn
+          >
+        </div>
+      </v-col>
+      <v-col cols="12" md="12" lg="12">
         <v-row>
           <v-col cols="12">
-            <div class="d-flex justify-space-between align-center">
-              <h3>文章分類</h3>
-              <v-btn @click="OpenCreateDialog" color="primary font-weight-bold"
-                >新增</v-btn
-              >
-            </div>
-            <v-container class="product_list px-0">
-              <v-data-table
-                :disable-sort="true"
-                :headers="headers"
-                :items="news_categories"
-                :disable-pagination="true"
-                :hide-default-footer="true"
-                sort-by="calories"
-                class="elevation-1 pb-10"
-              >
-                <template v-slot:body="props">
-                  <draggable
-                    :list="news_categories"
-                    @change="SortData"
-                    tag="tbody"
-                    handle=".page__grab-icon"
-                    @end="drag=false"
-                  >
-                    <tr v-for="(item, index) in news_categories" :key="index">
-                      <td>
-                        <v-icon small class="page__grab-icon">
-                          mdi-dots-grid
-                        </v-icon>
-                      </td>
-                      <td>
-                        <a @click="OpenEditDialog(item)">{{ item.Title }}</a>
-                      </td>
-
-                      <td>
-                        {{item.created_at}}
-                      </td>
-                      <td>
-                        <v-btn
-                          @click="OpenDeleteDialog(item.NewsCategoryID)"
-                          small
-                          color="error"
-                          >刪除</v-btn
-                        >
-                      </td>
-                    </tr>
-                  </draggable>
-                </template>
-
-                <template v-slot:no-data>
-                  <p>目前沒有資料可以顯示</p>
-                </template>
-              </v-data-table>
-            </v-container>
+            <MainDragList
+              :options="options"
+              :headers="headers"
+              @delete-action="OpenDeleteDialog"
+              @title-action="OpenEditDialog"
+              @sort-action="SortData"
+              v-model="news_categories"
+            />
           </v-col>
         </v-row>
       </v-col>

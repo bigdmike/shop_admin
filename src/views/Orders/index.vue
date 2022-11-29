@@ -3,6 +3,7 @@
 <script>
 import FilterDialog from '@/components/Orders/FilterDialog/index';
 import ListShow from '@/components/Orders/ListShow/index';
+import Breadcrumb from '@/components/Breadcrumb/';
 import TCATExcelExport from '@/components/Orders/TCATExcelExport/';
 import ExcelExport from '@/components/Orders/ExcelExport/';
 import { GetOrderList } from '@/api/order.js';
@@ -13,9 +14,20 @@ export default {
     ListShow,
     ExcelExport,
     TCATExcelExport,
+    Breadcrumb,
   },
   data() {
     return {
+      breadcrumb_data: [
+        {
+          title: '訂單管理',
+          link: '',
+        },
+        {
+          title: '所有訂單',
+          link: '',
+        },
+      ],
       filter_data: {
         status: 'all',
         member_id: -1,

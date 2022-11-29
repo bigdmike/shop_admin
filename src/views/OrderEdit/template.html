@@ -10,8 +10,12 @@
     />
     <PrintHCT :image="HCT_image" ref="PrintHCT" />
     <v-row>
-      <Breadcrumb :link_array="breadcrumb_data" />
-      <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+      <v-col cols="12">
+        <Breadcrumb :link_array="breadcrumb_data" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="12" lg="9" class="mx-auto py-0 mb-md-0 mb-5">
         <div class="header d-flex justify-space-between align-center">
           <h3 class="my-0 text-h5 font-weight-black">
             #{{order_data.TradeID}}
@@ -30,14 +34,18 @@
           </h3>
         </div>
       </v-col>
-      <v-col cols="12" md="12" lg="12" class="mx-auto py-0">
+      <v-col
+        cols="12"
+        md="12"
+        lg="3"
+        class="mx-auto py-0 d-flex justify-md-end"
+      >
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              class="px-0 mr-4"
+              class="elevation-0 mr-4"
               color="green"
-              small
-              text
+              dark
               v-bind="attrs"
               v-on="on"
             >
@@ -61,8 +69,8 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn class="px-0 mr-4" color="primary" small text @click="Print">
-          <v-icon small class="mr-1">mdi-printer</v-icon>出貨單
+        <v-btn class="elevation-0 " color="primary" @click="Print">
+          <v-icon small class="mr-1">mdi-printer</v-icon>列印出貨單
         </v-btn>
         <v-btn
           v-if="order_data.payment == 'zero_card'"
@@ -78,7 +86,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="8">
-        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+        <v-card elevation="2" class="pa-8 rounded-lg">
           <v-row>
             <v-col cols="12" md="6">
               <p class="mb-0">訂單總金額</p>
@@ -257,7 +265,7 @@
           </v-row>
         </v-card>
       </v-col>
-      <v-col cols="4">
+      <v-col cols="12" md="4">
         <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
           <h3 class="d-flex align-center mb-4">
             <v-icon class="mr-2">mdi-account</v-icon>客戶資訊

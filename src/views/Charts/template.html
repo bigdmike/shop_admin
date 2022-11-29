@@ -1,9 +1,9 @@
 <div id="Order">
   <v-container v-if="product_data!=null">
     <v-row>
-      <Breadcrumb :link_array="breadcrumb_data" />
       <v-col cols="12" md="12" lg="12" class="mx-auto">
-        <div class="header d-flex justify-end align-center">
+        <div class="header d-flex justify-space-between align-end">
+          <Breadcrumb :link_array="breadcrumb_data" class="pb-0" />
           <div class="d-flex align-center">
             <v-dialog
               ref="dialog"
@@ -17,7 +17,7 @@
                   :value="dateRangeText()"
                   :hide-details="true"
                   style="width:200px"
-                  class="text-caption"
+                  class="text-caption elevation-0"
                   prepend-inner-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"

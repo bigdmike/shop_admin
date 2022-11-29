@@ -2,7 +2,7 @@
 
 <script>
 export default {
-  name: "MainHeaderAccountMenu",
+  name: 'MainHeaderAccountMenu',
   data() {
     return {
       open: false,
@@ -18,36 +18,35 @@ export default {
         //   icon: "mdi-account-circle-outline"
         // },
         {
-          title: "登出",
-          link: "",
-          icon: "mdi-logout"
-        }
-      ]
-    }
+          title: '登出',
+          link: '',
+          icon: 'mdi-logout',
+        },
+      ],
+    };
   },
   methods: {
     IfPopUp(val) {
-      this.open = val
+      this.open = val;
     },
     Logout() {
-      this.RemoveToken()
-      this.$router.push("/login")
-    }
+      this.$cookie.delete('account_token');
+      this.$router.push('/login');
+    },
   },
   computed: {
     arrow_icon() {
-      return this.open ? "mdi-chevron-up" : "mdi-chevron-down"
+      return this.open ? 'mdi-chevron-up' : 'mdi-chevron-down';
     },
     user_data() {
-      if (this.$cookie.get("account_data")) {
-        return JSON.parse(this.$cookie.get("account_data"))
+      if (this.$cookie.get('account_data')) {
+        return JSON.parse(this.$cookie.get('account_data'));
+      } else {
+        return { name: '', admin_id: -1 };
       }
-      else {
-        return { name: "", admin_id: -1 }
-      }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

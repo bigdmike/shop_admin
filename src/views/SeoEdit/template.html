@@ -1,15 +1,11 @@
 <div id="Products">
-  <Breadcrumb :link_array="breadcrumb_data" />
-
   <v-container v-if="page_data!=null">
     <v-row>
       <v-col cols="12">
-        <p class="mt-0 mb-0">
-          {{page_list[$route.params.id]}} SEO設定
-        </p>
+        <Breadcrumb :link_array="breadcrumb_data" />
       </v-col>
       <v-col cols="12" md="8">
-        <v-card class="pa-5">
+        <v-card class="pa-5 elevation-1">
           <v-text-field
             label="標題"
             v-model="page_data[`meta_title_${$route.params.id}`].Content"

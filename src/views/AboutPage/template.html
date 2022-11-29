@@ -1,9 +1,9 @@
 <div id="Products">
-  <Breadcrumb :link_array="breadcrumb_data" />
-
   <v-container v-if="page_data!=null">
     <v-row>
-      <v-col cols="12"> <p class="mt-0 mb-0">區塊一</p> </v-col>
+      <v-col cols="12">
+        <Breadcrumb :link_array="breadcrumb_data" />
+      </v-col>
       <v-col cols="12" md="4">
         <MainImageCard
           :image_data="page_data.about_section_1_image"
@@ -12,7 +12,8 @@
         />
       </v-col>
       <v-col cols="12" md="8">
-        <v-card class="pa-5">
+        <v-card class="pa-5 elevation-1">
+          <p class="mt-0  primary--text font-weight-bold">區塊一</p>
           <v-text-field
             label="標題"
             v-model="page_data.about_section_1_title.Content"
@@ -28,7 +29,6 @@
           <FroalaEditor v-model="page_data.about_section_1_content.Content" />
         </v-card>
       </v-col>
-      <v-col cols="12"> <p class="mt-0 mb-0">區塊二</p> </v-col>
       <v-col cols="12" md="4">
         <MainImageCard
           :image_data="page_data.about_section_2_image"
@@ -37,7 +37,8 @@
         />
       </v-col>
       <v-col cols="12" md="8">
-        <v-card class="pa-5">
+        <v-card class="pa-5 elevation-1">
+          <p class="mt-0 primary--text font-weight-bold">區塊二</p>
           <v-text-field
             label="標題"
             v-model="page_data.about_section_2_title.Content"
@@ -53,7 +54,6 @@
           <FroalaEditor v-model="page_data.about_section_2_content.Content" />
         </v-card>
       </v-col>
-      <v-col cols="12"> <p class="mt-0 mb-0">區塊三</p> </v-col>
       <v-col cols="12" md="4">
         <MainImageCard
           :image_data="page_data.about_section_3_image"
@@ -62,7 +62,8 @@
         />
       </v-col>
       <v-col cols="12" md="8">
-        <v-card class="pa-5">
+        <v-card class="pa-5 elevation-1">
+          <p class="mt-0 primary--text font-weight-bold">區塊三</p>
           <v-text-field
             label="標題"
             v-model="page_data.about_section_3_title.Content"
@@ -78,7 +79,6 @@
           <FroalaEditor v-model="page_data.about_section_3_content.Content" />
         </v-card>
       </v-col>
-      <v-col cols="12"> <p class="mt-0 mb-0">區塊四</p> </v-col>
       <v-col cols="12" md="4">
         <MainImageCard
           :image_data="page_data.about_section_4_image"
@@ -87,7 +87,8 @@
         />
       </v-col>
       <v-col cols="12" md="8">
-        <v-card class="pa-5">
+        <v-card class="pa-5 elevation-1">
+          <p class="mt-0 primary--text font-weight-bold">區塊四</p>
           <v-text-field
             label="標題"
             v-model="page_data.about_section_4_title.Content"

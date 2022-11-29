@@ -1,22 +1,19 @@
 <template>
-  <v-dialog v-model="dialog" transition="dialog-bottom-transition" width="500">
+  <v-dialog v-model="dialog" width="500">
     <v-card v-if="category_data != null">
-      <v-card-title
-        style="border-bottom: 1px solid rgb(218, 218, 218)"
-        class="bg-primary"
-      >
+      <v-card-title class="primary--text">
         {{ mode == 'create' ? '新增' : '編輯' }}文章分類
       </v-card-title>
 
-      <v-card-text class="pt-5">
+      <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12" sm="12" md="12">
-              <p>分類標題</p>
               <v-text-field
                 v-model="category_data.Title"
                 placeholder="請輸入分類標題"
                 hide-details="auto"
+                label="分類標題"
                 outlined
                 dense
                 required
@@ -32,7 +29,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="primary" text @click="Cancel"> 取消 </v-btn>
-        <v-btn color="primary" @click="CreateData">
+        <v-btn color="primary" class="elevation-0" @click="CreateData">
           {{ mode == 'create' ? '新增' : '更新' }}
         </v-btn>
       </v-card-actions>

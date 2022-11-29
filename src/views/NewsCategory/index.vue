@@ -8,30 +8,38 @@ import {
   update_categories,
   delete_categories,
 } from '@/api/news';
-import draggable from 'vuedraggable';
 import Breadcrumb from '@/components/Breadcrumb/';
 import EditDialog from '@/components/NewsCategory/CategoryEditDialog/';
+import MainDragList from '@/components/MainDragList/index';
 import DeleteDialog from '@/components/MainDeleteDialog/';
 export default {
   name: 'NewsCategory',
   components: {
-    draggable,
     Breadcrumb,
     EditDialog,
     DeleteDialog,
+    MainDragList,
   },
   data() {
     return {
       drag: false,
+      options: {
+        action: [
+          {
+            title: '刪除',
+            class: 'error',
+            action: 'delete-action',
+          },
+        ],
+      },
       headers: [
-        { text: '', value: '' },
         {
-          text: '名稱',
+          text: '分類名稱',
           align: 'start',
           sortable: false,
-          value: 'Title',
+          value: 'TableTitle',
         },
-        { text: '建立時間', value: 'create_time' },
+        { text: '建立時間', value: 'created_at' },
         { text: '動作', value: 'action' },
       ],
       breadcrumb_data: [
@@ -51,7 +59,7 @@ export default {
     CheckSort() {
       let is_sort = true;
       this.news_categories.forEach((item, item_index) => {
-        item.Seq == item_index + 1 ? '' : (is_sort = false);
+        item.Seq == item_index + 2 ? '' : (is_sort = false);
       });
       is_sort ? '' : this.SortData();
     },
@@ -70,9 +78,10 @@ export default {
     OpenDeleteDialog(id) {
       this.$refs.DeleteDialog.Open(id);
     },
-    GetCategoryData() {
+    GetData() {
       get_categories().then((res) => {
         res.data.forEach((item, item_index) => {
+          res.data[item_index].TableTitle = item.Title;
           res.data[item_index].ID = item.NewsCategoryID;
         });
         this.news_categories = res.data;
@@ -82,7 +91,7 @@ export default {
     CreateData(category_item) {
       create_categories(category_item).then((res) => {
         if (res.code == 200) {
-          this.GetCategoryData();
+          this.GetData();
           this.$refs.EditDialog.Cancel();
         }
       });
@@ -90,36 +99,36 @@ export default {
     UpdateData(category_item) {
       update_categories(category_item).then((res) => {
         if (res.code == 200) {
-          this.GetCategoryData();
+          this.GetData();
           this.$refs.EditDialog.Cancel();
         }
       });
     },
-    SortData() {
-      let data = [];
-      this.news_categories.forEach((item, item_index) => {
-        data.push({
+    SortData(data) {
+      let tmp_data = [];
+      data.forEach((item, item_index) => {
+        tmp_data.push({
           ID: item.NewsCategoryID,
-          Seq: item_index + 1,
+          Seq: item_index + 2,
         });
       });
-      update_categories_sort(data).then((res) => {
+      update_categories_sort(tmp_data).then((res) => {
         if (res.code == 200) {
-          this.GetCategoryData();
+          this.GetData();
         }
       });
     },
     DeleteData(id) {
       delete_categories(id).then((res) => {
         if (res.code == 200) {
-          this.GetCategoryData();
+          this.GetData();
           this.$refs.DeleteDialog.Cancel();
         }
       });
     },
   },
   created() {
-    this.GetCategoryData();
+    this.GetData();
   },
 };
 </script>

@@ -13,7 +13,7 @@
       <MainMenu />
     </v-navigation-drawer>
 
-    <v-main class="blue-grey lighten-5" style="z-index:10">
+    <v-main class="blue-grey lighten-5 flex flex-column" style="z-index:10">
       <v-app-bar
         class="white elevation-2 pl-5"
         app
@@ -28,7 +28,7 @@
           :show="change_header == 'edit'"
         />
       </v-app-bar>
-      <v-container class="pa-6">
+      <v-container class="pa-md-6 flex-grow-1">
         <router-view ref="RouterView" class=""></router-view>
       </v-container>
     </v-main>
@@ -60,18 +60,15 @@ export default {
   methods: {
     ChangeHeader() {
       let pages = [
-        'HomePageEdit',
-        'AboutPageEdit',
+        '首頁頁面管理',
+        '關於頁面管理',
         '商品編輯',
-        'ProductCreate',
-        'About',
-        'CompanyInfo',
-        'PrivacyPage',
-        'SeoSetting',
-        'TermsOfCustomer',
-        'NewsCover',
-        'NewsEdit',
-        'SeoEdit',
+        '公司資訊管理',
+        '隱私權政策管理',
+        'SEO設定',
+        '會員條款管理',
+        '最新消息',
+        'SEO編輯',
       ];
       this.change_header =
         pages.filter((item) => item == this.$route.name).length > 0

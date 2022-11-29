@@ -1,10 +1,11 @@
 <div id="Products">
-  <Breadcrumb :link_array="breadcrumb_data" />
-
-  <v-container v-if="page_data!=null">
+  <div v-if="page_data!=null">
     <v-row>
       <v-col cols="12">
-        <p class="mt-0 mb-2">主打商品背景圖片</p>
+        <Breadcrumb :link_array="breadcrumb_data" />
+      </v-col>
+      <v-col cols="12">
+        <p class="mt-0 mb-2 primary--text font-weight-bold">主打商品背景圖片</p>
         <MainImageCard
           :image_data="page_data.home_main_product_bg"
           upload_key="home_main_product_bg"
@@ -12,18 +13,18 @@
         />
       </v-col>
       <v-col cols="12">
-        <p class="mt-0 mb-2">最新商品背景圖片</p>
+        <p class="mt-0 mb-2 primary--text font-weight-bold">最新商品背景圖片</p>
         <MainImageCard
           :image_data="page_data.home_new_product_bg"
           upload_key="home_new_product_bg"
           @update-action="UpdateImage"
         />
       </v-col>
-      <v-col cols="12">
-        <p class="mt-0 mb-0">廣告圖片區塊</p>
+      <v-col cols="12" class="pb-0">
+        <p class="mt-0 mb-0 primary--text font-weight-bold">廣告圖片區塊</p>
       </v-col>
       <v-col cols="12" md="6">
-        <v-card class="pa-5">
+        <v-card class="pa-5 elevation-1">
           <v-text-field
             label="連結"
             v-model="page_data.home_promote_1_link.Content"
@@ -39,7 +40,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="6">
-        <v-card class="pa-5">
+        <v-card class="pa-5 elevation-1">
           <v-text-field
             label="連結"
             v-model="page_data.home_promote_2_link.Content"
@@ -55,7 +56,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="12">
-        <v-card class="pa-5">
+        <v-card class="pa-5 elevation-1">
           <v-text-field
             label="連結"
             v-model="page_data.home_promote_3_link.Content"
@@ -70,5 +71,5 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </div>

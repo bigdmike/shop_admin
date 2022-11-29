@@ -1,0 +1,59 @@
+<div>
+  <v-container v-if="member_data!=null">
+    <v-row>
+      <v-col cols="12" class="d-flex justify-space-between">
+        <Breadcrumb :link_array="breadcrumb_data" />
+      </v-col>
+
+      <v-col cols="12" v-if="member_data!=null">
+        <v-card elevation="2" class="pa-8 rounded-lg">
+          <p class="mt-0  primary--text font-weight-bold">基本資料</p>
+          <p class="mt-0 mb-2 text-body-2 ">
+            <b class="blue--text text--darken-4">會員帳號：</b
+            >{{member_data.Account}}
+          </p>
+          <p class="mt-0 mb-2  text-body-2">
+            <b class="blue--text text--darken-4">會員名稱：</b
+            >{{member_data.Name}}
+          </p>
+          <p class="mt-0 mb-2  text-body-2">
+            <b class="blue--text text--darken-4">電話號碼：</b
+            >{{member_data.Phone}}
+          </p>
+          <p class="mt-0 mb-2  text-body-2">
+            <b class="blue--text text--darken-4">出生日期：</b
+            >{{member_data.Birthday}}
+          </p>
+          <p class="mt-0 mb-2  text-body-2">
+            <b class="blue--text text--darken-4">性別：</b
+            >{{member_data.Sex=="M"?"男":"女"}}
+          </p>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card elevation="2" class="pa-8  rounded-lg">
+          <p class="my-0 text-body-2 font-weight-bold">消費總額</p>
+          <h4 class="my-0 font-weight-black primary--text text-h4">
+            {{total_price}}
+          </h4>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card elevation="2" class="pa-8 rounded-lg">
+          <p class="my-0 text-body-2 font-weight-bold">訂單數量</p>
+          <h4 class="my-0 font-weight-black primary--text text-h4">
+            {{trade_data.length}}
+          </h4>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <MainList
+          :options="options"
+          :headers="headers"
+          @title-action="$router.push(`/order/${$event.TradeID}`)"
+          v-model="trade_data"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

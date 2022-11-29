@@ -1,49 +1,45 @@
 <div id="Products">
-  <Breadcrumb :link_array="breadcrumb_data" />
   <v-container v-if="seo_list!=null">
     <v-row>
       <v-col cols="12">
-        <div class="d-flex justify-space-between align-center">
-          <h3>SEO列表</h3>
-        </div>
+        <Breadcrumb :link_array="breadcrumb_data" />
+      </v-col>
+      <v-col cols="12">
+        <v-data-table
+          :disable-sort="true"
+          :headers="headers"
+          :items="seo_list"
+          :disable-pagination="true"
+          :hide-default-footer="true"
+          sort-by="calories"
+          class="elevation-1 pb-10"
+        >
+          <template v-slot:body="props">
+            <draggable
+              :list="seo_list"
+              tag="tbody"
+              handle=".page__grab-icon"
+              @end="drag=false"
+            >
+              <tr v-for="(item, index) in seo_list" :key="index">
+                <td>
+                  <v-icon small class="page__grab-icon">
+                    mdi-dots-grid
+                  </v-icon>
+                </td>
+                <td>
+                  <router-link :to="`seo_edit/${item.column_title}`"
+                    >{{ item.page }}</router-link
+                  >
+                </td>
+              </tr>
+            </draggable>
+          </template>
 
-        <v-container class="product_list px-0">
-          <v-data-table
-            :disable-sort="true"
-            :headers="headers"
-            :items="seo_list"
-            :disable-pagination="true"
-            :hide-default-footer="true"
-            sort-by="calories"
-            class="elevation-1 pb-10"
-          >
-            <template v-slot:body="props">
-              <draggable
-                :list="seo_list"
-                tag="tbody"
-                handle=".page__grab-icon"
-                @end="drag=false"
-              >
-                <tr v-for="(item, index) in seo_list" :key="index">
-                  <td>
-                    <v-icon small class="page__grab-icon">
-                      mdi-dots-grid
-                    </v-icon>
-                  </td>
-                  <td>
-                    <router-link :to="`seo_edit/${item.column_title}`"
-                      >{{ item.page }}</router-link
-                    >
-                  </td>
-                </tr>
-              </draggable>
-            </template>
-
-            <template v-slot:no-data>
-              <p>目前沒有資料可以顯示</p>
-            </template>
-          </v-data-table>
-        </v-container>
+          <template v-slot:no-data>
+            <p>目前沒有資料可以顯示</p>
+          </template>
+        </v-data-table>
       </v-col>
     </v-row>
   </v-container>

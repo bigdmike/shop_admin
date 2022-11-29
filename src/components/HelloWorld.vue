@@ -6,7 +6,7 @@
           :src="require('../assets/logo.png')"
           class="my-3"
           contain
-          height="60"
+          height="30"
         />
       </v-col>
 
@@ -26,5 +26,5 @@
 <script>
 export default {
   name: 'HelloWorld',
-}
+};
 </script>
