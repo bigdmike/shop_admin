@@ -130,6 +130,30 @@ export function post(url, params = {}, success_text = '') {
 }
 
 /*
+ *  post請求
+ *  url:請求地址
+ *  params:引數
+ * */
+export function prerender_post(url, params = {}) {
+  store.commit('SetPageLoading', 1);
+  return new Promise((resolve, reject) => {
+    service({
+      url: url,
+      method: 'post',
+      data: params,
+    })
+      .then((response) => {
+        resolve(response);
+        store.commit('SetPageLoading', -1);
+      })
+      .catch((error) => {
+        reject(error);
+        store.commit('SetPageLoading', -1);
+      });
+  });
+}
+
+/*
  *  put請求
  *  url:請求地址
  *  params:引數

@@ -1,4 +1,5 @@
 import { patch, del, put, get, post_image } from '@/common/request';
+import { recacheProduct } from '@/api/prerender';
 
 // 商品
 export function get_goods() {
@@ -77,6 +78,7 @@ export function create_goods_all(goods_item, images) {
   return goods_info.then((res) => {
     console.log(res);
     if (res.code == 200) {
+      let product_id = res.data.GoodsID;
       var goods_menu = patch(
         'admin/menu2goods/goods/' + res.data.GoodsID,
         menu_list,
@@ -102,7 +104,9 @@ export function create_goods_all(goods_item, images) {
       return Promise.all(GetPromise(promise_list)).then(
         (res) => {
           if (promise_list.length == res.length) {
-            return res;
+            return recacheProduct(product_id).then(() => {
+              return res;
+            });
           }
         },
         (err) => console.log(err)
@@ -162,7 +166,9 @@ export function update_goods_all(goods_item, images) {
   return Promise.all(GetPromise(promise_list)).then(
     (res) => {
       if (promise_list.length == res.length) {
-        return res;
+        return recacheProduct(goods_item.GoodsID).then(() => {
+          return res;
+        });
       }
     },
     (err) => console.log(err)

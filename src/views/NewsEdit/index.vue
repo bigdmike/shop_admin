@@ -4,6 +4,7 @@ import FroalaEditor from '@/components/FroalaEditor/';
 import Breadcrumb from '@/components/Breadcrumb/';
 import MainImageCard from '@/components/MainImageCard/';
 import DeleteDialog from '@/components/MainDeleteDialog';
+import { recacheNews } from '@/api/prerender.js';
 import {
   get_all_data,
   update_news,
@@ -98,23 +99,34 @@ export default {
       if (validate) {
         if (this.edit_mode == 'edit') {
           update_news(this.news_data).then(() => {
-            this.news_data.Image1 != null
-              ? this.UpdateImage()
-              : this.$router.push('/news');
+            if (this.news_data.Image1 != null) {
+              this.UpdateImage();
+            } else {
+              recacheNews(this.news_data.NewsID).then(() => {
+                this.$router.push('/news');
+              });
+            }
           });
         } else {
           create_news(this.news_data).then((res) => {
+            this.news_data.NewsID = res.data.NewsID;
             this.news_data.ID = res.data.NewsID;
-            this.news_data.Image1 != null
-              ? this.UpdateImage()
-              : this.$router.push('/news');
+            if (this.news_data.Image1 != null) {
+              this.UpdateImage();
+            } else {
+              recacheNews(this.news_data.NewsID).then(() => {
+                this.$router.push('/news');
+              });
+            }
           });
         }
       }
     },
     UpdateImage() {
       update_news_image(this.news_data.ID, this.news_data).then(() => {
-        this.$router.push('/news');
+        recacheNews(this.news_data.NewsID).then(() => {
+          this.$router.push('/news');
+        });
       });
     },
     CancelEdit() {

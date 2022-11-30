@@ -4,6 +4,7 @@ import FroalaEditor from '@/components/FroalaEditor/';
 import Breadcrumb from '@/components/Breadcrumb/';
 import MainImageCard from '@/components/MainImageCard/';
 import { get_common_column, updateData } from '@/api/common_column.js';
+import { recacheSeo } from '@/api/prerender.js';
 export default {
   name: 'SeoEdit',
   components: {
@@ -49,7 +50,9 @@ export default {
     },
     UpdateData() {
       updateData(this.page_data).then(() => {
-        this.$router.push('/seo_list');
+        recacheSeo(this.$route.params.id).then(() => {
+          this.$router.push('/seo_list');
+        });
       });
     },
     CancelEdit() {
