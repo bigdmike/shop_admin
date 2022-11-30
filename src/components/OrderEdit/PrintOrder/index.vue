@@ -1,11 +1,11 @@
 <template src="./template.html"></template>
 
 <script>
-import Vue from "vue";
-import Print from "vue-print-nb";
+import Vue from 'vue';
+import Print from 'vue-print-nb';
 Vue.use(Print);
 export default {
-  name: "OrderPrint",
+  name: 'OrderPrint',
   props: {
     order_data: {
       require: true,
@@ -31,18 +31,10 @@ export default {
       return this.zip_code.filter((item) => item.ZipCode == id)[0];
     },
   },
-  mounted() {
-    console.log(this.order_data.SubTradeList);
-  },
-  watch: {
-    order_data() {
-      console.log(this.order_data.SubTradeList);
-    },
-  },
   filters: {
     money_format(value) {
-      let val = (value / 1).toFixed(0).replace(".", ",");
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      let val = (value / 1).toFixed(0).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
 };

@@ -153,7 +153,6 @@ export default {
         });
       } else {
         create_goods_all(BoolToStr(this.product_data), images).then((res) => {
-          console.log(res);
           if (res[0].code == 200) {
             this.$router.push('/products');
           }
@@ -161,8 +160,7 @@ export default {
       }
     },
     DeleteData(id) {
-      delete_goods(id).then((res) => {
-        console.log(res);
+      delete_goods(id).then(() => {
         this.$router.push('/products');
       });
     },

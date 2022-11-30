@@ -249,7 +249,6 @@ export default {
       this.$refs.EditDialog.Open(0, this.id, option_type, '', 'create');
     },
     OpenEditOptionDialog(option, option_type) {
-      console.log(option[`${option_type}ID`]);
       this.$refs.EditDialog.Open(
         option[`${option_type}ID`],
         this.id,

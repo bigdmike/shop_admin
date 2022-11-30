@@ -15,7 +15,6 @@ export default {
       this.dialog = true;
     },
     Cancel() {
-      console.log('cancel');
       this.id = -1;
       this.dialog = false;
     },

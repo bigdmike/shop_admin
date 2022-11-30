@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="yongxin_admin" style="z-index:1">
     <MainSnackbar />
     <MainLoading />
     <MainDialog />
@@ -87,7 +87,6 @@ export default {
   },
   created() {
     this.ChangeHeader();
-    console.log(this.$cookie.get('account_token'));
     if (this.$cookie.get('account_token') == null) {
       this.$router.push('/login');
     }
@@ -115,6 +114,7 @@ export default {
   },
 };
 </script>
+<style lang="scss" src="@/assets/variables.scss"></style>
 
 <style>
 a {

@@ -2,13 +2,11 @@
 
 <script>
 import { get_common_column } from '@/api/common_column.js';
-import draggable from 'vuedraggable';
 import Breadcrumb from '@/components/Breadcrumb/';
 import DeleteDialog from '@/components/MainDeleteDialog';
 export default {
   name: 'SeoList',
   components: {
-    draggable,
     Breadcrumb,
     DeleteDialog,
   },
@@ -53,7 +51,6 @@ export default {
         'meta_content_productlist',
         'meta_image_productlist',
       ]).then((res) => {
-        console.log(res);
         this.seo_list.push({
           page: '首頁',
           column_title: 'home',

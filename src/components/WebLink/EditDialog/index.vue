@@ -71,9 +71,9 @@
 </template>
 
 <script>
-import { validEmpty } from "@/common/validate.js";
+import { validEmpty } from '@/common/validate.js';
 export default {
-  name: "QuestionEditDialog",
+  name: 'QuestionEditDialog',
   props: {
     category_list: {
       require: true,
@@ -82,25 +82,25 @@ export default {
   },
   data() {
     return {
-      title: "",
-      link: "",
-      category: "",
+      title: '',
+      link: '',
+      category: '',
       dialog: false,
-      status: "N",
+      status: 'N',
       status_data: [
         {
-          label: "顯示",
-          value: "Y",
+          label: '顯示',
+          value: 'Y',
         },
         {
-          label: "隱藏",
-          value: "N",
+          label: '隱藏',
+          value: 'N',
         },
       ],
       errors: {
-        title: "",
-        link: "",
-        category: "",
+        title: '',
+        link: '',
+        category: '',
       },
     };
   },
@@ -114,47 +114,46 @@ export default {
       this.seq = item.Seq;
       this.dialog = true;
       this.errors = {
-        title: "",
-        link: "",
-        category: "",
+        title: '',
+        link: '',
+        category: '',
       };
     },
     Cancel() {
       this.id = -1;
-      this.title = "";
-      this.link = "";
+      this.title = '';
+      this.link = '';
       this.category = -1;
-      this.status = "N";
+      this.status = 'N';
       this.seq = -1;
       this.dialog = false;
       this.errors = {
-        title: "",
-        link: "",
-        category: "",
+        title: '',
+        link: '',
+        category: '',
       };
     },
     UpdateQuestion() {
       let error = false;
       this.errors = {
-        title: "",
-        link: "",
-        category: "",
+        title: '',
+        link: '',
+        category: '',
       };
       if (!validEmpty(this.title)) {
-        this.errors.title = "請輸入連結名稱";
+        this.errors.title = '請輸入連結名稱';
         error = true;
       }
       if (!validEmpty(this.link)) {
-        this.errors.link = "請輸入連結網址";
+        this.errors.link = '請輸入連結網址';
         error = true;
       }
       if (!validEmpty(this.category)) {
-        this.errors.category = "請選擇選單群組";
+        this.errors.category = '請選擇選單群組';
         error = true;
       }
       if (!error) {
-        console.log(this.category);
-        this.$emit("update-weblink", {
+        this.$emit('update-weblink', {
           ID: parseInt(this.id),
           Title: this.title,
           Link: this.link,

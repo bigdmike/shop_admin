@@ -86,7 +86,6 @@ export default {
   methods: {
     async GetOrders() {
       GetOrderAndProduct().then((res) => {
-        console.log(res);
         this.products = res[0].data;
         this.discount_list = res[2].data;
         this.coupon_list = res[3].data;
@@ -128,7 +127,6 @@ export default {
           order_products.push(tmp_product);
         }
       });
-      console.log(order_products);
       return order_products;
     },
     GetProductDiscount(id) {
@@ -160,7 +158,6 @@ export default {
     },
     GetCVSOrder() {
       GetCVSOrder(this.order_data.TradeID).then((res) => {
-        console.log(res);
         if (res.code == 200) {
           let form = res.data.split('<form')[1].split('</form>')[0];
           form =
@@ -171,7 +168,6 @@ export default {
           document.querySelector('.form_area').innerHTML = '';
           document.querySelector('.form_area').innerHTML += form;
           document.querySelector('.form_area form').submit();
-          console.log(document.querySelector('.form_area form'));
         }
       });
     },
@@ -229,22 +225,3 @@ export default {
   },
 };
 </script>
-<style>
-.image_card {
-  transition: opacity 0.4s ease-in-out;
-  cursor: grab;
-}
-
-.img_card_control {
-  background-color: rgba(0, 0, 0, 0.541);
-  transition: opacity 0.4s ease-in-out;
-  opacity: 0;
-}
-.img_card_control.show {
-  opacity: 1;
-}
-
-.show-btns {
-  color: rgba(255, 255, 255, 1) !important;
-}
-</style>

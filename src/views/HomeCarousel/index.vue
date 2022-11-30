@@ -1,7 +1,6 @@
 <template src="./template.html"></template>
 
 <script>
-import draggable from 'vuedraggable';
 import Breadcrumb from '@/components/Breadcrumb/';
 import EditDialog from '@/components/HomeCarousel/EditDialog/index.vue';
 import ImageShow from '@/components/HomeCarousel/ImageShowDialog/index.vue';
@@ -17,7 +16,6 @@ import {
 export default {
   name: 'HomeCarousel',
   components: {
-    draggable,
     Breadcrumb,
     EditDialog,
     ImageShow,

@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     OpenEditDialog(item) {
-      console.log(item);
       this.$refs.EditDialog.Open(item, 'edit');
     },
     OpenCreateDialog() {

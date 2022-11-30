@@ -1,12 +1,8 @@
 <template src="./template.html"></template>
 
 <script>
-import draggable from 'vuedraggable';
 export default {
   name: 'MainDragList',
-  components: {
-    draggable,
-  },
   props: {
     value: {
       // 表格資料

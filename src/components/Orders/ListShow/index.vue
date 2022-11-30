@@ -1,7 +1,6 @@
 <template src="./template.html"></template>
 
 <script>
-import draggable from 'vuedraggable';
 export default {
   name: 'OrderListShow',
   props: {
@@ -33,9 +32,6 @@ export default {
       require: true,
       type: Array,
     },
-  },
-  components: {
-    draggable,
   },
   data() {
     return {

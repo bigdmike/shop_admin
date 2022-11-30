@@ -2,12 +2,13 @@
   <v-container>
     <v-row class="text-center">
       <v-col cols="12">
-        <v-img
+        <!-- <v-img
           :src="require('../assets/logo.png')"
           class="my-3"
           contain
           height="30"
-        />
+        /> -->
+        <h3 class="text-h4 primary--text font-weight-bold">耀聞管理後台</h3>
       </v-col>
 
       <v-col class="mb-4">

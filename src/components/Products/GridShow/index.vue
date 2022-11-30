@@ -1,7 +1,6 @@
 <template src="./template.html"></template>
 
 <script>
-import draggable from 'vuedraggable';
 import { ImageUrl, DataSort } from '@/common/filter.js';
 export default {
   name: 'ProductsGridShow',
@@ -26,9 +25,6 @@ export default {
       require: true,
       type: String,
     },
-  },
-  components: {
-    draggable,
   },
   data() {
     return {

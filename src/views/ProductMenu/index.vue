@@ -103,7 +103,6 @@ export default {
     //
     GetData() {
       getMenuAndCategory().then((res) => {
-        console.log(res);
         this.category_data = res[0].data;
         this.category_data.splice(0, 0, {
           MenuCategoryID: 'all',

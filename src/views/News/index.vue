@@ -2,14 +2,12 @@
 
 <script>
 import { get_all_data, update_news_sort, delete_news } from '@/api/news';
-import draggable from 'vuedraggable';
 import MainDragList from '@/components/MainDragList/index';
 import Breadcrumb from '@/components/Breadcrumb/';
 import DeleteDialog from '@/components/MainDeleteDialog';
 export default {
   name: 'NewsCover',
   components: {
-    draggable,
     Breadcrumb,
     DeleteDialog,
     MainDragList,

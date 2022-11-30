@@ -1,19 +1,6 @@
 <template src="./template.html"></template>
 
 <script>
-//Import Froala Editor
-import 'froala-editor/js/plugins.pkgd.min.js';
-//Import third party plugins
-import 'froala-editor/js/languages/zh_tw';
-// Import Froala Editor css files.
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-
-// Import and use Vue Froala lib.
-import VueFroala from 'vue-froala-wysiwyg';
-import Vue from 'vue';
-Vue.use(VueFroala);
-Vue.config.productionTip = false;
-
 export default {
   props: {
     value: {
@@ -26,8 +13,6 @@ export default {
         events: {
           'image.uploaded': function(response) {
             // Parse response to get image url.
-            console.log(response);
-            console.log(response.link);
             var img_url =
               'https://api.yaowenfruit.com/' + JSON.parse(response).link;
 
@@ -35,10 +20,6 @@ export default {
             this.image.insert(img_url, false, null, this.image.get(), response);
 
             return false;
-          },
-          'image.inserted': function($img, response) {
-            console.log($img, response);
-            // Image was inserted in the editor.
           },
           'image.error': function(error, response) {
             console.log(error, response);

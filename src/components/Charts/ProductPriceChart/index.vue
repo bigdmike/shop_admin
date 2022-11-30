@@ -1,11 +1,11 @@
 <template src="./template.html"></template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts';
+// import VueApexCharts from 'vue-apexcharts';
 export default {
   name: 'ProductSellChart',
   components: {
-    VueApexCharts,
+    // VueApexCharts,
   },
   props: {
     product_data: {

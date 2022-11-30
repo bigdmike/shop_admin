@@ -39,7 +39,6 @@ export default {
         `meta_content_${this.$route.params.id}`,
         `meta_image_${this.$route.params.id}`,
       ]).then((res) => {
-        console.log(res);
         res[`meta_image_${this.$route.params.id}`] = this.$SetImageObj(
           res[`meta_image_${this.$route.params.id}`],
           res[`meta_image_${this.$route.params.id}`].Content
@@ -49,8 +48,7 @@ export default {
       });
     },
     UpdateData() {
-      updateData(this.page_data).then((res) => {
-        console.log(res);
+      updateData(this.page_data).then(() => {
         this.$router.push('/seo_list');
       });
     },

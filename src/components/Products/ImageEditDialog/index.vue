@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable';
+// import draggable from 'vuedraggale';
 import DeleteDialog from '@/components/MainDeleteDialog/index.vue';
 import MainImageCard from '@/components/MainImageCard/';
 import {
@@ -85,7 +85,6 @@ export default {
   name: 'ProductImageCreateDialog',
   components: {
     DeleteDialog,
-    draggable,
     MainImageCard,
   },
   data() {

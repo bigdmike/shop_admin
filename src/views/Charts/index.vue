@@ -1,7 +1,6 @@
 <template src="./template.html"></template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts';
 import Breadcrumb from '@/components/Breadcrumb/';
 import TotalPriceChart from '@/components/Charts/TotalPriceChart';
 import ProductPriceChart from '@/components/Charts/ProductPriceChart';
@@ -10,7 +9,6 @@ import { GetOrderAndProduct } from '@/api/order.js';
 export default {
   name: 'Charts',
   components: {
-    VueApexCharts,
     Breadcrumb,
     TotalPriceChart,
     ProductPriceChart,

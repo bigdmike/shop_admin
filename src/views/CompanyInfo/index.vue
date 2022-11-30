@@ -27,8 +27,7 @@ export default {
   },
   methods: {
     async UpdateData() {
-      updateData(this.page_data).then((res) => {
-        console.log(res);
+      updateData(this.page_data).then(() => {
         this.GetPageData();
       });
     },

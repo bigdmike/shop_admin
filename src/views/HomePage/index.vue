@@ -27,8 +27,7 @@ export default {
   },
   methods: {
     UpdateData() {
-      updateData(this.page_data).then((res) => {
-        console.log(res);
+      updateData(this.page_data).then(() => {
         this.GetPageData();
       });
     },
@@ -47,7 +46,6 @@ export default {
         'home_promote_3_image',
         'home_promote_3_link',
       ]).then((res) => {
-        console.log(res);
         this.page_data = {};
         res.home_main_product_bg = this.$SetImageObj(
           res.home_main_product_bg,
