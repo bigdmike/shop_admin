@@ -18,7 +18,7 @@
         :style="dark_mode?'background-color: #999':''"
       >
         <v-card-title
-          :class="{'show':hover}"
+          :class="image_data.PreviewImage==''?'show':hover?'show':''"
           class="text-h6 white--text fill-height img_card_control"
         >
           <div
@@ -26,12 +26,12 @@
           >
             <v-btn
               @click="OpenUpload()"
-              :class="{ 'show-btns': hover }"
+              :class="image_data.PreviewImage==''?'show-btns':hover?'show-btns':''"
               color="rgba(255, 255, 255, 0)"
               icon
             >
               <v-icon
-                :class="{ 'show-btns': hover }"
+                :class="image_data.PreviewImage==''?'show-btns':hover?'show-btns':''"
                 small
                 color="rgba(255, 255, 255, 0)"
               >
@@ -41,12 +41,12 @@
             <v-btn
               v-if="delete_mode"
               @click="OpenDeleteDialog()"
-              :class="{ 'show-btns': hover }"
+              :class="image_data.PreviewImage==''?'show-btns':hover?'show-btns':''"
               color="rgba(255, 255, 255, 0)"
               icon
             >
               <v-icon
-                :class="{ 'show-btns': hover }"
+                :class="image_data.PreviewImage==''?'show-btns':hover?'show-btns':''"
                 small
                 color="rgba(255, 255, 255, 0)"
               >

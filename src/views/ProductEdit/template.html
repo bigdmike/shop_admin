@@ -106,7 +106,7 @@
                         aspect-ratio="1"
                       >
                         <v-card-title
-                          :class="{'show':hover}"
+                          :class="cover_file.cover_1_preview_url==''?'show':hover?'show':''"
                           class="text-h6 white--text fill-height img_card_control"
                         >
                           <div
@@ -114,12 +114,12 @@
                           >
                             <v-btn
                               @click="OpenUploadImage(1)"
-                              :class="{ 'show-btns': hover }"
+                              :class="cover_file.cover_1_preview_url==''?'show-btns':hover?'show-btns':''"
                               color="rgba(255, 255, 255, 0)"
                               icon
                             >
                               <v-icon
-                                :class="{ 'show-btns': hover }"
+                                :class="cover_file.cover_1_preview_url==''?'show-btns':hover?'show-btns':''"
                                 color="rgba(255, 255, 255, 0)"
                               >
                                 mdi-pencil-outline
@@ -207,9 +207,12 @@
                 elevation="0"
                 :class="{ 'on-hover': hover }"
               >
-                <v-img :src="cover_file.cover_2_preview_url">
+                <v-img
+                  :src="cover_file.cover_2_preview_url"
+                  :aspect-ratio="1200/630"
+                >
                   <v-card-title
-                    :class="{'show':hover}"
+                    :class="cover_file.cover_2_preview_url==''?'show':hover?'show':''"
                     class="text-h6 white--text fill-height img_card_control"
                   >
                     <div
@@ -217,12 +220,12 @@
                     >
                       <v-btn
                         @click="OpenUploadImage(2)"
-                        :class="{ 'show-btns': hover }"
+                        :class="cover_file.cover_2_preview_url==''?'show-btns':hover?'show-btns':''"
                         color="rgba(255, 255, 255, 0)"
                         icon
                       >
                         <v-icon
-                          :class="{ 'show-btns': hover }"
+                          :class="cover_file.cover_2_preview_url==''?'show-btns':hover?'show-btns':''"
                           color="rgba(255, 255, 255, 0)"
                         >
                           mdi-pencil-outline

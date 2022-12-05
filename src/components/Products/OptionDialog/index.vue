@@ -41,7 +41,7 @@
             >
           </div>
           <MainList
-            v-if="option_1 != null"
+            v-if="option_1 != null && option_1 != undefined"
             :options="option_table_options"
             :headers="option_table_headers"
             @delete-action="OpenDelete"
@@ -59,7 +59,7 @@
             >
           </div>
           <MainList
-            v-if="option_2 != null"
+            v-if="option_2 != null && option_2 != undefined"
             :options="option_table_options"
             :headers="option_table_headers"
             @delete-action="OpenDelete"
@@ -249,6 +249,7 @@ export default {
       this.$refs.EditDialog.Open(0, this.id, option_type, '', 'create');
     },
     OpenEditOptionDialog(option, option_type) {
+      console.log(option, option_type);
       this.$refs.EditDialog.Open(
         option[`${option_type}ID`],
         this.id,
@@ -261,12 +262,14 @@ export default {
       this.$refs.DeleteDialog.Open(item);
     },
     SortOption(data, title) {
+      console.log(data, title, this.product.GoodsID);
       data = data.filter(
         (item) => item.GoodsID == this.product.GoodsID || item.GoodsID == 0
       );
       data = data.filter((item) => item.Status == 'Y' && item.SizeTitle != 'F');
       data.forEach((item, item_index) => {
         data[item_index].TableTitle = item[title];
+        console.log(data[item_index]);
         if (data[item_index].TableTitle == '無') {
           data[item_index].TitleActionDisable = true;
           data[item_index].ActionDisable = true;
@@ -293,13 +296,11 @@ export default {
     },
     UpdateOptionData(data) {
       if (data.ColorTitle) {
-        data.ID = data.ColorID;
         update_color(data).then(() => {
           this.$refs.EditDialog.Cancel();
           this.GetGoodsStockData();
         });
       } else {
-        data.ID = data.SizeID;
         update_size(data).then(() => {
           this.$refs.EditDialog.Cancel();
           this.GetGoodsStockData();
@@ -309,6 +310,7 @@ export default {
     async DeleteOptionData(data) {
       // 停用相關庫存
       if (data.ColorTitle) {
+        data.ID = data.ColorID;
         for (let item of this.stocks) {
           if (item.ColorID == data.ColorID) {
             item.Status = 'N';
@@ -316,6 +318,7 @@ export default {
           }
         }
       } else {
+        data.ID = data.SizeID;
         for (let item of this.stocks) {
           if (item.SizeID == data.SizeID) {
             item.Status = 'N';
