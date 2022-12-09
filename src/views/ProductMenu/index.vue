@@ -110,6 +110,10 @@ export default {
         });
         res[1].data.forEach((item, item_index) => {
           res[1].data[item_index].TableTitle = item.Title;
+          if (item.MenuID == 4 || item.MenuID == 5 || item.MenuID == 7) {
+            res[1].data[item_index].TitleActionDisable = true;
+            res[1].data[item_index]['delete-actionDisable'] = true;
+          }
         });
         this.menu_data = res[1].data;
         this.CheckSort();
