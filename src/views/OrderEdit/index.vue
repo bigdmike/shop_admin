@@ -136,6 +136,7 @@ export default {
       return this.coupon_list.filter((item) => item.CouponID == id)[0];
     },
     GetPayment() {
+      console.log(this.payment_list, this.order_data.PaymentID);
       return this.payment_list.filter(
         (item) => item.PaymentID == this.order_data.PaymentID
       )[0];

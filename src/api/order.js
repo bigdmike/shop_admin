@@ -29,8 +29,8 @@ export function GetOrderAndProduct() {
     get('admin/trade'),
     get('admin/discount'),
     get('admin/coupon'),
-    get('payment'),
-    get('shipping'),
+    get('admin/payment'),
+    get('admin/shipping'),
     get('zipcode'),
   ];
 
