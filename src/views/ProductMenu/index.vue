@@ -139,9 +139,10 @@ export default {
         }
       });
     },
-    SortData() {
+    SortData(tmp_data) {
+      console.log(tmp_data);
       let data = [];
-      this.menu_data.forEach((item, item_index) => {
+      tmp_data.forEach((item, item_index) => {
         data.push({
           ID: item.MenuID,
           Seq: item_index + 2,
