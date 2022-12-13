@@ -6,11 +6,11 @@ export function GetOrderList(data_per_page, page, status, member_id) {
   page != -1 ? (url += '&Page=' + page) : '';
   status != 'all' ? (url += '&Status=' + status) : '';
   member_id != -1 ? (url += '&MemberID=' + member_id) : '';
-  let shipping = get('shipping');
+  let shipping = get('admin/shipping');
   let orders = get(url);
   let zip = get('zipcode');
-  let product = get('goods');
-  let payment = get('payment');
+  let product = get('admin/goods');
+  let payment = get('admin/payment');
   let promise_list = [orders, shipping, zip, product, payment];
 
   return Promise.all(GetPromise(promise_list)).then(

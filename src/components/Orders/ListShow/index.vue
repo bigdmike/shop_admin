@@ -32,6 +32,10 @@ export default {
       require: true,
       type: Array,
     },
+    payment_list: {
+      require: true,
+      type: Array,
+    },
   },
   data() {
     return {
@@ -39,6 +43,7 @@ export default {
         { text: '訂單編號', value: 'TradeID' },
         { text: '訂單日期', value: 'created_at' },
         { text: '客戶姓名', value: 'ReceiverName' },
+        { text: '付款方式', value: 'PaymentID' },
         { text: '運送方式', value: 'ShippingID' },
         { text: '訂單狀態', value: 'status' },
         { text: '總金額', value: 'total_price' },
@@ -89,6 +94,12 @@ export default {
         (item) => item.ShippingID == order_data.ShippingID
       );
       return ship_way.length > 0 ? ship_way[0] : { Title: '查無配送方式' };
+    },
+    GetPayment(order_data) {
+      let payment = this.payment_list.filter(
+        (item) => item.PaymentID == order_data.PaymentID
+      );
+      return payment.length > 0 ? payment[0] : { Title: '查無付款方式' };
     },
     ExcelExport() {
       this.$refs.ExcelExport.Export();

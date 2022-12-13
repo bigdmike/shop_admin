@@ -22,9 +22,12 @@
       {{item.created_at.slice(0,10)}}
     </template>
 
+    <template v-slot:item.PaymentID="{ item }">
+      {{GetPayment(item).Title}}
+    </template>
+
     <template v-slot:item.ShippingID="{ item }">
       {{GetShipway(item).Title}}
-      <!-- {{shipping_list.filter(list_item=>list_item.ShippingID == item.ShippingID)[0].Title }} -->
     </template>
 
     <template v-slot:item.status="{ item }">
