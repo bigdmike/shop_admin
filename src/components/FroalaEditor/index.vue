@@ -29,6 +29,7 @@ export default {
         imageDefaultWidth: 0,
         language: 'zh_tw',
         pastePlain: true,
+        videoUpload: false,
         toolbarButtons: [
           [
             'bold',
