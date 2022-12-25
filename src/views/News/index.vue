@@ -57,7 +57,7 @@ export default {
       this.news_data.forEach((item, item_index) => {
         item.Seq == item_index + 1 ? '' : (is_sort = false);
       });
-      is_sort ? '' : this.SortData();
+      is_sort ? '' : this.SortData(this.news_data);
     },
     GetData() {
       get_all_data().then((res) => {
