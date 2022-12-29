@@ -76,7 +76,7 @@ export default {
         ],
         heightMin: 200,
         heightMax: 600,
-        imageUploadURL: process.env.VUE_APP_BASE_API + 'editor/upload',
+        imageUploadURL: process.env.VUE_APP_BASE_API + '/editor/upload',
         imageUploadMethod: 'POST',
         imageStyles: {
           'w-full': 'w-full',
