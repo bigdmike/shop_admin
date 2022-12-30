@@ -83,7 +83,6 @@ export default {
         },
         requestHeaders: {
           Authorization: `${this.$cookie.get('account_token')}`,
-          'Access-Control-Allow-Origin-Type': '*',
         },
       },
       model: 'Edit Your Content Here!',
