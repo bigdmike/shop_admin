@@ -150,6 +150,7 @@ export default {
             (product) => product.GoodsID == item.GoodsID
           )[0];
           tmp_product.Amount = 1;
+          console.log(tmp_product);
           tmp_product.Option = tmp_product.Info.Stock.filter(
             (option) =>
               option.ColorID == item.ColorID && option.SizeID == item.SizeID

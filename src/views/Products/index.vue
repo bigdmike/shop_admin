@@ -93,6 +93,12 @@ export default {
           sortable: false,
           value: 'TableTitle',
         },
+        {
+          text: '商品庫存',
+          align: 'start',
+          sortable: false,
+          value: 'StockCount',
+        },
         { text: '上架時間', value: 'created_at' },
         { text: '上架狀態', value: 'Status' },
         { text: '動作', value: 'action' },
@@ -124,8 +130,14 @@ export default {
         res[1].data.forEach((item, item_index) => {
           res[1].data[item_index].TableTitle = item.Title;
           res[1].data[item_index].TableImage = item.Image1;
+          let stock_count = 0;
+          item.Stock.forEach((stock) => {
+            stock_count += parseInt(stock.Stock);
+          });
+          res[1].data[item_index].StockCount = stock_count;
         });
         this.product_data = res[1].data;
+        // StockCount
       });
     },
     CheckSort() {

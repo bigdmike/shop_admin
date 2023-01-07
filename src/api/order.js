@@ -9,7 +9,7 @@ export function GetOrderList(data_per_page, page, status, member_id) {
   let shipping = get('admin/shipping');
   let orders = get(url);
   let zip = get('zipcode');
-  let product = get('admin/goods');
+  let product = get('goods');
   let payment = get('admin/payment');
   let promise_list = [orders, shipping, zip, product, payment];
 

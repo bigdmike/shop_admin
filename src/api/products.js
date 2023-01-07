@@ -3,7 +3,7 @@ import { recacheProduct } from '@/api/prerender';
 
 // 商品
 export function get_goods() {
-  return get('admin/goods');
+  return get('goods');
 }
 export function create_goods(goods_item) {
   return put('admin/goods', goods_item, '已成功新增商品');
@@ -45,7 +45,7 @@ export function getGoodsAndCategory(id = -1) {
   //分類
   var category = get('admin/menu');
   //商品
-  var goods = get('admin/goods');
+  var goods = get('goods');
 
   let promise_list = [category, goods];
   if (id != -1) {
