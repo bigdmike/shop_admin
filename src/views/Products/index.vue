@@ -42,11 +42,11 @@ export default {
           value: 'all',
         },
         {
-          label: '已停用',
+          label: '已隱藏',
           value: 'N',
         },
         {
-          label: '已啟用',
+          label: '已發布',
           value: 'Y',
         },
       ],

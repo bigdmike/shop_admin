@@ -3,7 +3,7 @@ import { recacheProduct } from '@/api/prerender';
 
 // 商品
 export function get_goods() {
-  return get('goods');
+  return get('admin/goods');
 }
 export function create_goods(goods_item) {
   return put('admin/goods', goods_item, '已成功新增商品');

@@ -1,6 +1,6 @@
 import { get, patch } from '@/common/request.js';
 
-export function GetOrderList(data_per_page, page, status, member_id) {
+export function GetOrderList(data_per_page = 99999, page, status, member_id) {
   let url = '/admin/trade?';
   data_per_page != -1 ? (url += 'PageLimit=' + data_per_page) : '';
   page != -1 ? (url += '&Page=' + page) : '';
@@ -9,7 +9,7 @@ export function GetOrderList(data_per_page, page, status, member_id) {
   let shipping = get('admin/shipping');
   let orders = get(url);
   let zip = get('zipcode');
-  let product = get('goods');
+  let product = get('admin/goods');
   let payment = get('admin/payment');
   let promise_list = [orders, shipping, zip, product, payment];
 
@@ -25,7 +25,7 @@ export function GetOrderList(data_per_page, page, status, member_id) {
 
 export function GetOrderAndProduct() {
   let promise_list = [
-    get('goods'),
+    get('admin/goods'),
     get('admin/trade'),
     get('admin/discount'),
     get('admin/coupon'),
