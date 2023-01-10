@@ -13,6 +13,8 @@
 
 <script>
 import DownloadExcel from 'vue-json-excel';
+import * as XLSX from 'xlsx/xlsx.mjs';
+
 export default {
   name: 'ExcelExport',
   components: {
@@ -75,7 +77,21 @@ export default {
   },
   methods: {
     Export() {
-      this.$refs.DownloadBtn.generate();
+      let export_json = [];
+      this.export_order_data.forEach((item, item_index) => {
+        let tmp_data = {};
+        Object.keys(this.columns).forEach((new_key) => {
+          tmp_data[new_key] = this.export_order_data[item_index][
+            this.columns[new_key]
+          ];
+        });
+        export_json.push(tmp_data);
+      });
+
+      const data = XLSX.utils.json_to_sheet(export_json);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, data, 'kalacloud-data');
+      XLSX.writeFile(wb, 'kalacloudExportExcel.xlsx');
     },
     SetExportData() {
       let order_data = JSON.parse(JSON.stringify(this.order_data));
