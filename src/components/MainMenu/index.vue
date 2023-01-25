@@ -91,6 +91,10 @@ export default {
               title: '商品分類',
               link: '/product_menu',
             },
+            {
+              title: '銷售頁管理',
+              link: '/event_page',
+            },
             // {
             //   title: '商品目錄',
             //   link: '/categories',

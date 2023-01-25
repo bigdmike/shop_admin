@@ -97,6 +97,30 @@ const routes = [
       ),
   },
   {
+    path: '/event_page',
+    name: '銷售頁管理',
+    component: () =>
+      import(
+        /* webpackChunkName: "event_page" */ '../views/EventPage/index.vue'
+      ),
+  },
+  {
+    path: '/event_page/new/',
+    name: '新增銷售頁',
+    component: () =>
+      import(
+        /* webpackChunkName: "create_event_page" */ '../views/EventPageEdit/index.vue'
+      ),
+  },
+  {
+    path: '/event_page/:id',
+    name: '編輯銷售頁',
+    component: () =>
+      import(
+        /* webpackChunkName: "edit_event_page" */ '../views/EventPageEdit/index.vue'
+      ),
+  },
+  {
     path: '/categories',
     name: 'Categories',
     component: () =>

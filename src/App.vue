@@ -70,6 +70,8 @@ export default {
         '會員條款管理',
         '最新消息',
         'SEO編輯',
+        '新增銷售頁',
+        '編輯銷售頁',
       ];
       this.change_header =
         pages.filter((item) => item == this.$route.name).length > 0

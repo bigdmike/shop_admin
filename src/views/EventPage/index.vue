@@ -14,7 +14,7 @@ import DeleteDialog from '@/components/MainDeleteDialog/';
 import MenuEditDialog from '@/components/ProductMenu/MenuEditDialog/';
 import Breadcrumb from '@/components/Breadcrumb/';
 export default {
-  name: 'ProductMenu',
+  name: 'EventPage',
   components: {
     FilterDialog,
     Breadcrumb,
@@ -30,7 +30,7 @@ export default {
           link: '',
         },
         {
-          title: '商品分類管理',
+          title: '銷售頁管理',
           link: '',
         },
       ],
@@ -51,12 +51,12 @@ export default {
         ],
         status: [
           {
-            title: '顯示',
+            title: '啟用',
             class: 'success',
             condition: 'Y',
           },
           {
-            title: '隱藏',
+            title: '停用',
             class: '',
             condition: 'N',
           },
@@ -64,13 +64,14 @@ export default {
       },
       headers: [
         {
-          text: '分類名稱',
+          text: '頁面標題',
           align: 'start',
           sortable: false,
           value: 'TableTitle',
         },
-        { text: '上架時間', value: 'created_at' },
-        { text: '顯示狀態', value: 'Status' },
+        { text: '開始時間', value: 'MenuTimeStart' },
+        { text: '結束時間', value: 'MenuTimeEnd' },
+        { text: '啟用狀態', value: 'Status' },
         { text: '動作', value: 'action' },
       ],
     };
@@ -93,7 +94,7 @@ export default {
       this.menu_data.forEach((item, item_index) => {
         item.Seq == item_index + 2 ? '' : (is_sort = false);
       });
-      is_sort ? '' : this.SortData();
+      is_sort ? '' : this.SortData(this.menu_data);
     },
     GetCategoryName() {
       return this.category_data.filter(
@@ -117,7 +118,7 @@ export default {
         });
         // 去除獨立銷售頁的分類
         this.menu_data = res[1].data.filter((item) => {
-          return item.Content5 != '獨立銷售頁';
+          return item.Content5 == '獨立銷售頁';
         });
         this.CheckSort();
       });
