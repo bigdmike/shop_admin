@@ -51,6 +51,7 @@ export default {
       GetOrderAndProduct().then((res) => {
         this.product_data = res[0].data;
         this.trade_data = res[1].data.List;
+        this.trade_data = this.trade_data.filter((item) => item.Status != 'C');
         this.discount_data = res[2].data;
         this.coupon_data = res[3].data;
         this.payment_data = res[4].data;
