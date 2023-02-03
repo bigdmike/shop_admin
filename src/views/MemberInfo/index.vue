@@ -104,9 +104,11 @@ export default {
               item_index
             ].Price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
           });
-          this.trade_data = trade_data.filter(
-            (item) => item.MemberID == this.member_data.MemberID
-          );
+          this.trade_data = trade_data.filter((item) => {
+            return (
+              item.MemberID == this.member_data.MemberID && item.Status != 'C'
+            );
+          });
         }
       });
     },

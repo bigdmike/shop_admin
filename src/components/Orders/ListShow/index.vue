@@ -42,7 +42,7 @@ export default {
       headers: [
         { text: '訂單編號', value: 'TradeID' },
         { text: '訂單日期', value: 'created_at' },
-        { text: '客戶姓名', value: 'ReceiverName' },
+        { text: '客戶姓名', value: 'BuyerName' },
         { text: '付款方式', value: 'PaymentID' },
         { text: '運送方式', value: 'ShippingID' },
         { text: '訂單狀態', value: 'status' },

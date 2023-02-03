@@ -8,6 +8,7 @@ import MainDragList from '@/components/MainDragList/index';
 import OptionDialog from '@/components/Products/OptionDialog/index';
 import ImageEditDialog from '@/components/Products/ImageEditDialog/index.vue';
 import Breadcrumb from '@/components/Breadcrumb/';
+import SortDialog from '@/components/Products/SortDialog/index.vue';
 import {
   getGoodsAndCategory,
   delete_goods,
@@ -23,6 +24,7 @@ export default {
     Breadcrumb,
     ImageEditDialog,
     MainDragList,
+    SortDialog,
   },
   data() {
     return {
@@ -57,12 +59,17 @@ export default {
       options: {
         action: [
           {
-            title: '圖片設定',
+            title: '排序',
+            class: 'blue-grey white--text mr-2',
+            action: 'open-sort-action',
+          },
+          {
+            title: '圖片',
             class: 'primary mr-2',
             action: 'image-action',
           },
           {
-            title: '庫存設定',
+            title: '庫存',
             class: 'success mr-2',
             action: 'stock-action',
           },
@@ -106,6 +113,9 @@ export default {
     };
   },
   methods: {
+    OpenSortDialog(product) {
+      this.$refs.SortDialog.Open(product);
+    },
     OpenFilterDialog() {
       this.$refs.FilterDialog.Open();
     },

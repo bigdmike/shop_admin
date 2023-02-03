@@ -137,6 +137,34 @@
 
           <v-col cols="12">
             <v-card elevation="2" class="pa-8 rounded-lg ">
+              <h3 class="d-flex align-center mb-4">
+                <v-icon class="mr-2">mdi-shape-outline</v-icon>販售期間
+              </h3>
+              <v-select
+                v-model="product_data.GoodsTimeSet"
+                label="限制販售期間"
+                :items="time_status_data"
+                item-text="label"
+                item-value="value"
+                dense
+                outlined
+              ></v-select>
+
+              <template v-if="product_data.GoodsTimeSet">
+                <DateTimePicker
+                  label="開始販售時間"
+                  v-model="product_data.GoodsTimeStart"
+                />
+                <DateTimePicker
+                  label="結束販售時間"
+                  v-model="product_data.GoodsTimeEnd"
+                />
+              </template>
+            </v-card>
+          </v-col>
+
+          <v-col cols="12">
+            <v-card elevation="2" class="pa-8 rounded-lg ">
               <h3 class="d-flex align-center">
                 <v-icon class="mr-2">mdi-shape-outline</v-icon>商品分類
               </h3>

@@ -1,6 +1,12 @@
 <div id="Products">
   <v-container v-if="product_data!=null">
     <OptionDialog ref="OptionDialog" />
+    <SortDialog
+      ref="SortDialog"
+      @get-data-action="GetProductData"
+      :product_list="product_data"
+    />
+
     <FilterDialog
       ref="FilterDialog"
       :product_status_data="product_status_data"
@@ -105,6 +111,7 @@
           @sort-action="UpdateProductSort"
           @image-action="OpenImageDialog"
           @stock-action="OpenStockDialog($event.GoodsID)"
+          @open-sort-action="OpenSortDialog($event)"
           v-model="filter_product_data"
         />
       </v-col>

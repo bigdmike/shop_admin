@@ -268,7 +268,27 @@
       <v-col cols="12" md="4">
         <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
           <h3 class="d-flex align-center mb-4">
-            <v-icon class="mr-2">mdi-account</v-icon>客戶資訊
+            <v-icon class="mr-2">mdi-account-cash</v-icon>分潤標籤
+          </h3>
+          <p class="mb-0 font-weight-black">
+            {{order_data.OrderMemo?order_data.OrderMemo:"無"}}
+          </p>
+        </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-account</v-icon>購買人資訊
+          </h3>
+          <p class="mb-0 font-weight-black">{{order_data.BuyerName}}</p>
+          <p class="mb-0 grey--text text--darken-2 body-2">
+            {{order_data.BuyerPhone}}
+          </p>
+          <p class="mb-0 grey--text text--darken-2 body-2">
+            {{order_data.ReceiverEmail}}
+          </p>
+        </v-card>
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-account</v-icon>收件人資訊
           </h3>
           <p class="mb-0 font-weight-black">{{order_data.ReceiverName}}</p>
           <p class="mb-2 grey--text text--darken-2 body-2">
@@ -277,9 +297,6 @@
           </p>
           <p class="mb-0 grey--text text--darken-2 body-2">
             {{order_data.ReceiverPhone}}
-          </p>
-          <p class="mb-0 grey--text text--darken-2 body-2">
-            {{order_data.ReceiverEmail}}
           </p>
         </v-card>
         <v-card elevation="2" class="pa-8 mb-5 rounded-lg">

@@ -4,6 +4,7 @@
 import Breadcrumb from '@/components/Breadcrumb/';
 import FroalaEditor from '@/components/FroalaEditor/';
 import DeleteDialog from '@/components/MainDeleteDialog/index';
+import DateTimePicker from '@/components/DateTimePicker/index.vue';
 
 import {
   getGoodsAndCategory,
@@ -18,6 +19,7 @@ export default {
     Breadcrumb,
     FroalaEditor,
     DeleteDialog,
+    DateTimePicker,
   },
   data() {
     return {
@@ -41,6 +43,16 @@ export default {
           value: false,
         },
       ],
+      time_status_data: [
+        {
+          label: '指定期間內販售',
+          value: true,
+        },
+        {
+          label: '不限制販售時間',
+          value: false,
+        },
+      ],
       product_data: null,
       category_data: [],
       cover_file: {
@@ -60,6 +72,20 @@ export default {
       let error = '';
       if (this.product_data.name == '') {
         error += '- 請輸入商品名稱 <br>';
+      }
+      if (this.product_data.GoodsTimeSet) {
+        if (
+          this.product_data.GoodsTimeStart == '' ||
+          this.product_data.GoodsTimeStart == null
+        ) {
+          error += '- 請選擇開始販售時間 <br>';
+        }
+        if (
+          this.product_data.GoodsTimeEnd == '' ||
+          this.product_data.GoodsTimeEnd == null
+        ) {
+          error += '- 請選擇結束販售時間 <br>';
+        }
       }
       if (error == '') {
         this.UpdateProductData();
@@ -102,12 +128,26 @@ export default {
               Option2: '商品Option2',
               DeliveryFrozen: false,
               RecommendMenuID: '',
+              GoodsTimeStart: '',
+              GoodsTimeEnd: '',
+              GoodsTimeSet: 'N',
               Menu: [],
               MenuID: [],
             }
           );
         } else {
           this.edit_type = 'edit';
+          product_data[0].GoodsTimeSet =
+            product_data[0].GoodsTimeStart != null &&
+            product_data[0].GoodsTimeEnd != null
+              ? true
+              : false;
+          if (product_data[0].GoodsTimeStart == null) {
+            product_data[0].GoodsTimeStart = '';
+          }
+          if (product_data[0].GoodsTimeEnd == null) {
+            product_data[0].GoodsTimeEnd = '';
+          }
           this.product_data = product_data[0];
           this.product_data.MenuID = [];
           this.product_data.Menu.forEach((item) => {
@@ -147,6 +187,10 @@ export default {
     },
     async UpdateProductData() {
       const images = [this.cover_file.cover_1, this.cover_file.cover_2];
+      if (!this.product_data.GoodsTimeSet) {
+        this.product_data.GoodsTimeStart = null;
+        this.product_data.GoodsTimeEnd = null;
+      }
       if (this.edit_type == 'edit') {
         update_goods_all(BoolToStr(this.product_data), images).then(() => {
           this.GetProductData();

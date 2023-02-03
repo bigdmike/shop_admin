@@ -52,7 +52,7 @@ export default {
           let total_price = 0;
           res[0].data.List[item_index].TableTitle = item.Name;
           this.trade_data.forEach((trade) => {
-            if (trade.MemberID == item.MemberID) {
+            if (trade.MemberID == item.MemberID && trade.Status != 'C') {
               total_price += parseInt(trade.Price);
             }
           });

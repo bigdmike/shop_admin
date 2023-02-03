@@ -79,13 +79,34 @@ export default {
     Export() {
       let export_json = [];
       this.export_order_data.forEach((item, item_index) => {
-        let tmp_data = {};
-        Object.keys(this.columns).forEach((new_key) => {
-          tmp_data[new_key] = this.export_order_data[item_index][
-            this.columns[new_key]
-          ];
+        item.ProductName.forEach((product, product_index) => {
+          let tmp_data = {};
+          if (product_index == 0) {
+            Object.keys(this.columns).forEach((new_key) => {
+              if (new_key != '品名') {
+                tmp_data[new_key] = this.export_order_data[item_index][
+                  this.columns[new_key]
+                ];
+              } else {
+                tmp_data[new_key] = this.export_order_data[
+                  item_index
+                ].ProductName[0];
+              }
+            });
+          } else {
+            Object.keys(this.columns).forEach((new_key) => {
+              if (new_key != '品名') {
+                tmp_data[new_key] = '';
+              } else {
+                tmp_data[new_key] = this.export_order_data[
+                  item_index
+                ].ProductName[product_index];
+              }
+            });
+          }
+
+          export_json.push(tmp_data);
         });
-        export_json.push(tmp_data);
       });
 
       const data = XLSX.utils.json_to_sheet(export_json);
@@ -124,7 +145,9 @@ export default {
         order_data[item_index].ProductName = this.GetOrderProducts(
           item.SubTradeList
         );
+        // order_data[item_index].ProductName = item.SubTradeList;
       });
+
       this.export_order_data = order_data;
       this.$nextTick(() => {
         this.Export();
@@ -166,7 +189,6 @@ export default {
             (product) => product.GoodsID == item.GoodsID
           )[0];
           tmp_product.Amount = 1;
-          console.log(tmp_product);
           tmp_product.Option = tmp_product.Info.Stock.filter(
             (option) =>
               option.ColorID == item.ColorID && option.SizeID == item.SizeID
@@ -176,19 +198,23 @@ export default {
       });
 
       // Option.SizeTitle Option.ColorTitle
-      let product_str = '';
-      order_products.forEach((item, item_index) => {
-        item_index != 0 ? (product_str += ';') : '';
-        product_str +=
+      let product_list = [];
+      order_products.forEach((item) => {
+        let product_str = '';
+        // item_index != 0 ? (product_str += ';') : '';
+        product_str =
           item.Info.Title +
-          '_' +
+          ' - ' +
           item.Option.ColorTitle +
           '_' +
           item.Option.SizeTitle +
-          'x' +
+          '，NT$' +
+          item.FinalPrice +
+          ' x ' +
           item.Amount;
+        product_list.push(product_str);
       });
-      return product_str;
+      return product_list;
     },
   },
 };

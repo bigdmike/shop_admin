@@ -1,0 +1,46 @@
+<v-dialog v-model="dialog" width="500">
+  <v-card>
+    <v-container>
+      <v-row>
+        <v-col class="d-flex" cols="12">
+          <h4>商品排序調整</h4>
+        </v-col>
+        <v-col class="d-flex" cols="12">
+          <v-btn class="elevation-0 mr-2" small color="success" @click="Seq=1">
+            置頂
+          </v-btn>
+
+          <v-btn
+            class="elevation-0"
+            small
+            color="black"
+            dark
+            @click="Seq=product_list.length"
+          >
+            置底
+          </v-btn>
+        </v-col>
+        <v-col class="d-flex" cols="12">
+          <v-text-field
+            label="商品排序"
+            v-model="Seq"
+            dense
+            outlined
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-divider></v-divider>
+
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn class="elevation-0" color="grey lighten-2" @click="dialog = false">
+        取消
+      </v-btn>
+      <v-btn class="elevation-0" color="primary" @click="UpdateSort">
+        確定
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
