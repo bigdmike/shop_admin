@@ -78,6 +78,7 @@
           @delete-action="OpenDeleteDialog"
           @title-action="$router.push(`/event_page/${$event.MenuID}`)"
           @sort-action="SortData"
+          @url-action="ShowUrl($event)"
           v-model="filter_menu_data"
         />
       </v-col>

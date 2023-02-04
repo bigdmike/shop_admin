@@ -30,6 +30,28 @@
               dense
             ></v-select>
           </v-col>
+          <v-col cols="12">
+            <v-select
+              v-model="menu_data.MenuTimeSet"
+              label="限制販售期間"
+              :items="status_list"
+              item-text="label"
+              item-value="value"
+              dense
+              outlined
+            ></v-select>
+
+            <template v-if="menu_data.MenuTimeSet == 'Y'">
+              <DateTimePicker
+                label="開始販售時間"
+                v-model="menu_data.MenuTimeStart"
+              />
+              <DateTimePicker
+                label="結束販售時間"
+                v-model="menu_data.MenuTimeEnd"
+              />
+            </template>
+          </v-col>
         </v-row>
       </v-card-text>
 
@@ -47,6 +69,7 @@
 </template>
 
 <script>
+import DateTimePicker from '@/components/DateTimePicker/index.vue';
 export default {
   name: 'MenuEditDialog',
   props: {
@@ -54,6 +77,9 @@ export default {
       require: true,
       type: Array,
     },
+  },
+  components: {
+    DateTimePicker,
   },
   data() {
     return {
@@ -76,7 +102,19 @@ export default {
     Open(item, edit_type) {
       this.edit_type = edit_type;
       if (edit_type == 'edit') {
-        this.menu_data = Object.assign({}, item);
+        let menu_data = Object.assign({}, item);
+        menu_data.MenuTimeSet =
+          menu_data.MenuTimeStart != null && menu_data.MenuTimeEnd != null
+            ? 'Y'
+            : 'N';
+        if (menu_data.MenuTimeStart == null) {
+          menu_data.MenuTimeStart = '';
+        }
+        if (menu_data.MenuTimeEnd == null) {
+          menu_data.MenuTimeEnd = '';
+        }
+
+        this.menu_data = menu_data;
         this.menu_data.ID = this.menu_data.MenuID;
       } else {
         this.menu_data = Object.assign(
@@ -106,6 +144,20 @@ export default {
       if (this.menu_data.Status == '') {
         error_msg += '- 請選擇啟用狀態<br/>';
       }
+      if (this.menu_data.MenuTimeSet == 'Y') {
+        if (
+          this.menu_data.MenuTimeStart == '' ||
+          this.menu_data.MenuTimeStart == null
+        ) {
+          error_msg += '- 請選擇開始販售時間 <br>';
+        }
+        if (
+          this.menu_data.MenuTimeEnd == '' ||
+          this.menu_data.MenuTimeEnd == null
+        ) {
+          error_msg += '- 請選擇結束販售時間 <br>';
+        }
+      }
 
       if (error_msg == '') {
         this.SendData();
@@ -119,6 +171,10 @@ export default {
       }
     },
     SendData() {
+      if (this.menu_data.MenuTimeSet == 'N') {
+        this.menu_data.MenuTimeStart = null;
+        this.menu_data.MenuTimeEnd = null;
+      }
       if (this.edit_type == 'edit') {
         this.$emit('update-action', this.menu_data);
       } else {

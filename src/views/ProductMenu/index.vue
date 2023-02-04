@@ -93,7 +93,7 @@ export default {
       this.menu_data.forEach((item, item_index) => {
         item.Seq == item_index + 2 ? '' : (is_sort = false);
       });
-      is_sort ? '' : this.SortData();
+      is_sort ? '' : this.SortData(this.menu_data);
     },
     GetCategoryName() {
       return this.category_data.filter(

@@ -44,6 +44,11 @@ export default {
       options: {
         action: [
           {
+            title: '產生網址',
+            class: 'primary mr-2',
+            action: 'url-action',
+          },
+          {
             title: '刪除',
             class: 'error',
             action: 'delete-action',
@@ -77,6 +82,17 @@ export default {
     };
   },
   methods: {
+    ShowUrl(event) {
+      let url = 'https://www.yaowenfruit.com/event/' + event.MenuID;
+      if (event.Content6 != '' && event.Content6 != null) {
+        url += '?order_memo=' + event.Content6;
+      }
+      this.$store.commit('SetDialog', {
+        title: '銷售頁網址產生',
+        content: `已產生獨立銷售頁專屬網址，請複製以下網址：<br/><a href="${url}" target="_blank">${url}</a>`,
+        status: true,
+      });
+    },
     OpenCreateDialog() {
       this.$refs.MenuEditDialog.Open(null, 'create');
     },
