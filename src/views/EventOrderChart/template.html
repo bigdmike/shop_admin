@@ -1,0 +1,27 @@
+<div id="Products">
+  <v-container>
+    <v-row>
+      <v-col cols="12" class="d-flex justify-space-between align-end">
+        <Breadcrumb :link_array="breadcrumb_data" class="pb-0" />
+      </v-col>
+      <v-col cols="12">
+        <v-card class="elevation-1 pa-8 rounded-lg">
+          <p class="primary--text mb-0 caption">分潤標籤</p>
+          <h2 class="mb-0">{{$route.params.id}}</h2>
+        </v-card>
+      </v-col>
+      <v-col cols="12" class="mb-5">
+        <TotalPriceChart ref="TotalPriceChart" elevation="2" class="pa-8 rounded-lg" :order_data="order_data"
+          :date_between="date_between" />
+      </v-col>
+      <v-col cols="12" class="mb-5">
+        <ProductPriceChart ref="ProductPriceChart" elevation="2" class="pa-8 rounded-lg" :product_data="product_data" />
+      </v-col>
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto">
+        <MainList :options="options" :headers="headers" @title-action="$router.push(`/order/${$event.TradeID}`)"
+          v-model="filter_order_data" />
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

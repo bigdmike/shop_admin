@@ -111,8 +111,8 @@ export default {
 
       const data = XLSX.utils.json_to_sheet(export_json);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, data, 'kalacloud-data');
-      XLSX.writeFile(wb, 'kalacloudExportExcel.xlsx');
+      XLSX.utils.book_append_sheet(wb, data, '訂單資料');
+      XLSX.writeFile(wb, '耀聞水果世界訂單匯出.xlsx');
     },
     SetExportData() {
       let order_data = JSON.parse(JSON.stringify(this.order_data));

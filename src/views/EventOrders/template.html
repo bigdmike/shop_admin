@@ -1,0 +1,21 @@
+<div id="Products">
+  <v-container>
+    <v-row>
+      <v-col cols="12" class="d-flex justify-space-between align-end">
+        <Breadcrumb :link_array="breadcrumb_data" class="pb-0" />
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto">
+        <div class="searchbar d-flex align-stretch  pb-2">
+          <v-btn class="ma-0 py-0 filter_btn  black--text" outlined>
+            分潤標籤搜尋
+          </v-btn>
+          <v-text-field class="searchtext" v-model="key_word" hide-details="auto" color="grey darken-2" outlined dense
+            append-icon="mdi-magnify"></v-text-field>
+        </div>
+
+        <MainList :options="options" :headers="headers"
+          @title-action="$router.push(`/event_order/${$event.TableTitle}`)" v-model="filter_order_data" />
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

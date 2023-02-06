@@ -178,6 +178,19 @@
                 hide-details
                 multiple
               ></v-select>
+              <h3 class="d-flex align-center">
+                <v-icon class="mr-2">mdi-shape-outline</v-icon>銷售頁販售
+              </h3>
+              <v-select
+                class="mb-8"
+                v-model="product_data.EventID"
+                :items="event_data"
+                item-text="Title"
+                item-value="MenuID"
+                chips
+                hide-details
+                multiple
+              ></v-select>
               <!-- multiple -->
               <h3 class="d-flex align-center mt-4">
                 <v-icon class="mr-2">mdi-list-status</v-icon>推薦商品分類

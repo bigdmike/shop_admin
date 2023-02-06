@@ -74,6 +74,10 @@ export default {
               title: '所有訂單',
               link: '/orders',
             },
+            {
+              title: '分潤訂單統計',
+              link: '/event_orders',
+            },
           ],
         },
         {

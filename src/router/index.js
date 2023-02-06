@@ -135,6 +135,22 @@ const routes = [
       import(/* webpackChunkName: "orders" */ '../views/Orders/index.vue'),
   },
   {
+    path: '/event_orders',
+    name: '分潤訂單統計',
+    component: () =>
+      import(
+        /* webpackChunkName: "event_orders" */ '../views/EventOrders/index.vue'
+      ),
+  },
+  {
+    path: '/event_order/:id',
+    name: '分潤訂單統計報表',
+    component: () =>
+      import(
+        /* webpackChunkName: "event_order_chart" */ '../views/EventOrderChart/index.vue'
+      ),
+  },
+  {
     path: '/order/:id',
     name: '訂單詳細',
     component: () =>

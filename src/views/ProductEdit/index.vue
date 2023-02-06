@@ -55,6 +55,7 @@ export default {
       ],
       product_data: null,
       category_data: [],
+      event_data:[],
       cover_file: {
         cover_1: null,
         cover_2: null,
@@ -104,7 +105,8 @@ export default {
     GetProductData() {
       const id = this.$route.params.id != 'new' ? this.$route.params.id : -1;
       getGoodsAndCategory(id).then((res) => {
-        this.category_data = res[0].data;
+        this.category_data = res[0].data.filter(item=>item.Content5!="獨立銷售頁");
+        this.event_data = res[0].data.filter(item=>item.Content5=="獨立銷售頁");
         let product_data = res[1].data.filter(
           (item) => item.GoodsID == this.$route.params.id
         );
@@ -133,6 +135,7 @@ export default {
               GoodsTimeSet: 'N',
               Menu: [],
               MenuID: [],
+              EventID: [],
             }
           );
         } else {
@@ -148,10 +151,15 @@ export default {
           if (product_data[0].GoodsTimeEnd == null) {
             product_data[0].GoodsTimeEnd = '';
           }
+          product_data[0].EventID = [];
           this.product_data = product_data[0];
           this.product_data.MenuID = [];
           this.product_data.Menu.forEach((item) => {
-            this.product_data.MenuID.push(item.MenuID);
+            if (item.Content5 == '獨立銷售頁') {
+              this.product_data.EventID.push(item.MenuID);
+            } else {
+              this.product_data.MenuID.push(item.MenuID);
+            }
           });
 
           this.product_data = StrToBool(this.product_data);

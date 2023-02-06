@@ -68,7 +68,10 @@ export function create_goods_all(goods_item, images) {
   // 更新商品資訊
   // 更新商品分類
   // 更新商品圖片
-  const menu_list = goods_item.MenuID;
+  let menu_list = goods_item.MenuID;
+  goods_item.EventID.forEach((id) => {
+    menu_list.push(id);
+  });
   // delete goods_item.Image1;
   // delete goods_item.Image2;
   // delete goods_item.Menu;
@@ -139,10 +142,15 @@ export function update_goods_all(goods_item, images) {
   delete goods_item.Image1;
   delete goods_item.Image2;
 
+  let menu_list = goods_item.MenuID;
+  goods_item.EventID.forEach((id) => {
+    menu_list.push(id);
+  });
+
   var goods_info = patch('admin/goods', goods_item, '已成功更新商品');
   var goods_menu = patch(
     'admin/menu2goods/goods/' + goods_item.ID,
-    goods_item.MenuID,
+    menu_list,
     '已成功更新商品所屬分類'
   );
 
