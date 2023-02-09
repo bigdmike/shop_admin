@@ -51,7 +51,7 @@ module.exports = {
     compress: true, // 是否启动压缩 gzip
     proxy: {
       '/api': {
-        target: 'https://api.yaowenfruit.com',
+        target: 'https://api.krace.com.tw',
         secure: false,
         pathRewrite: {
           '^/api': '/',

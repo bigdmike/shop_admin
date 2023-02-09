@@ -4,7 +4,7 @@ import store from '@/store/index.js';
 import router from '@/router';
 
 // let baseURL = process.env.VUE_APP_BASE_API;
-let baseURL = 'https://api.yaowenfruit.com/';
+let baseURL = 'https://api.krace.com.tw/';
 // 建立axios例項
 const service = axios.create({
   baseURL: baseURL,
