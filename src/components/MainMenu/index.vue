@@ -92,6 +92,10 @@ export default {
               link: '/products',
             },
             {
+              title: '客製化選項',
+              link: '/customize_category',
+            },
+            {
               title: '商品分類',
               link: '/product_menu',
             },

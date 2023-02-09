@@ -89,6 +89,22 @@ const routes = [
       ),
   },
   {
+    path: '/customize_category',
+    name: '客製化選項類型管理',
+    component: () =>
+      import(
+        /* webpackChunkName: "customize_category" */ '../views/CustomizeCategory/index.vue'
+      ),
+  },
+  {
+    path: '/customize_category/:id',
+    name: '客製化選項管理',
+    component: () =>
+      import(
+        /* webpackChunkName: "customize_spec" */ '../views/CustomizeSpec/index.vue'
+      ),
+  },
+  {
     path: '/product_menu',
     name: '商品分類管理',
     component: () =>

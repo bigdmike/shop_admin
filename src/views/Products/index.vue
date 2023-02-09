@@ -7,6 +7,7 @@ import GridShow from '@/components/Products/GridShow/index';
 import MainDragList from '@/components/MainDragList/index';
 import OptionDialog from '@/components/Products/OptionDialog/index';
 import ImageEditDialog from '@/components/Products/ImageEditDialog/index.vue';
+import CustomizeDialog from '@/components/Products/CustomizeDialog/index.vue';
 import Breadcrumb from '@/components/Breadcrumb/';
 import SortDialog from '@/components/Products/SortDialog/index.vue';
 import {
@@ -25,6 +26,7 @@ export default {
     ImageEditDialog,
     MainDragList,
     SortDialog,
+    CustomizeDialog,
   },
   data() {
     return {
@@ -93,12 +95,17 @@ export default {
         ],
       },
       headers: [
-        { text: '商品縮圖', value: 'TableImage' },
         {
           text: '商品名稱',
           align: 'start',
           sortable: false,
           value: 'TableTitle',
+        },
+        {
+          text: '商品類型',
+          align: 'start',
+          sortable: false,
+          value: 'IsCustom',
         },
         {
           text: '商品庫存',
@@ -127,8 +134,13 @@ export default {
         ? (this.show_type = 'grid')
         : (this.show_type = 'list');
     },
-    OpenStockDialog(id) {
-      this.$refs.OptionDialog.Open(id);
+    OpenStockDialog(product) {
+      console.log(product.IsCustom);
+      if (product.IsCustom == '客製化') {
+        this.$refs.CustomizeDialog.Open(product.GoodsID);
+      } else {
+        this.$refs.OptionDialog.Open(product.GoodsID);
+      }
     },
     OpenImageDialog(item) {
       this.$refs.ImageEditDialog.Open(item);
@@ -140,6 +152,8 @@ export default {
         res[1].data.forEach((item, item_index) => {
           res[1].data[item_index].TableTitle = item.Title;
           res[1].data[item_index].TableImage = item.Image1;
+          res[1].data[item_index].IsCustom =
+            res[1].data[item_index].IsCustom == 'Y' ? '客製化' : '一般';
           let stock_count = 0;
           item.Stock.forEach((stock) => {
             stock_count += parseInt(stock.Stock);

@@ -1,0 +1,45 @@
+<div id="Products">
+  <v-container v-if="category_data!=null">
+    <DeleteDialog ref="DeleteDialog" @delete-action="DeleteData" />
+    <CategoryEditDialog ref="CategoryEditDialog" @create-action="CreateData" />
+
+    <v-row>
+      <v-col cols="12" class="d-flex justify-space-between">
+        <Breadcrumb :link_array="breadcrumb_data" />
+        <div class="d-flex justify-space-between align-center">
+          <v-btn
+            @click="OpenCreateDialog"
+            color="light-blue lighten-1 white--text font-weight-bold elevation-0"
+            >新增選項類型</v-btn
+          >
+        </div>
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto">
+        <div class="searchbar d-flex align-stretch pb-2">
+          <v-btn class="ma-0 py-0 filter_btn  black--text" outlined>
+            搜尋選項
+            <v-icon class="ml-2">mdi-menu-down</v-icon>
+          </v-btn>
+          <v-text-field
+            class="searchtext"
+            v-model="key_word"
+            hide-details="auto"
+            color="grey darken-2"
+            outlined
+            dense
+            append-icon="mdi-magnify"
+          ></v-text-field>
+        </div>
+
+        <MainDragList
+          :options="options"
+          :headers="headers"
+          @title-action="$router.push(`/customize_category/${$event.SpecCategoryID}`)"
+          @delete-action="OpenDeleteDialog"
+          @sort-action="SortData"
+          v-model="filter_menu_data"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+</div>
