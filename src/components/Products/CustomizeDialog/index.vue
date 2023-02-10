@@ -5,12 +5,14 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
-    <EditDialog
-      ref="EditDialog"
-      @update-action="UpdateOptionData"
-      @create-action="CreateOptionData"
+    <CreateAllStockDialog
+      ref="CreateAllStockDialog"
+      :product_id="id"
+      :spec_data="spec"
+      :category_data="category"
     />
-    <DeleteDialog ref="DeleteDialog" @delete-action="DeleteOptionData" />
+    <EditDialog ref="EditDialog" />
+    <DeleteDialog ref="DeleteDialog" />
     <EditStockDialog
       ref="EditStockDialog"
       :spec_data="spec"
@@ -44,6 +46,11 @@
                 hide-details=""
                 outlined
               ></v-select>
+              <v-btn
+                @click="OpenCreateAllStockDialog()"
+                class="light-blue lighten-1 white--text font-weight-bold elevation-0"
+                >自動產生庫存</v-btn
+              >
               <v-btn
                 @click="OpenCreateStockDialog()"
                 class="light-blue lighten-1 white--text font-weight-bold elevation-0"
@@ -105,17 +112,19 @@
 </template>
 
 <script>
-import { create_stock, update_stock_sort } from '@/api/product_option.js';
+import { create_stock, update_stock_sort } from '@/api/product_customize.js';
 import { getOptionStock } from '@/api/product_customize.js';
 import EditDialog from './EditDialog/index.vue';
 import EditStockDialog from './EditStockDialog/index.vue';
 import DeleteDialog from '@/components/MainDeleteDialog/index.vue';
+import CreateAllStockDialog from '@/components/Products/CustomizeDialog/CreateAllStockDialog/index.vue';
 export default {
   name: 'CustomizeDialog',
   components: {
     DeleteDialog,
     EditDialog,
     EditStockDialog,
+    CreateAllStockDialog,
   },
   data() {
     return {
@@ -183,6 +192,9 @@ export default {
         this.stocks = res[2].data.filter((item) => item.GoodsID == this.id);
       });
     },
+    OpenCreateAllStockDialog() {
+      this.$refs.CreateAllStockDialog.Open();
+    },
     // stocks
     OpenCreateStockDialog() {
       this.$refs.EditStockDialog.Open(null, 'create');
@@ -192,9 +204,14 @@ export default {
     },
     CreateStockData(data) {
       data.GoodsID = this.id;
+      data.CustomSpecID = '';
+      data.SpecList.forEach((item, item_index) => {
+        item_index != 0 ? (data.CustomSpecID += ',') : '';
+        data.CustomSpecID += item.CustomSpecID;
+      });
       create_stock(data).then(() => {
         this.$refs.EditStockDialog.Cancel();
-        this.GetGoodsStockData();
+        this.GetStockOptionData();
       });
     },
     SortStockData(data) {
@@ -203,7 +220,7 @@ export default {
         tmp_data[item_index].Seq = item_index + 2;
       });
       update_stock_sort(tmp_data).then(() => {
-        this.GetGoodsStockData();
+        this.GetStockOptionData();
       });
     },
   },

@@ -25,7 +25,15 @@
                   {{ item.CategoryTitle }}:{{ item.Title }}
                 </span>
               </p>
-              <v-btn small class="priamry" @click="OpenSpecDialog">編輯</v-btn>
+              <div v-if="edit_type == 'create'" class="d-flex justify-end">
+                <v-btn
+                  elevation="0"
+                  small
+                  color="primary"
+                  @click="OpenSpecDialog"
+                  >編輯規格</v-btn
+                >
+              </div>
             </v-col>
             <v-col cols="6">
               <v-text-field
@@ -158,9 +166,11 @@ export default {
           {},
           {
             Stock: 0,
+            CustomSpecID: '',
             DeliverVolume: 0,
             DeliverWeight: 0,
             Price: 0,
+            MemberSellPrice: 0,
             SellPrice: 0,
             Status: 'Y',
             SpecList: [],

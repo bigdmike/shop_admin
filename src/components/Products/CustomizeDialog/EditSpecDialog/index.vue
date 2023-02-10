@@ -11,6 +11,7 @@
             <v-col class="d-flex" cols="6" :key="`category_${item_index}`">
               <v-select
                 v-model="item.SpecCategoryID"
+                @input="ChangeCategoryTitle($event, item_index)"
                 hide-details="auto"
                 dense
                 :items="category_data"
@@ -23,6 +24,7 @@
             <v-col class="d-flex" cols="6" :key="`spec_${item_index}`">
               <v-select
                 v-model="item.CustomSpecID"
+                @input="ChangeTitle($event, item_index)"
                 hide-details="auto"
                 dense
                 :items="GetCategory(item.SpecCategoryID)"
@@ -140,6 +142,16 @@ export default {
         Title: new_spec.Title,
         CategoryTitle: new_category.Title,
       });
+    },
+    ChangeTitle(id, index) {
+      const spec = this.spec_data.filter((item) => item.CustomSpecID == id)[0];
+      this.spec_list[index].Title = spec.Title;
+    },
+    ChangeCategoryTitle(id, index) {
+      const category = this.category_data.filter(
+        (item) => item.SpecCategoryID == id
+      )[0];
+      this.spec_list[index].CategoryTitle = category.Title;
     },
   },
   computed: {
