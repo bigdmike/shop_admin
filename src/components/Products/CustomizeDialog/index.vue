@@ -11,7 +11,6 @@
       :spec_data="spec"
       :category_data="category"
     />
-    <EditDialog ref="EditDialog" />
     <DeleteDialog ref="DeleteDialog" />
     <EditStockDialog
       ref="EditStockDialog"
@@ -114,7 +113,6 @@
 <script>
 import { create_stock, update_stock_sort } from '@/api/product_customize.js';
 import { getOptionStock } from '@/api/product_customize.js';
-import EditDialog from './EditDialog/index.vue';
 import EditStockDialog from './EditStockDialog/index.vue';
 import DeleteDialog from '@/components/MainDeleteDialog/index.vue';
 import CreateAllStockDialog from '@/components/Products/CustomizeDialog/CreateAllStockDialog/index.vue';
@@ -122,7 +120,6 @@ export default {
   name: 'CustomizeDialog',
   components: {
     DeleteDialog,
-    EditDialog,
     EditStockDialog,
     CreateAllStockDialog,
   },
