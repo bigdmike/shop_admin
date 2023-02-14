@@ -89,7 +89,15 @@ const routes = [
       ),
   },
   {
-    path: '/customize_category',
+    path: '/customize_product',
+    name: '客製化商品選項',
+    component: () =>
+      import(
+        /* webpackChunkName: "customize_product" */ '../views/CustomizeProducts/index.vue'
+      ),
+  },
+  {
+    path: '/customize_category/:id/:name',
     name: '客製化選項類型管理',
     component: () =>
       import(
@@ -97,7 +105,7 @@ const routes = [
       ),
   },
   {
-    path: '/customize_category/:id',
+    path: '/customize_spec/:goods_id/:name/:id',
     name: '客製化選項管理',
     component: () =>
       import(

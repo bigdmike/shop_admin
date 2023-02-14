@@ -1,0 +1,17 @@
+<div id="Products">
+  <v-container v-if="product_data!=null">
+    <v-row>
+      <v-col cols="12" class="d-flex justify-space-between">
+        <Breadcrumb :link_array="breadcrumb_data" />
+      </v-col>
+      <v-col cols="12" md="12" lg="12" class="mx-auto">
+        <MainList
+          :options="options"
+          :headers="headers"
+          @title-action="$router.push(`/customize_category/${$event.GoodsID}/${$event.Title}`)"
+          v-model="product_data"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

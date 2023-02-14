@@ -1,15 +1,8 @@
 <template src="./template.html"></template>
 
 <script>
-// import {
-//   getMenuAndCategory,
-//   create_menu,
-//   update_menu,
-//   delete_menu,
-//   update_menu_sort,
-// } from '@/api/product_menu';
 import {
-  getOption,
+  get_category,
   create_category,
   delete_category,
   update_category_sort,
@@ -30,12 +23,8 @@ export default {
     return {
       breadcrumb_data: [
         {
-          title: '商品管理',
-          link: '',
-        },
-        {
           title: '客製化選項類型管理',
-          link: '',
+          link: '/customize_product',
         },
       ],
       filter_data: {
@@ -93,11 +82,19 @@ export default {
       is_sort ? '' : this.SortData(this.menu_data);
     },
     GetData() {
-      getOption().then((res) => {
-        res[0].data.forEach((item) => {
+      get_category(this.$route.params.id).then((res) => {
+        res.data.forEach((item) => {
           item.TableTitle = item.Title;
         });
-        this.category_data = res[0].data;
+        this.category_data = res.data;
+        this.breadcrumb_data.push({
+          title: this.$route.params.name,
+          link: '',
+        });
+        this.breadcrumb_data.push({
+          title: '選項分類',
+          link: `/customize_category/${this.$route.params.id}/${this.$route.params.name}`,
+        });
       });
     },
     CreateData(category_item) {

@@ -20,6 +20,9 @@ export function update_stock_sort(list) {
 }
 
 //選項分類
+export function get_category(id) {
+  return get('admin/customgoods/category/' + id);
+}
 export function create_category(item) {
   return put('admin/customgoods/category', item, '已成功新增選項分類');
 }
@@ -38,6 +41,9 @@ export function update_category_sort(list) {
 }
 
 //選項規格
+export function get_spec(id) {
+  return get('admin/customgoods/spec/' + id);
+}
 export function create_spec(item) {
   return put('admin/customgoods/spec', item, '已成功新增選項規格');
 }
@@ -58,9 +64,9 @@ export function update_spec_sort(list) {
 // 取得全部資訊
 export function getOptionStock(id) {
   //選項一
-  var category = get('admin/customgoods/category');
+  var category = get('admin/customgoods/category/' + id);
   //選項二
-  var spec = get('admin/customgoods/spec');
+  var spec = get('admin/customgoods/spec/' + id);
   //庫存
   var stocks = get('admin/customgoods/stock/' + id);
 
@@ -75,11 +81,11 @@ export function getOptionStock(id) {
     (err) => console.log(err)
   );
 }
-export function getOption() {
+export function getOption(good_id, id) {
   //選項一
-  var category = get('admin/customgoods/category');
+  var category = get('admin/customgoods/category/' + good_id);
   //選項二
-  var spec = get('admin/customgoods/spec');
+  var spec = get('admin/customgoods/spec/' + id);
 
   let promise_list = [category, spec];
 

@@ -93,7 +93,7 @@ export default {
             },
             {
               title: '客製化選項',
-              link: '/customize_category',
+              link: '/customize_product',
             },
             {
               title: '商品分類',

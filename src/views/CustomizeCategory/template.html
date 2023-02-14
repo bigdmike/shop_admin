@@ -34,7 +34,7 @@
         <MainDragList
           :options="options"
           :headers="headers"
-          @title-action="$router.push(`/customize_category/${$event.SpecCategoryID}`)"
+          @title-action="$router.push(`/customize_spec/${$route.params.id}/${$route.params.name}/${$event.SpecCategoryID}`)"
           @delete-action="OpenDeleteDialog"
           @sort-action="SortData"
           v-model="filter_menu_data"

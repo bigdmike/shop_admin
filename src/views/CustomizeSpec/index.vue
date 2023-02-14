@@ -25,12 +25,8 @@ export default {
     return {
       breadcrumb_data: [
         {
-          title: '客製化選項類型',
-          link: '/customize_category',
-        },
-        {
           title: '客製化選項類型管理',
-          link: '',
+          link: '/customize_product',
         },
       ],
       category_data: null,
@@ -97,19 +93,34 @@ export default {
       is_sort ? '' : this.SortData(this.menu_data);
     },
     GetData() {
-      getOption().then((res) => {
-        this.category_data = res[0].data.filter(
-          (item) => item.SpecCategoryID == this.$route.params.id
-        )[0];
-        this.category_data.ID = this.category_data.SpecCategoryID;
-        res[1] = res[1].data.filter(
-          (item) => item.SpecCategoryID == this.$route.params.id
-        );
-        res[1].forEach((item) => {
-          item.TableTitle = item.Title;
-        });
-        this.spec_data = res[1];
-      });
+      getOption(this.$route.params.goods_id, this.$route.params.id).then(
+        (res) => {
+          this.category_data = res[0].data.filter(
+            (item) => item.SpecCategoryID == this.$route.params.id
+          )[0];
+          this.category_data.ID = this.category_data.SpecCategoryID;
+          res[1] = res[1].data.filter(
+            (item) => item.SpecCategoryID == this.$route.params.id
+          );
+          res[1].forEach((item) => {
+            item.TableTitle = item.Title;
+          });
+          this.spec_data = res[1];
+
+          this.breadcrumb_data.push({
+            title: this.$route.params.name,
+            link: '',
+          });
+          this.breadcrumb_data.push({
+            title: '選項分類',
+            link: `/customize_category/${this.$route.params.goods_id}/${this.$route.params.name}`,
+          });
+          this.breadcrumb_data.push({
+            title: '選項管理',
+            link: '',
+          });
+        }
+      );
     },
     UpdateCategoryData() {
       update_category(this.category_data).then(() => {
