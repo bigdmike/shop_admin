@@ -1,7 +1,11 @@
 <div id="Products">
   <v-container v-if="spec_data!=null">
     <DeleteDialog ref="DeleteDialog" @delete-action="DeleteData" />
-    <CategoryEditDialog ref="CategoryEditDialog" @create-action="CreateData" />
+    <CategoryEditDialog
+      ref="CategoryEditDialog"
+      @create-action="CreateData"
+      @update-action="UpdateData"
+    />
 
     <v-row>
       <v-col cols="12" class="d-flex justify-space-between">

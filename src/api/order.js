@@ -71,6 +71,10 @@ export function GetCVSOrder(order_id) {
   return get('admin/trade/ECLogistics/' + order_id);
 }
 
+export function CancelOrder(order_id) {
+  return get('/order_cancel/' + order_id);
+}
+
 function GetPromise(promiseList) {
   return promiseList.map((promise) => promise.then((res) => res));
 }

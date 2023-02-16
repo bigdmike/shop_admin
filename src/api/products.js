@@ -1,4 +1,4 @@
-import { patch, del, put, get, post_image } from '@/common/request';
+import { post, patch, del, put, get, post_image } from '@/common/request';
 import { recacheProduct } from '@/api/prerender';
 
 // 商品
@@ -104,6 +104,26 @@ export function create_goods_all(goods_item, images) {
         );
         promise_list.push(goods_image);
       }
+
+      if (goods_item.IsCustom == 'Y') {
+        const stock_data = {
+          GoodsID: res.data.GoodsID,
+          Stock: 0,
+          Status: 'Y',
+          DeliverVolume: 0,
+          DeliverWeight: 0,
+          Price: 0,
+          SellPrice: 0,
+          MemberSellPrice: 0,
+        };
+        const stock = post(
+          'admin/customgoods/stock',
+          stock_data,
+          '已成功建立商品庫存'
+        );
+        promise_list.push(stock);
+      }
+
       return Promise.all(GetPromise(promise_list)).then(
         (res) => {
           if (promise_list.length == res.length) {

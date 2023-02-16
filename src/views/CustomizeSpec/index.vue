@@ -107,6 +107,12 @@ export default {
           });
           this.spec_data = res[1];
 
+          this.breadcrumb_data = [];
+          this.breadcrumb_data.push({
+            title: '客製化選項類型管理',
+            link: '/customize_product',
+          });
+
           this.breadcrumb_data.push({
             title: this.$route.params.name,
             link: '',

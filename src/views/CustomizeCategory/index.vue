@@ -99,6 +99,7 @@ export default {
     },
     CreateData(category_item) {
       console.log(category_item);
+      category_item.GoodsID = this.$route.params.id;
       create_category(category_item).then(() => {
         this.GetData();
         this.$refs.CategoryEditDialog.Cancel();

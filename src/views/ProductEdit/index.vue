@@ -43,6 +43,16 @@ export default {
           value: false,
         },
       ],
+      customize_data: [
+        {
+          label: '客製化商品',
+          value: true,
+        },
+        {
+          label: '一般商品',
+          value: false,
+        },
+      ],
       time_status_data: [
         {
           label: '指定期間內販售',
@@ -136,7 +146,8 @@ export default {
               RecommendMenuID: '',
               GoodsTimeStart: '',
               GoodsTimeEnd: '',
-              GoodsTimeSet: 'N',
+              GoodsTimeSet: false,
+              IsCustom: false,
               Menu: [],
               MenuID: [],
               EventID: [],
