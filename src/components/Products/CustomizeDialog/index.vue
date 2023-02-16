@@ -5,20 +5,22 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
-    <CreateAllStockDialog
-      ref="CreateAllStockDialog"
-      :product_id="id"
-      :spec_data="spec"
-      :category_data="category"
+    <MainDeleteDialog ref="MainDeleteDialog" @delete-action="CheckDeleteData" />
+    <ChangePriceDialog
+      ref="ChangePriceDialog"
+      :spec_list="spec_list"
+      :category_list="category_list"
+      @create-action="CreateChangePrice"
+      @update-action="UpdateChangePrice"
     />
-    <DeleteDialog ref="DeleteDialog" />
-    <EditStockDialog
-      ref="EditStockDialog"
-      :spec_data="spec"
-      :category_data="category"
-      v-on:update-stock="CreateStockData"
+    <BlackListDialog
+      ref="BlackListDialog"
+      :spec_list="spec_list"
+      :category_list="category_list"
+      @create-action="CreateBlackList"
+      @update-action="UpdateBlackList"
     />
-    <v-card class="grey lighten-3 overflow-hidden">
+    <v-card v-if="stock_data != null" class="grey lighten-3 overflow-hidden">
       <v-toolbar class="white primary--text elevation-1">
         <v-toolbar-title>
           <p class="ma-0 font-weight-bold">商品庫存設定</p>
@@ -32,76 +34,211 @@
         </v-toolbar-items>
       </v-toolbar>
       <v-row class="pa-8">
-        <v-col cols="12">
-          <div class="d-flex justify-space-between align-center mb-2">
-            <h3>庫存設定</h3>
-            <div class="d-flex align-center">
-              <v-select
-                class="mr-5"
-                v-model="stock_filter"
-                :items="stock_filter_list"
-                label="篩選設定"
-                dense
-                hide-details=""
-                outlined
-              ></v-select>
-              <v-btn
-                @click="OpenCreateAllStockDialog()"
-                class="light-blue lighten-1 white--text font-weight-bold elevation-0"
-                >自動產生庫存</v-btn
-              >
-              <v-btn
-                @click="OpenCreateStockDialog()"
-                class="light-blue lighten-1 white--text font-weight-bold elevation-0"
-                >新增庫存</v-btn
-              >
-            </div>
-          </div>
+        <v-col cols="6">
+          <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+            <h3 class="mt-0 mb-2">庫存設定</h3>
+            <v-row>
+              <v-col cols="12">
+                <v-select
+                  label="啟用狀態"
+                  v-model="stock_data.Status"
+                  :items="status_data"
+                  item-text="label"
+                  item-value="value"
+                  hide-details
+                  dense
+                  outlined
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="stock_data.DeliverWeight"
+                  label="重量"
+                  dense
+                  hide-details
+                  outlined
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="stock_data.DeliverVolume"
+                  label="積材尺寸"
+                  dense
+                  hide-details
+                  outlined
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" class="d-flex justify-end">
+                <v-btn elevation="0" color="primary" @click="CreateStockData">
+                  儲存
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+            <h3 class="mt-0 mb-2">金額設定</h3>
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="stock_data.Price"
+                  label="原價"
+                  dense
+                  outlined
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="stock_data.SellPrice"
+                  label="售價"
+                  dense
+                  outlined
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="stock_data.MemberSellPrice"
+                  label="會員價"
+                  dense
+                  outlined
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" class="d-flex justify-end">
+                <v-btn elevation="0" color="primary" @click="CreateStockData">
+                  儲存
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-row class="pa-8">
+        <v-col cols="12" class="d-flex justify-space-between aligns-center">
+          <h3 class="mt-0 mb-2">停用組合設定</h3>
+          <v-btn
+            @click="OpenBlackListDialog(null)"
+            elevation="0"
+            color="primary"
+          >
+            新增停用組合
+          </v-btn>
         </v-col>
         <v-col
           cols="12"
           md="4"
-          v-for="(item, item_index) in stocks"
-          :key="`stock_${item_index}`"
+          lg="3"
+          v-for="(item, item_index) in black_list"
+          :key="`black_card_${item_index}`"
         >
-          <v-card class="pa-5 rounded-lg">
-            <div class="d-flex justify-space-between">
-              <div class="d-flex">
-                <h4 class="primary--text mb-1 mr-2">
-                  庫存選項{{ item_index + 1 }}
-                </h4>
-                <v-chip
-                  label
-                  small
-                  :color="item.Status == 'Y' ? 'success' : ''"
-                  >{{ item.Status == 'Y' ? '已啟用' : '已停用' }}</v-chip
-                >
+          <v-card elevation="2" class="pa-5 rounded-lg" variant="outlined">
+            <div>
+              <div class="mb-5">
+                <div class="text-overline mb-1 red--text">
+                  停用組合
+                </div>
+                <div class="text-caption">
+                  <span
+                    class="d-block"
+                    v-for="(tag, tag_index) in item.SpecList"
+                    :key="`black_${item_index}_${tag_index}`"
+                  >
+                    {{ GetCategoryTitle(tag.SpecCategoryID) }}:{{
+                      GetSpecTitle(tag.CustomSpecID)
+                    }}
+                  </span>
+                </div>
               </div>
-              <div cols="12" md="6" class="d-flex pb-0">
-                <p class="mb-0 text-body-2 mr-2">售價:</p>
-                <p class="mb-0 text-body-2">{{ item.SellPrice }}</p>
+              <div class="d-flex justify-end">
+                <v-btn
+                  @click="OpenBlackListDialog(item)"
+                  elevation="0"
+                  small
+                  color="primary"
+                >
+                  編輯
+                </v-btn>
+                <v-btn @click="OpenDeleteDialog(item)" color="error" small text>
+                  刪除
+                </v-btn>
               </div>
             </div>
-            <v-divider class="mb-2"></v-divider>
-            <v-row class="mb-2">
-              <v-col
-                cols="12"
-                md="6"
-                v-for="(spec, spec_index) in item.SpecList"
-                :key="`spec_${item_index}_${spec_index}`"
-                class="d-flex"
-              >
-                <p class="mb-0 text-body-2 mr-2">{{ spec.CategoryTitle }}:</p>
-                <p class="mb-0 text-body-2">{{ spec.Title }}</p>
-              </v-col>
-            </v-row>
-            <div class="d-flex justify-end">
-              <v-btn
-                small
-                @click="OpenEditStockDialog(item)"
-                class="light-blue lighten-1 white--text font-weight-bold elevation-0"
-                >編輯</v-btn
-              >
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-row class="pa-8">
+        <v-col cols="12" class="d-flex justify-space-between aligns-center">
+          <h3 class="mt-0 mb-2">特殊價格設定</h3>
+          <v-btn
+            @click="OpenChangePriceDialog(null)"
+            elevation="0"
+            color="primary"
+          >
+            新增價格組合
+          </v-btn>
+        </v-col>
+        <v-col
+          cols="12"
+          md="4"
+          lg="3"
+          v-for="(item, item_index) in change_price_list"
+          :key="`change_card_${item_index}`"
+        >
+          <v-card elevation="2" class="pa-5 rounded-lg" variant="outlined">
+            <div>
+              <div class="mb-5">
+                <div class="text-overline mb-1 primary--text">
+                  特殊價格組合
+                </div>
+                <div class="text-caption">
+                  <span
+                    class="d-block"
+                    v-for="(tag, tag_index) in item.SpecList"
+                    :key="`black_${item_index}_${tag_index}`"
+                  >
+                    {{ GetCategoryTitle(tag.SpecCategoryID) }}:{{
+                      GetSpecTitle(tag.CustomSpecID)
+                    }}
+                  </span>
+                </div>
+              </div>
+              <div class="d-flex justify-space-between aligns-center">
+                <p
+                  class="body-2 font-weight-bold"
+                  :class="
+                    parseInt(item.ChangePrice) > 0
+                      ? 'success--text'
+                      : 'red--text'
+                  "
+                >
+                  {{ parseInt(item.ChangePrice) > 0 ? '+' : '-' }} NT${{
+                    Math.abs(item.ChangePrice)
+                  }}
+                </p>
+                <div class="d-flex justify-end">
+                  <v-btn
+                    @click="OpenChangePriceDialog(item)"
+                    elevation="0"
+                    small
+                    color="primary"
+                  >
+                    編輯
+                  </v-btn>
+                  <v-btn
+                    @click="OpenDeleteDialog(item)"
+                    color="error"
+                    small
+                    text
+                  >
+                    刪除
+                  </v-btn>
+                </div>
+              </div>
             </div>
           </v-card>
         </v-col>
@@ -111,27 +248,47 @@
 </template>
 
 <script>
-import { create_stock, update_stock_sort } from '@/api/product_customize.js';
+import {
+  create_stock,
+  create_black_list,
+  update_black_list,
+  delete_black_list,
+  create_change_price,
+  update_change_price,
+  delete_change_price,
+} from '@/api/product_customize.js';
 import { getOptionStock } from '@/api/product_customize.js';
-import EditStockDialog from './EditStockDialog/index.vue';
-import DeleteDialog from '@/components/MainDeleteDialog/index.vue';
-import CreateAllStockDialog from '@/components/Products/CustomizeDialog/CreateAllStockDialog/index.vue';
+import BlackListDialog from '@/components/Products/CustomizeDialog/BlackListDialog';
+import ChangePriceDialog from '@/components/Products/CustomizeDialog/ChangePriceDialog';
+import MainDeleteDialog from '@/components/MainDeleteDialog/index.vue';
 export default {
   name: 'CustomizeDialog',
   components: {
-    DeleteDialog,
-    EditStockDialog,
-    CreateAllStockDialog,
+    BlackListDialog,
+    MainDeleteDialog,
+    ChangePriceDialog,
   },
   data() {
     return {
       id: 1,
-      category: null,
-      spec: null,
-      stocks: null,
+      category_list: null,
+      spec_list: null,
+      stock_data: null,
+      black_list: null,
+      change_price_list: null,
       dialog: false,
       stock_filter_list: ['全部顯示', '只顯示啟用', '只顯示停用'],
       stock_filter: '只顯示啟用',
+      status_data: [
+        {
+          label: '已啟用',
+          value: 'Y',
+        },
+        {
+          label: '已停用',
+          value: 'N',
+        },
+      ],
     };
   },
   computed: {
@@ -164,61 +321,133 @@ export default {
     },
     GetStockOptionData() {
       getOptionStock(this.id).then((res) => {
-        // [category, spec, stocks]
-        res[1].data.forEach((item) => {
-          item.CategoryTitle = res[0].data.filter(
-            (category) => category.SpecCategoryID == item.SpecCategoryID
-          )[0].Title;
-        });
-        res[2].data.forEach((item) => {
-          item.SpecList = [];
-          item.CustomSpecID.split(',').forEach((spec) => {
-            const spec_data = res[1].data.filter(
-              (spec_item) => spec_item.CustomSpecID == spec
-            )[0];
-            item.SpecList.push({
-              Title: spec_data.Title,
-              CustomSpecID: spec_data.CustomSpecID,
-              CategoryTitle: spec_data.CategoryTitle,
-              SpecCategoryID: spec_data.SpecCategoryID,
-            });
+        //  [category, spec, stocks, blacklist, change_price_list];
+        this.category_list = res[0].data;
+
+        this.spec_list = res[1].data.filter((item) => {
+          const category_exist = this.category_list.filter((category) => {
+            return category.SpecCategoryID == item.SpecCategoryID;
           });
+          return category_exist.length > 0;
         });
-        this.category = res[0].data;
-        this.spec = res[1].data;
-        this.stocks = res[2].data.filter((item) => item.GoodsID == this.id);
+        this.stock_data = res[2].data;
+        this.black_list = this.GetFullSpecList(res[3].data);
+        this.change_price_list = this.GetFullSpecList(res[4].data);
       });
     },
     OpenCreateAllStockDialog() {
       this.$refs.CreateAllStockDialog.Open();
     },
-    // stocks
-    OpenCreateStockDialog() {
-      this.$refs.EditStockDialog.Open(null, 'create');
+    //
+    OpenBlackListDialog(val) {
+      let black_list_item = val;
+      let type = 'edit';
+      if (val == null) {
+        type = 'create';
+        black_list_item = {
+          GoodsID: this.id,
+          CustomSpecID: '',
+          SpecList: [],
+        };
+      }
+      this.$refs.BlackListDialog.Open(black_list_item, type);
     },
-    OpenEditStockDialog(item) {
-      this.$refs.EditStockDialog.Open(item, 'edit');
+    OpenDeleteDialog(val) {
+      this.$refs.MainDeleteDialog.Open(val);
     },
-    CreateStockData(data) {
-      data.GoodsID = this.id;
-      data.CustomSpecID = '';
-      data.SpecList.forEach((item, item_index) => {
-        item_index != 0 ? (data.CustomSpecID += ',') : '';
-        data.CustomSpecID += item.CustomSpecID;
-      });
-      create_stock(data).then(() => {
-        this.$refs.EditStockDialog.Cancel();
+    OpenChangePriceDialog(val) {
+      let change_price_item = val;
+      let type = 'edit';
+      if (val == null) {
+        type = 'create';
+        change_price_item = {
+          GoodsID: this.id,
+          CustomSpecID: '',
+          SpecList: [],
+        };
+      }
+      this.$refs.ChangePriceDialog.Open(change_price_item, type);
+    },
+    CheckDeleteData(val) {
+      console.log(val);
+      if (val.BlacklistID) {
+        this.DeleteBlackList(val.BlacklistID);
+      } else {
+        this.DeleteChangePrice(val.ChangePriceID);
+      }
+    },
+
+    // api
+    CreateStockData() {
+      create_stock(this.stock_data).then(() => {
         this.GetStockOptionData();
       });
     },
-    SortStockData(data) {
+    CreateBlackList(data) {
+      create_black_list(data).then((res) => {
+        console.log(res);
+        this.GetStockOptionData();
+      });
+    },
+    UpdateBlackList(data) {
+      update_black_list(data).then((res) => {
+        console.log(res);
+        this.GetStockOptionData();
+      });
+    },
+    DeleteBlackList(id) {
+      delete_black_list(id).then((res) => {
+        console.log(res);
+        this.GetStockOptionData();
+        this.$refs.MainDeleteDialog.Cancel();
+      });
+    },
+    CreateChangePrice(data) {
+      create_change_price(data).then((res) => {
+        console.log(res);
+        this.GetStockOptionData();
+      });
+    },
+    UpdateChangePrice(data) {
+      update_change_price(data).then((res) => {
+        console.log(res);
+        this.GetStockOptionData();
+      });
+    },
+    DeleteChangePrice(id) {
+      delete_change_price(id).then((res) => {
+        console.log(res);
+        this.GetStockOptionData();
+        this.$refs.MainDeleteDialog.Cancel();
+      });
+    },
+
+    // 資料轉換
+    GetFullSpecList(data) {
       let tmp_data = JSON.parse(JSON.stringify(data));
-      tmp_data.forEach((item, item_index) => {
-        tmp_data[item_index].Seq = item_index + 2;
+      tmp_data.forEach((tmp_spec) => {
+        console.log(tmp_spec.CustomSpecID);
+        let list = [];
+        tmp_spec.CustomSpecID.split(',').forEach((spec_id) => {
+          const spec_item = this.spec_list.filter(
+            (spec) => spec.CustomSpecID == spec_id
+          )[0];
+          list.push({
+            SpecCategoryID: spec_item.SpecCategoryID,
+            CustomSpecID: spec_item.CustomSpecID,
+          });
+        });
+        tmp_spec.SpecList = list;
       });
-      update_stock_sort(tmp_data).then(() => {
-        this.GetStockOptionData();
-      });
+
+      return tmp_data;
+    },
+    GetSpecTitle(id) {
+      return this.spec_list.filter((item) => item.CustomSpecID == id)[0].Title;
+    },
+    GetCategoryTitle(id) {
+      return this.category_list.filter((item) => item.SpecCategoryID == id)[0]
+        .Title;
     },
   },
 };

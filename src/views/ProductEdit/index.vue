@@ -35,11 +35,11 @@ export default {
       ],
       status_data: [
         {
-          label: '已發布',
+          label: '可購買',
           value: true,
         },
         {
-          label: '隱藏',
+          label: '已停賣',
           value: false,
         },
       ],
@@ -55,7 +55,7 @@ export default {
       ],
       product_data: null,
       category_data: [],
-      event_data:[],
+      event_data: [],
       cover_file: {
         cover_1: null,
         cover_2: null,
@@ -105,8 +105,12 @@ export default {
     GetProductData() {
       const id = this.$route.params.id != 'new' ? this.$route.params.id : -1;
       getGoodsAndCategory(id).then((res) => {
-        this.category_data = res[0].data.filter(item=>item.Content5!="獨立銷售頁");
-        this.event_data = res[0].data.filter(item=>item.Content5=="獨立銷售頁");
+        this.category_data = res[0].data.filter(
+          (item) => item.Content5 != '獨立銷售頁'
+        );
+        this.event_data = res[0].data.filter(
+          (item) => item.Content5 == '獨立銷售頁'
+        );
         let product_data = res[1].data.filter(
           (item) => item.GoodsID == this.$route.params.id
         );

@@ -1,20 +1,20 @@
 <template>
   <v-dialog v-model="dialog" width="500">
-    <v-card>
+    <v-card v-if="spec_data != null">
       <v-card-title class="primary--text">
-        選擇規格
+        價格調整
       </v-card-title>
 
       <v-card-text class="pt-5">
         <v-row>
-          <template v-for="(item, item_index) in spec_list">
+          <template v-for="(item, item_index) in spec_data.SpecList">
             <v-col class="d-flex" cols="6" :key="`category_${item_index}`">
               <v-select
                 v-model="item.SpecCategoryID"
                 @input="ChangeCategoryTitle($event, item_index)"
                 hide-details="auto"
                 dense
-                :items="category_data"
+                :items="category_list"
                 item-text="Title"
                 item-value="SpecCategoryID"
                 label="選項分類"
@@ -45,6 +45,15 @@
           <v-col cols="12">
             <v-btn @click="AddSpec" block outlined primary>新增規格</v-btn>
           </v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="spec_data.ChangePrice"
+              label="調整金額"
+              dense
+              hide-details
+              outlined
+            ></v-text-field>
+          </v-col>
         </v-row>
       </v-card-text>
 
@@ -54,7 +63,7 @@
         <v-spacer></v-spacer>
         <v-btn color="primary" text @click="Cancel"> 取消 </v-btn>
         <v-btn color="primary" class="elevation-0" @click="Validate">
-          更新
+          {{ edit_type == 'edit' ? '更新' : '新增' }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -63,28 +72,32 @@
 
 <script>
 export default {
-  name: 'OptionCreateDialog',
+  name: 'ChangePriceDialog',
   props: {
-    spec_data: {
+    spec_list: {
       type: Array,
     },
-    category_data: {
+    category_list: {
       type: Array,
     },
   },
   data() {
     return {
-      spec_list: [],
+      spec_data: null,
       dialog: false,
+      edit_type: 'edit',
     };
   },
   methods: {
-    Open(spec_list) {
-      this.spec_list = spec_list;
+    Open(spec_data, edit_type) {
+      this.edit_type = edit_type;
+      this.spec_data = JSON.parse(JSON.stringify(spec_data));
+      this.spec_data.ID = this.spec_data.ChangePriceID;
       this.dialog = true;
     },
     Cancel() {
-      this.spec_list = [];
+      this.id = -1;
+      this.spec_data = null;
       this.dialog = false;
     },
     Validate() {
@@ -94,9 +107,9 @@ export default {
       }
       // 檢查不能有重複的SpecCategoryID
       let same_spec_category = false;
-      this.spec_list.forEach((item) => {
+      this.spec_data.SpecList.forEach((item) => {
         let same_count = 0;
-        this.spec_list.forEach((spec) => {
+        this.spec_data.SpecList.forEach((spec) => {
           spec.SpecCategoryID == item.SpecCategoryID ? (same_count += 1) : '';
         });
         same_count >= 2 ? (same_spec_category = true) : '';
@@ -116,39 +129,46 @@ export default {
       }
     },
     SendData() {
-      this.$emit('update-action', this.spec_list);
+      this.spec_data.CustomSpecID = '';
+      this.spec_data.SpecList.forEach((item, item_index) => {
+        item_index == 0 ? '' : (this.spec_data.CustomSpecID += ',');
+        this.spec_data.CustomSpecID += item.CustomSpecID;
+      });
+      if (this.edit_type == 'edit') {
+        this.$emit('update-action', this.spec_data);
+      } else {
+        this.$emit('create-action', this.spec_data);
+      }
       this.Cancel();
     },
     GetCategory(id) {
-      return this.spec_data.filter((item) => item.SpecCategoryID == id);
+      return this.spec_list.filter((item) => item.SpecCategoryID == id);
     },
     RemoveSpec(index) {
-      this.spec_list.splice(index, 1);
+      this.spec_data.SpecList.splice(index, 1);
     },
     AddSpec() {
-      const new_category = this.category_data.filter((item) => {
+      const new_category = this.category_list.filter((item) => {
         return (
-          this.spec_list.filter(
+          this.spec_data.SpecList.filter(
             (spec) => spec.SpecCategoryID == item.SpecCategoryID
           ).length <= 0
         );
       })[0];
-      const new_spec = this.spec_data.filter((item) => {
+      const new_spec = this.spec_list.filter((item) => {
         return item.SpecCategoryID == new_category.SpecCategoryID;
       })[0];
-      this.spec_list.push({
+      this.spec_data.SpecList.push({
         SpecCategoryID: new_category.SpecCategoryID,
         CustomSpecID: new_spec.CustomSpecID,
-        Title: new_spec.Title,
-        CategoryTitle: new_category.Title,
       });
     },
     ChangeTitle(id, index) {
-      const spec = this.spec_data.filter((item) => item.CustomSpecID == id)[0];
+      const spec = this.spec_list.filter((item) => item.CustomSpecID == id)[0];
       this.spec_list[index].Title = spec.Title;
     },
     ChangeCategoryTitle(id, index) {
-      const category = this.category_data.filter(
+      const category = this.category_list.filter(
         (item) => item.SpecCategoryID == id
       )[0];
       this.spec_list[index].CategoryTitle = category.Title;

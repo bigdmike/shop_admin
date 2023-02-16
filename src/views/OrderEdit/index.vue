@@ -7,12 +7,14 @@ import CommentDialog from '@/components/OrderEdit/CommentDialog';
 import ShipCodeDialog from '@/components/OrderEdit/ShipCodeDialog';
 import PrintOrder from '@/components/OrderEdit/PrintOrder';
 import PrintHCT from '@/components/OrderEdit/PrintHCT';
+import MainDeleteDialog from '@/components/MainDeleteDialog/index';
 import { hex_to_ascii } from '@/common/filter.js';
 import {
   GetOrderAndProduct,
   UpdateOrderInfo,
   GetHCTOrder,
   GetCVSOrder,
+  CancelOrder,
 } from '@/api/order.js';
 export default {
   name: 'OrderEdit',
@@ -23,6 +25,7 @@ export default {
     ShipCodeDialog,
     PrintOrder,
     PrintHCT,
+    MainDeleteDialog,
   },
   data() {
     return {
@@ -36,41 +39,36 @@ export default {
           link: '',
         },
       ],
+      status_color: {
+        W: '',
+        P: 'blue lighten-1 white--text',
+        T: 'yellow darken-1 white--text',
+        S: 'orange darken-3 white--text',
+        A: 'deep-orange darken-3 white--text',
+        F: 'green white--text',
+        C: 'black white--text',
+      },
       status_array: {
         W: {
           label: '尚未付款',
-          color: '',
-          'text-color': '',
         },
         P: {
           label: '完成付款',
-          color: 'blue lighten-1',
-          'text-color': 'white',
         },
         T: {
           label: '理貨中',
-          color: 'yellow darken-1',
-          'text-color': 'white',
         },
         S: {
           label: '已出貨',
-          color: 'orange darken-3',
-          'text-color': 'white',
         },
         A: {
           label: '已送達',
-          color: 'deep-orange darken-3',
-          'text-color': 'white',
         },
         F: {
           label: '已完成',
-          color: 'green',
-          'text-color': 'white',
         },
         C: {
           label: '已取消',
-          color: 'black',
-          'text-color': 'white',
         },
       },
       products: [],
@@ -214,8 +212,24 @@ export default {
         });
       });
     },
+    OpenCancelDialog() {
+      this.$refs.MainDeleteDialog.Open(this.order_data.TradeID);
+    },
+    CancelOrder(id) {
+      CancelOrder(id).then((res) => {
+        console.log(res);
+        this.$refs.MainDeleteDialog.Cancel();
+        this.GetOrders();
+      });
+    },
   },
-  computed: {},
+  computed: {
+    status_select_list() {
+      let tmp_list = Object.assign({}, this.status_array);
+      delete tmp_list.C;
+      return tmp_list;
+    },
+  },
   created() {
     this.GetOrders();
   },

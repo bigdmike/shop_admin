@@ -40,6 +40,28 @@ export function update_category_sort(list) {
   );
 }
 
+// 禁用組合
+export function create_black_list(data) {
+  return put('admin/customgoods/blacklist', data, '已成功新增禁用組合');
+}
+export function update_black_list(data) {
+  return patch('admin/customgoods/blacklist', data, '已成功更新禁用組合');
+}
+export function delete_black_list(id) {
+  return del('admin/customgoods/blacklist/' + id, '已成功刪除禁用組合');
+}
+
+// 特殊價格組合
+export function create_change_price(data) {
+  return put('admin/customgoods/changeprice', data, '已成功新增特殊價格組合');
+}
+export function update_change_price(data) {
+  return patch('admin/customgoods/changeprice', data, '已成功更新特殊價格組合');
+}
+export function delete_change_price(id) {
+  return del('admin/customgoods/changeprice/' + id, '已成功刪除特殊價格組合');
+}
+
 //選項規格
 export function get_spec(id) {
   return get('admin/customgoods/spec/' + id);
@@ -66,11 +88,15 @@ export function getOptionStock(id) {
   //選項一
   var category = get('admin/customgoods/category/' + id);
   //選項二
-  var spec = get('admin/customgoods/spec/' + id);
+  var spec = get('admin/customgoods/spec');
   //庫存
   var stocks = get('admin/customgoods/stock/' + id);
+  // 黑名單
+  var blacklist = get('/admin/customgoods/blacklist/' + id);
+  // 黑名單
+  var change_price_list = get('/admin/customgoods/changeprice/' + id);
 
-  let promise_list = [category, spec, stocks];
+  let promise_list = [category, spec, stocks, blacklist, change_price_list];
 
   return Promise.all(GetPromise(promise_list)).then(
     (res) => {

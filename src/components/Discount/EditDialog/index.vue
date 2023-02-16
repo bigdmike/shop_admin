@@ -222,7 +222,7 @@
             <v-col cols="6">
               <v-select
                 v-model="discount_data.MenuID"
-                :items="category_list"
+                :items="all_category_list"
                 item-text="Title"
                 item-value="MenuID"
                 label="套用商品分類"
@@ -244,13 +244,13 @@
                 dense
               ></v-select>
             </v-col>
-            <v-col cols="6">
+            <v-col v-if="this.discount_data.DiscountType != 'D'" cols="6">
               <v-checkbox
                 v-model="discount_member_only"
                 label="會員限定"
               ></v-checkbox>
             </v-col>
-            <v-col cols="6">
+            <v-col v-if="this.discount_data.DiscountType != 'D'" cols="6">
               <v-checkbox
                 v-model="combine_product"
                 label="套用於組合商品"
@@ -309,7 +309,7 @@ export default {
           value: 'G',
         },
         {
-          title: '免運',
+          title: '全館免運',
           value: 'D',
         },
       ],
@@ -449,6 +449,19 @@ export default {
     },
     combine_product() {
       this.discount_data.Combine = this.combine_product ? 'Y' : 'N';
+    },
+  },
+  computed: {
+    all_category_list() {
+      let all_category = {
+        MenuID: '0',
+        Title: '全館優惠',
+      };
+      if (this.discount_data.DiscountType == 'D') {
+        return [all_category];
+      } else {
+        return [all_category, ...this.category_list];
+      }
     },
   },
 };

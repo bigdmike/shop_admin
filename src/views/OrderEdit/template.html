@@ -2,6 +2,13 @@
   <v-container v-if="order_data!=null">
     <CommentDialog v-on:send-data="UpdateOrderInfo" ref="CommentDialog" />
     <ShipCodeDialog v-on:send-data="UpdateOrdeShipCode" ref="ShipCodeDialog" />
+    <MainDeleteDialog
+      ref="MainDeleteDialog"
+      @delete-action="CancelOrder"
+      title="取消訂單"
+      content="取消後訂單商品的庫存將會回補，確定要取消此筆訂單嗎？"
+      action_text="取消訂單"
+    />
     <PrintOrder
       :order_data="order_data"
       :products="GetOrderProducts()"
@@ -24,8 +31,7 @@
               >{{order_data.created_at}}</span
             >
             <v-chip
-              :class="status_array[order_data.Status].color"
-              :text-color="status_array[order_data.Status]['text-color']"
+              :class="status_color[order_data.Status]"
               class="ma-2 caption"
               small
             >
@@ -40,6 +46,14 @@
         lg="3"
         class="mx-auto py-0 d-flex justify-md-end"
       >
+        <v-btn
+          v-if="order_data.Status=='W'"
+          class="elevation-0 mr-4"
+          color="black"
+          dark
+          @click="OpenCancelDialog"
+          >取消訂單
+        </v-btn>
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -54,7 +68,7 @@
           </template>
           <v-list>
             <v-list-item
-              v-for="(item, index) in status_array"
+              v-for="(item, index) in status_select_list"
               :key="`Status_${index}`"
             >
               <v-list-item-title>
@@ -72,7 +86,7 @@
         <v-btn class="elevation-0 " color="primary" @click="Print">
           <v-icon small class="mr-1">mdi-printer</v-icon>列印出貨單
         </v-btn>
-        <v-btn
+        <!-- <v-btn
           v-if="order_data.payment == 'zero_card'"
           class="px-0"
           color="error"
@@ -81,7 +95,7 @@
           @click="Refund"
         >
           <v-icon small class="mr-1">mdi-printer</v-icon>退款
-        </v-btn>
+        </v-btn> -->
       </v-col>
     </v-row>
     <v-row>
