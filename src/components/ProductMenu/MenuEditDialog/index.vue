@@ -20,6 +20,18 @@
           </v-col>
           <v-col cols="12">
             <v-select
+              label="商品目錄"
+              v-model="menu_data.CategoryID"
+              :items="category_list"
+              hide-details="auto"
+              item-text="Title"
+              item-value="MenuCategoryID"
+              outlined
+              dense
+            ></v-select>
+          </v-col>
+          <v-col cols="12">
+            <v-select
               label="啟用狀態"
               v-model="menu_data.Status"
               :items="status_list"

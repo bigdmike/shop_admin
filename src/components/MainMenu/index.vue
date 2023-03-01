@@ -96,6 +96,10 @@ export default {
               link: '/customize_product',
             },
             {
+              title: '商品目錄',
+              link: '/categories',
+            },
+            {
               title: '商品分類',
               link: '/product_menu',
             },
@@ -103,10 +107,6 @@ export default {
               title: '銷售頁管理',
               link: '/event_page',
             },
-            // {
-            //   title: '商品目錄',
-            //   link: '/categories',
-            // },
           ],
         },
         {

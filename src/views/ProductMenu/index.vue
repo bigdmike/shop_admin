@@ -104,10 +104,10 @@ export default {
     GetData() {
       getMenuAndCategory().then((res) => {
         this.category_data = res[0].data;
-        this.category_data.splice(0, 0, {
-          MenuCategoryID: 'all',
-          Title: '全部目錄',
-        });
+        // this.category_data.splice(0, 0, {
+        //   MenuCategoryID: 'all',
+        //   Title: '全部目錄',
+        // });
         res[1].data.forEach((item, item_index) => {
           res[1].data[item_index].TableTitle = item.Title;
           if (item.MenuID == 4 || item.MenuID == 5 || item.MenuID == 7) {
@@ -123,6 +123,7 @@ export default {
       });
     },
     CreateData(category_item) {
+      console.log(category_item);
       create_menu(category_item).then(() => {
         this.GetData();
         this.$refs.MenuEditDialog.Cancel();
