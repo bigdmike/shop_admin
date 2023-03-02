@@ -238,6 +238,7 @@ export default {
       get_goods().then((res) => {
         this.product = res.data.filter((item) => item.GoodsID == this.id)[0];
         getOptionStock(this.product.GoodsID).then((res) => {
+          console.log(res[1].data);
           this.option_1 = this.SortOption(res[0].data, 'ColorTitle');
           this.option_2 = this.SortOption(res[1].data, 'SizeTitle');
           this.stocks = res[2].data;
@@ -262,7 +263,6 @@ export default {
       this.$refs.DeleteDialog.Open(item);
     },
     SortOption(data, title) {
-      console.log(data, title, this.product.GoodsID);
       data = data.filter(
         (item) => item.GoodsID == this.product.GoodsID || item.GoodsID == 0
       );
@@ -279,6 +279,7 @@ export default {
       let first_option = data.filter((item) => item[title] == '無')[0];
       data.splice(data.indexOf(first_option), 1);
       data.splice(0, 0, first_option);
+      console.log(data);
       return data;
     },
     CreateOptionData(data) {

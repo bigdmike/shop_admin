@@ -91,6 +91,16 @@
                 required
               ></v-text-field>
             </v-col>
+            <v-col cols="6">
+              <v-text-field
+                label="會員售價"
+                v-model="stock_data.MemberSellPrice"
+                hide-details="auto"
+                outlined
+                dense
+                required
+              ></v-text-field>
+            </v-col>
             <v-col cols="12">
               <v-select
                 :items="status_array"
@@ -164,6 +174,7 @@ export default {
             DeliverWeight: 0,
             Price: 0,
             SellPrice: 0,
+            MemberSellPrice: 0,
             Status: 'Y',
             Seq: 1,
           }
