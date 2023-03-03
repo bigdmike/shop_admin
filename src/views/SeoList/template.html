@@ -5,41 +5,12 @@
         <Breadcrumb :link_array="breadcrumb_data" />
       </v-col>
       <v-col cols="12">
-        <v-data-table
-          :disable-sort="true"
+        <MainList
+          :options="options"
           :headers="headers"
-          :items="seo_list"
-          :disable-pagination="true"
-          :hide-default-footer="true"
-          sort-by="calories"
-          class="elevation-1 pb-10"
-        >
-          <template v-slot:body="props">
-            <draggable
-              :list="seo_list"
-              tag="tbody"
-              handle=".page__grab-icon"
-              @end="drag=false"
-            >
-              <tr v-for="(item, index) in seo_list" :key="index">
-                <td>
-                  <v-icon small class="page__grab-icon">
-                    mdi-dots-grid
-                  </v-icon>
-                </td>
-                <td>
-                  <router-link :to="`seo_edit/${item.column_title}`"
-                    >{{ item.page }}</router-link
-                  >
-                </td>
-              </tr>
-            </draggable>
-          </template>
-
-          <template v-slot:no-data>
-            <p>目前沒有資料可以顯示</p>
-          </template>
-        </v-data-table>
+          v-model="seo_list"
+          @title-action="$router.push(`seo_edit/${$event.column_title}`)"
+        />
       </v-col>
     </v-row>
   </v-container>

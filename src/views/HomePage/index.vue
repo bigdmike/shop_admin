@@ -36,36 +36,25 @@ export default {
     },
     GetPageData() {
       get_common_column([
-        'event_announcement',
-        'home_main_product_bg',
-        'home_new_product_bg',
-        'home_promote_1_image',
-        'home_promote_1_link',
-        'home_promote_2_image',
-        'home_promote_2_link',
-        'home_promote_3_image',
-        'home_promote_3_link',
+        'home_product_1_title',
+        'home_product_1_subtitle',
+        'home_product_1_link',
+        'home_product_1_image',
+        'home_product_2_title',
+        'home_product_2_subtitle',
+        'home_product_2_link',
+        'home_product_2_image',
+        'home_video',
       ]).then((res) => {
         this.page_data = {};
-        res.home_main_product_bg = this.$SetImageObj(
-          res.home_main_product_bg,
-          res.home_main_product_bg.Content
+
+        res.home_product_1_image = this.$SetImageObj(
+          res.home_product_1_image,
+          res.home_product_1_image.Content
         );
-        res.home_new_product_bg = this.$SetImageObj(
-          res.home_new_product_bg,
-          res.home_new_product_bg.Content
-        );
-        res.home_promote_1_image = this.$SetImageObj(
-          res.home_promote_1_image,
-          res.home_promote_1_image.Content
-        );
-        res.home_promote_2_image = this.$SetImageObj(
-          res.home_promote_2_image,
-          res.home_promote_2_image.Content
-        );
-        res.home_promote_3_image = this.$SetImageObj(
-          res.home_promote_3_image,
-          res.home_promote_3_image.Content
+        res.home_product_2_image = this.$SetImageObj(
+          res.home_product_2_image,
+          res.home_product_2_image.Content
         );
         this.page_data = res;
       });

@@ -38,7 +38,7 @@
           <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
             <h3 class="mt-0 mb-2">庫存設定</h3>
             <v-row>
-              <v-col cols="12">
+              <v-col cols="12" md="6">
                 <v-select
                   label="啟用狀態"
                   v-model="stock_data.Status"
@@ -49,6 +49,15 @@
                   dense
                   outlined
                 ></v-select>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="stock_data.Stock"
+                  label="庫存"
+                  dense
+                  hide-details
+                  outlined
+                ></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field

@@ -4,19 +4,9 @@
       <v-col cols="12">
         <Breadcrumb :link_array="breadcrumb_data" />
       </v-col>
-      <v-col cols="12">
-        <p class="mt-0 mb-2 primary--text font-weight-bold">
-          公司介紹-封面圖片
-        </p>
-        <MainImageCard
-          :image_data="page_data.company_image"
-          upload_key="company_image"
-          @update-action="UpdateImage"
-        />
-      </v-col>
+
       <v-col cols="12">
         <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
-          <p class="mt-0 mb-5 primary--text font-weight-bold">公司資訊</p>
           <p class="mt-0 mb-2">公司名稱</p>
           <v-text-field
             v-model="page_data.company_name.Content"

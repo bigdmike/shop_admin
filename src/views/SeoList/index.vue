@@ -4,22 +4,45 @@
 import { get_common_column } from '@/api/common_column.js';
 import Breadcrumb from '@/components/Breadcrumb/';
 import DeleteDialog from '@/components/MainDeleteDialog';
+import MainList from '@/components/MainList/';
 export default {
   name: 'SeoList',
   components: {
     Breadcrumb,
     DeleteDialog,
+    MainList,
   },
   data() {
     return {
       drag: false,
+
+      options: {
+        action: [
+          {
+            title: '刪除',
+            class: 'error',
+            action: 'delete-action',
+          },
+        ],
+        status: [
+          {
+            title: '已啟用',
+            class: 'success',
+            condition: 'Y',
+          },
+          {
+            title: '已停用',
+            class: '',
+            condition: 'N',
+          },
+        ],
+      },
       headers: [
-        { text: '', value: '', width: 100 },
         {
           text: '頁面名稱',
           align: 'start',
           sortable: false,
-          value: 'page_title',
+          value: 'TableTitle',
         },
       ],
       breadcrumb_data: [
@@ -50,34 +73,54 @@ export default {
         'meta_title_productlist',
         'meta_content_productlist',
         'meta_image_productlist',
+        'meta_title_contact',
+        'meta_content_contact',
+        'meta_image_contact',
+        'meta_title_dealer',
+        'meta_content_dealer',
+        'meta_image_dealer',
       ]).then((res) => {
         this.seo_list.push({
           page: '首頁',
           column_title: 'home',
-          title: res.meta_title_home.Content,
+          TableTitle: res.meta_title_home.Content,
           content: res.meta_content_home.Content,
           image: res.meta_image_home.Content,
         });
         this.seo_list.push({
           page: '關於我們',
           column_title: 'about',
-          title: res.meta_title_about.Content,
+          TableTitle: res.meta_title_about.Content,
           content: res.meta_content_about.Content,
           image: res.meta_image_about.Content,
         });
         this.seo_list.push({
           page: '最新消息列表',
           column_title: 'newslist',
-          title: res.meta_title_newslist.Content,
+          TableTitle: res.meta_title_newslist.Content,
           content: res.meta_content_newslist.Content,
           image: res.meta_image_newslist.Content,
         });
         this.seo_list.push({
           page: '商品列表',
           column_title: 'productlist',
-          title: res.meta_title_productlist.Content,
+          TableTitle: res.meta_title_productlist.Content,
           content: res.meta_content_productlist.Content,
           image: res.meta_image_productlist.Content,
+        });
+        this.seo_list.push({
+          page: '聯絡我們',
+          column_title: 'contact',
+          TableTitle: res.meta_title_contact.Content,
+          content: res.meta_content_contact.Content,
+          image: res.meta_image_contact.Content,
+        });
+        this.seo_list.push({
+          page: '經銷據點',
+          column_title: 'dealer',
+          TableTitle: res.meta_title_dealer.Content,
+          content: res.meta_content_dealer.Content,
+          image: res.meta_image_dealer.Content,
         });
       });
     },

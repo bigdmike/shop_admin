@@ -38,7 +38,6 @@ export default {
       get_common_column([
         'company_facebook',
         'company_instagram',
-        'company_image',
         'company_name',
         'company_phone',
         'company_email',
@@ -46,10 +45,6 @@ export default {
         'company_time',
         'company_messenger',
       ]).then((res) => {
-        res.company_image = this.$SetImageObj(
-          res.company_image,
-          res.company_image.Content
-        );
         this.page_data = res;
       });
     },

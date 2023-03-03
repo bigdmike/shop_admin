@@ -29,6 +29,8 @@ export default {
         about: '關於我們',
         newslist: '最新消息列表',
         productlist: '商品列表',
+        dealer: '經銷據點',
+        contact: '聯絡我們',
       },
       page_data: null,
     };

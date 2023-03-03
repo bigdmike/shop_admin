@@ -4,105 +4,24 @@
       <v-col cols="12">
         <Breadcrumb :link_array="breadcrumb_data" />
       </v-col>
-      <v-col cols="12" md="4">
-        <MainImageCard
-          :image_data="page_data.about_section_1_image"
-          upload_key="about_section_1_image"
-          @update-action="UpdateImage"
-        />
-      </v-col>
-      <v-col cols="12" md="8">
+      <v-col cols="12">
         <v-card class="pa-5 elevation-1">
-          <p class="mt-0  primary--text font-weight-bold">區塊一</p>
           <v-text-field
-            label="標題"
-            v-model="page_data.about_section_1_title.Content"
+            label="標語"
+            v-model="page_data.about_slogan.Content"
             dense
             outlined
           ></v-text-field>
-          <v-text-field
-            label="副標題"
-            v-model="page_data.about_section_1_sub_title.Content"
-            dense
-            outlined
-          ></v-text-field>
-          <FroalaEditor v-model="page_data.about_section_1_content.Content" />
+          <FroalaEditor v-model="page_data.about_content.Content" />
         </v-card>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col cols="12">
         <MainImageCard
-          :image_data="page_data.about_section_2_image"
-          upload_key="about_section_2_image"
+          :aspect_ratio="16/9"
+          :image_data="page_data.about_image"
+          upload_key="about_image"
           @update-action="UpdateImage"
         />
-      </v-col>
-      <v-col cols="12" md="8">
-        <v-card class="pa-5 elevation-1">
-          <p class="mt-0 primary--text font-weight-bold">區塊二</p>
-          <v-text-field
-            label="標題"
-            v-model="page_data.about_section_2_title.Content"
-            dense
-            outlined
-          ></v-text-field>
-          <v-text-field
-            label="副標題"
-            v-model="page_data.about_section_2_sub_title.Content"
-            dense
-            outlined
-          ></v-text-field>
-          <FroalaEditor v-model="page_data.about_section_2_content.Content" />
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4">
-        <MainImageCard
-          :image_data="page_data.about_section_3_image"
-          upload_key="about_section_3_image"
-          @update-action="UpdateImage"
-        />
-      </v-col>
-      <v-col cols="12" md="8">
-        <v-card class="pa-5 elevation-1">
-          <p class="mt-0 primary--text font-weight-bold">區塊三</p>
-          <v-text-field
-            label="標題"
-            v-model="page_data.about_section_3_title.Content"
-            dense
-            outlined
-          ></v-text-field>
-          <v-text-field
-            label="副標題"
-            v-model="page_data.about_section_3_sub_title.Content"
-            dense
-            outlined
-          ></v-text-field>
-          <FroalaEditor v-model="page_data.about_section_3_content.Content" />
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="4">
-        <MainImageCard
-          :image_data="page_data.about_section_4_image"
-          upload_key="about_section_4_image"
-          @update-action="UpdateImage"
-        />
-      </v-col>
-      <v-col cols="12" md="8">
-        <v-card class="pa-5 elevation-1">
-          <p class="mt-0 primary--text font-weight-bold">區塊四</p>
-          <v-text-field
-            label="標題"
-            v-model="page_data.about_section_4_title.Content"
-            dense
-            outlined
-          ></v-text-field>
-          <v-text-field
-            label="副標題"
-            v-model="page_data.about_section_4_sub_title.Content"
-            dense
-            outlined
-          ></v-text-field>
-          <FroalaEditor v-model="page_data.about_section_4_content.Content" />
-        </v-card>
       </v-col>
     </v-row>
   </v-container>

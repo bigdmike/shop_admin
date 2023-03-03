@@ -37,34 +37,16 @@ export default {
       this.GetPageData();
     },
     GetPageData() {
-      get_common_column([
-        'about_section_1_title',
-        'about_section_1_sub_title',
-        'about_section_1_content',
-        'about_section_1_image',
-        'about_section_2_title',
-        'about_section_2_sub_title',
-        'about_section_2_content',
-        'about_section_2_image',
-        'about_section_3_title',
-        'about_section_3_sub_title',
-        'about_section_3_content',
-        'about_section_3_image',
-        'about_section_4_title',
-        'about_section_4_sub_title',
-        'about_section_4_content',
-        'about_section_4_image',
-      ]).then((res) => {
-        this.page_data = {};
-        for (let i = 1; i <= 4; i++) {
-          res[`about_section_${i}_image`].type = 'image';
-          res[`about_section_${i}_image`].Image1 = null;
-          res[`about_section_${i}_image`].PreviewImage = this.$ImageUrl(
-            res[`about_section_${i}_image`].Content
+      get_common_column(['about_slogan', 'about_content', 'about_image']).then(
+        (res) => {
+          this.page_data = {};
+          res.about_image = this.$SetImageObj(
+            res.about_image,
+            res.about_image.Content
           );
+          this.page_data = res;
         }
-        this.page_data = res;
-      });
+      );
     },
     UpdateImage(val, index, key) {
       this.$set(this.page_data[key], 'PreviewImage', val.preview_url);
