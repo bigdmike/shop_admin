@@ -93,8 +93,12 @@ export default {
     },
     Validate() {
       let error_msg = '';
-      if (this.spec_list.length <= 0) {
+      if (this.spec_data.SpecList.length <= 0) {
         error_msg += '- 請選擇規格';
+      }
+      // 至少要兩個選項
+      else if (this.spec_data.SpecList.length < 2) {
+        error_msg += '- 請至少選擇兩種規格';
       }
       // 檢查不能有重複的SpecCategoryID
       let same_spec_category = false;

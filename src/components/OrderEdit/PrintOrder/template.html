@@ -77,12 +77,24 @@
           <td
             style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
           >
-            {{ item.Info.Title}}
+            {{item.ProductData.Title}}
           </td>
           <td
+            v-if="item.ProductData.IsCustom=='N'"
             style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
           >
-            {{item.Option.SizeTitle}} / {{item.Option.ColorTitle}}
+            {{GetStock(item).SizeTitle}} / {{GetStock(item).ColorTitle}}
+          </td>
+          <td
+            v-else
+            style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
+          >
+            <span
+              v-for="(option,option_index) in GetStock(item)"
+              :key="`option_${item_index}_${option_index}`"
+            >
+              {{option.SpecCategoryTitle}}:{{option.SpecTitle}}/
+            </span>
           </td>
           <td
             style="border: 1px solid black;border-collapse: collapse;padding: 5px;"

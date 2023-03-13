@@ -232,6 +232,11 @@ export default {
       });
     },
   },
+  computed: {
+    recommend_category() {
+      return [{ MenuID: '0', Title: '無' }, ...this.category_data];
+    },
+  },
   created() {
     this.GetProductData();
   },

@@ -8,6 +8,8 @@ import ShipCodeDialog from '@/components/OrderEdit/ShipCodeDialog';
 import PrintOrder from '@/components/OrderEdit/PrintOrder';
 import PrintHCT from '@/components/OrderEdit/PrintHCT';
 import MainDeleteDialog from '@/components/MainDeleteDialog/index';
+import ProductCard from '@/components/OrderEdit/ProductCard/index.vue';
+import CustomProductCard from '@/components/OrderEdit/CustomProductCard/index.vue';
 import { hex_to_ascii } from '@/common/filter.js';
 import {
   GetOrderAndProduct,
@@ -26,6 +28,8 @@ export default {
     PrintOrder,
     PrintHCT,
     MainDeleteDialog,
+    ProductCard,
+    CustomProductCard,
   },
   data() {
     return {
@@ -228,6 +232,50 @@ export default {
       let tmp_list = Object.assign({}, this.status_array);
       delete tmp_list.C;
       return tmp_list;
+    },
+    trade_product_data() {
+      if (this.order_data == null || this.order_data == 'error') {
+        return [];
+      } else {
+        let tmp_product_list = JSON.parse(
+          JSON.stringify(this.order_data.SubTradeList)
+        );
+        let product_list = [];
+
+        tmp_product_list.forEach((item) => {
+          const product_detail = this.products.filter(
+            (product) => product.GoodsID == item.GoodsID
+          )[0];
+          if (product_detail.IsCustom == 'N') {
+            // 一般商品
+            let match = -1;
+            product_list.forEach((product, product_inndex) => {
+              if (
+                product.GoodsID == item.GoodsID &&
+                product.ColorID == item.ColorID &&
+                product.SizeID == item.SizeID
+              ) {
+                match = product_inndex;
+              }
+            });
+            if (match != -1) {
+              product_list[match].Amount += 1;
+            } else {
+              let tmp_product = Object.assign({}, item);
+              tmp_product.Amount = 1;
+              tmp_product.ProductData = product_detail;
+              product_list.push(tmp_product);
+            }
+          } else {
+            let tmp_product = Object.assign({}, item);
+            tmp_product.Amount = 1;
+            tmp_product.ProductData = product_detail;
+            product_list.push(tmp_product);
+          }
+        });
+
+        return product_list;
+      }
     },
   },
   created() {

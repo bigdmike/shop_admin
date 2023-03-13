@@ -189,10 +189,14 @@ export default {
             (product) => product.GoodsID == item.GoodsID
           )[0];
           tmp_product.Amount = 1;
-          tmp_product.Option = tmp_product.Info.Stock.filter(
-            (option) =>
-              option.ColorID == item.ColorID && option.SizeID == item.SizeID
-          )[0];
+          if (tmp_product.Info.IsCustom == 'N') {
+            tmp_product.Option = tmp_product.Info.Stock.filter(
+              (option) =>
+                option.ColorID == item.ColorID && option.SizeID == item.SizeID
+            )[0];
+          } else {
+            tmp_product.Option = tmp_product.CustomSpecID.split(',');
+          }
           order_products.push(tmp_product);
         }
       });
@@ -202,16 +206,33 @@ export default {
       order_products.forEach((item) => {
         let product_str = '';
         // item_index != 0 ? (product_str += ';') : '';
-        product_str =
-          item.Info.Title +
-          ' - ' +
-          item.Option.ColorTitle +
-          '_' +
-          item.Option.SizeTitle +
-          '，NT$' +
-          item.FinalPrice +
-          ' x ' +
-          item.Amount;
+        if (item.Info.IsCustom == 'N') {
+          product_str =
+            item.Info.Title +
+            ' - ' +
+            '選項一：' +
+            item.Option.ColorTitle +
+            '/' +
+            '選項二：' +
+            item.Option.SizeTitle +
+            '，NT$' +
+            item.FinalPrice +
+            ' x ' +
+            item.Amount;
+        } else {
+          console.log(item.Info);
+          const spec_list = item.Info.CustomSpecList.filter((spec) => {
+            return item.Option.indexOf(spec.CustomSpecID) != -1;
+          });
+          product_str = item.Info.Title + ' - ';
+
+          spec_list.forEach((spec) => {
+            product_str += spec.SpecCategoryTitle + ':' + spec.SpecTitle + '/';
+          });
+
+          product_str += '，NT$' + item.FinalPrice + ' x ' + item.Amount;
+        }
+
         product_list.push(product_str);
       });
       return product_list;

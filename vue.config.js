@@ -40,7 +40,7 @@ const cdn = {
 
 module.exports = {
   filenameHashing: true,
-  publicPath: '/yaowen_admin/',
+  publicPath: '/krace_admin/',
   //   publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
   outputDir: 'dist',
   productionSourceMap: false,

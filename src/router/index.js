@@ -276,7 +276,7 @@ const routes = [
 
 const router = new VueRouter({
   routes,
-  base: '/yaowen_admin/',
+  base: '/krace_admin/',
   mode: 'history',
 });
 

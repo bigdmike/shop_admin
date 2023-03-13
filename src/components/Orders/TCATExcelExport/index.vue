@@ -72,13 +72,43 @@ export default {
     Export() {
       let export_json = [];
       this.export_order_data.forEach((item, item_index) => {
-        let tmp_data = {};
-        Object.keys(this.columns).forEach((new_key) => {
-          tmp_data[new_key] = this.export_order_data[item_index][
-            this.columns[new_key]
-          ];
+        // let tmp_data = {};
+        // Object.keys(this.columns).forEach((new_key) => {
+        //   tmp_data[new_key] = this.export_order_data[item_index][
+        //     this.columns[new_key]
+        //   ];
+        // });
+
+        // export_json.push(tmp_data);
+        console.log(item);
+        item.ProductName.forEach((product, product_index) => {
+          let tmp_data = {};
+          if (product_index == 0) {
+            Object.keys(this.columns).forEach((new_key) => {
+              if (new_key != '品名') {
+                tmp_data[new_key] = this.export_order_data[item_index][
+                  this.columns[new_key]
+                ];
+              } else {
+                tmp_data[new_key] = this.export_order_data[
+                  item_index
+                ].ProductName[0];
+              }
+            });
+          } else {
+            Object.keys(this.columns).forEach((new_key) => {
+              if (new_key != '品名') {
+                tmp_data[new_key] = '';
+              } else {
+                tmp_data[new_key] = this.export_order_data[
+                  item_index
+                ].ProductName[product_index];
+              }
+            });
+          }
+
+          export_json.push(tmp_data);
         });
-        export_json.push(tmp_data);
       });
 
       const data = XLSX.utils.json_to_sheet(export_json);
@@ -164,28 +194,54 @@ export default {
             (product) => product.GoodsID == item.GoodsID
           )[0];
           tmp_product.Amount = 1;
-          tmp_product.Option = tmp_product.Info.Stock.filter(
-            (option) =>
-              option.ColorID == item.ColorID && option.SizeID == item.SizeID
-          )[0];
+          if (tmp_product.Info.IsCustom == 'N') {
+            tmp_product.Option = tmp_product.Info.Stock.filter(
+              (option) =>
+                option.ColorID == item.ColorID && option.SizeID == item.SizeID
+            )[0];
+          } else {
+            tmp_product.Option = tmp_product.CustomSpecID.split(',');
+          }
+
           order_products.push(tmp_product);
         }
       });
 
       // Option.SizeTitle Option.ColorTitle
-      let product_str = '';
-      order_products.forEach((item, item_index) => {
-        item_index != 0 ? (product_str += ';') : '';
-        product_str +=
-          item.Info.Title +
-          '_' +
-          item.Option.ColorTitle +
-          '_' +
-          item.Option.SizeTitle +
-          'x' +
-          item.Amount;
+      let product_list = [];
+      order_products.forEach((item) => {
+        let product_str = '';
+        // item_index != 0 ? (product_str += ';') : '';
+        if (item.Info.IsCustom == 'N') {
+          product_str +=
+            item.Info.Title +
+            ' - ' +
+            '選項一：' +
+            item.Option.ColorTitle +
+            '/' +
+            '選項二：' +
+            item.Option.SizeTitle +
+            '，NT$' +
+            item.FinalPrice +
+            ' x ' +
+            item.Amount;
+        } else {
+          const spec_list = item.Info.CustomSpecList.filter((spec) => {
+            return item.Option.indexOf(spec.CustomSpecID) != -1;
+          });
+          product_str += item.Info.Title + ' - ';
+
+          spec_list.forEach((spec) => {
+            product_str += spec.SpecCategoryTitle + ':' + spec.SpecTitle + '/';
+          });
+
+          product_str += '，NT$' + item.FinalPrice + ' x ' + item.Amount;
+        }
+
+        product_list.push(product_str);
       });
-      return product_str;
+
+      return product_list;
     },
   },
 };

@@ -11,7 +11,7 @@
     />
     <PrintOrder
       :order_data="order_data"
-      :products="GetOrderProducts()"
+      :products="trade_product_data"
       :zip_code="zip_code"
       ref="PrintOrder"
     />
@@ -155,52 +155,23 @@
             <!-- PRODUCT LIST -->
             <v-col cols="12">
               <v-divider class="my-5"></v-divider>
-              <v-row
-                v-for="(item,item_index) in GetOrderProducts()"
+              <div
+                class="mb-3"
+                v-for="(item,item_index) in trade_product_data"
                 :key="`product_${item_index}`"
               >
-                <v-col cols="6" md="4">
-                  <p class="my-0 blue--text">{{item.Info.Title}}</p>
-                  <span class="caption">
-                    {{item.Option.ColorTitle}} / {{item.Option.SizeTitle}}</span
-                  >
-                </v-col>
-                <v-col cols="6" md="4" class=" d-flex align-center justify-end">
-                  <p class="my-0 ">
-                    NT$ {{item.SellPrice | money_format}} x {{item.Amount}}
-                  </p>
-                </v-col>
-                <v-col
-                  cols="6"
-                  md="4"
-                  class=" d-flex align-end justify-center flex-column"
-                >
-                  <p
-                    v-if="item.SellPrice !=item.FinalPrice"
-                    class="my-0 text-decoration-line-through body-2 grey--text lighten-1--text"
-                  >
-                    NT$ {{(item.SellPrice * item.Amount) | money_format}}
-                  </p>
-                  <p class="my-0">
-                    NT$ {{(item.FinalPrice * item.Amount) | money_format}}
-                  </p>
-                </v-col>
-                <v-col
-                  cols="12"
-                  class="py-0 px-2 d-flex align-center"
-                  v-if="item.DiscountID_PercentMenu!=0"
-                >
-                  <v-chip class="mr-4" small>
-                    {{GetProductDiscount(item.DiscountID_PercentMenu).Title}}</v-chip
-                  >
-                  <span class="caption"
-                    >-NT${{(item.SellPrice*(GetProductDiscount(item.DiscountID_PercentMenu).DiscountPercent/100))*item.Amount}}</span
-                  >
-                </v-col>
-                <v-col cols="12">
-                  <v-divider></v-divider>
-                </v-col>
-              </v-row>
+                <ProductCard
+                  v-if="item.ProductData.IsCustom=='N'"
+                  :shopcart_item="item"
+                  :discount_list="discount_list"
+                />
+                <CustomProductCard
+                  v-else
+                  :product_data="products"
+                  :shopcart_item="item"
+                  :discount_list="discount_list"
+                />
+              </div>
               <v-row>
                 <v-col
                   cols="12"

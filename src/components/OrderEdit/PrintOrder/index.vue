@@ -30,6 +30,32 @@ export default {
     GetZipCity(id) {
       return this.zip_code.filter((item) => item.ZipCode == id)[0];
     },
+    GetStock(shopcart_item) {
+      if (shopcart_item.ProductData.IsCustom == 'Y') {
+        const id_list = shopcart_item.CustomSpecID.split(',');
+        console.log(
+          shopcart_item.ProductData.CustomSpecList.filter(
+            (item) => id_list.indexOf(item.CustomSpecID) != -1
+          )
+        );
+        return shopcart_item.ProductData.CustomSpecList.filter(
+          (item) => id_list.indexOf(item.CustomSpecID) != -1
+        );
+      } else {
+        console.log(
+          shopcart_item.ProductData.IsCustom,
+          shopcart_item.ProductData.Stock,
+          shopcart_item.ColorID,
+          shopcart_item.SizeID
+        );
+        return shopcart_item.ProductData.Stock.filter((item) => {
+          return (
+            item.ColorID == shopcart_item.ColorID &&
+            item.SizeID == shopcart_item.SizeID
+          );
+        })[0];
+      }
+    },
   },
   filters: {
     money_format(value) {
