@@ -1,4 +1,4 @@
-# yaowen_admin
+# krace_admin
 
 ## Project setup
 
