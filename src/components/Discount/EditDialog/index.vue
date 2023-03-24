@@ -457,11 +457,13 @@ export default {
         MenuID: '0',
         Title: '全館優惠',
       };
-      if (this.discount_data.DiscountType == 'D') {
-        return [all_category];
-      } else {
-        return [all_category, ...this.category_list];
-      }
+      // if (this.discount_data.DiscountType == 'D') {
+      //   return [all_category];
+      // } else {
+      //   return [all_category, ...this.category_list];
+      // }
+
+      return [all_category, ...this.category_list];
     },
   },
 };

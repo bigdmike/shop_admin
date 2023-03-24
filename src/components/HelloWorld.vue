@@ -8,7 +8,7 @@
           contain
           height="30"
         /> -->
-        <h3 class="text-h4 primary--text font-weight-bold">耀聞管理後台</h3>
+        <h3 class="text-h4 primary--text font-weight-bold">凱銳斯管理後台</h3>
       </v-col>
 
       <v-col class="mb-4">

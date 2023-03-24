@@ -6,7 +6,7 @@
       :data="export_order_data"
       :fields="columns"
       type="csv"
-      name="耀聞水果世界-訂單匯出.csv"
+      name="Krace-訂單匯出.csv"
     ></DownloadExcel>
   </div>
 </template>
@@ -112,7 +112,7 @@ export default {
       const data = XLSX.utils.json_to_sheet(export_json);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, data, '訂單資料');
-      XLSX.writeFile(wb, '耀聞水果世界訂單匯出.xlsx');
+      XLSX.writeFile(wb, 'Krace訂單匯出.xlsx');
     },
     SetExportData() {
       let order_data = JSON.parse(JSON.stringify(this.order_data));

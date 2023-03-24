@@ -6,14 +6,14 @@ export default {
   data() {
     return {
       menu: [
-        {
-          title: '首頁',
-          icon: 'mdi-home',
-          type: 'U',
-          link: '/',
-          group: false,
-          list: [],
-        },
+        // {
+        //   title: '首頁',
+        //   icon: 'mdi-home',
+        //   type: 'U',
+        //   link: '/',
+        //   group: false,
+        //   list: [],
+        // },
         {
           title: '頁面編輯',
           icon: 'mdi-pencil',
@@ -61,6 +61,40 @@ export default {
               title: 'SEO設定',
               link: '/seo_list',
             },
+          ],
+        },
+        {
+          title: '影音相簿',
+          icon: 'mdi-video',
+          type: 'U',
+          link: '/video_category',
+          group: true,
+          list: [
+            {
+              title: '分類管理',
+              link: '/video_category',
+            },
+            {
+              title: '影片管理',
+              link: '/video',
+            },
+          ],
+        },
+        {
+          title: '經銷據點',
+          icon: 'mdi-store',
+          type: 'U',
+          link: '/dealers',
+          group: false,
+          list: [
+            // {
+            //   title: '',
+            //   link: '/terms_of_customer',
+            // },
+            // {
+            //   title: 'SEO設定',
+            //   link: '/seo_list',
+            // },
           ],
         },
         {

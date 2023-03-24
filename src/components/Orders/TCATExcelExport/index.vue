@@ -6,7 +6,7 @@
       :data="export_order_data"
       :fields="columns"
       type="csv"
-      name="耀聞水果世界-黑貓訂單匯出.csv"
+      name="Krace-黑貓訂單匯出.csv"
     ></DownloadExcel>
   </div>
 </template>
@@ -35,6 +35,10 @@ export default {
     product_data: {
       require: true,
       type: Array,
+    },
+    company_data: {
+      require: true,
+      type: Object,
     },
   },
   data() {
@@ -114,7 +118,7 @@ export default {
       const data = XLSX.utils.json_to_sheet(export_json);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, data, '黑貓訂單');
-      XLSX.writeFile(wb, '耀聞水果世界-黑貓訂單匯出.xlsx');
+      XLSX.writeFile(wb, 'Krace-黑貓訂單匯出.xlsx');
     },
     SetExportData() {
       let order_data = JSON.parse(JSON.stringify(this.order_data));
@@ -140,9 +144,15 @@ export default {
         // 報值
         order_data[item_index].PriceCount = 'Y';
         // 寄件人
-        order_data[item_index].SendName = '耀聞水果世界';
-        order_data[item_index].SendPhone = '04-2382-1555';
-        order_data[item_index].SendAddress = '臺中市南屯區公益路二段931號';
+        order_data[
+          item_index
+        ].SendName = this.company_data.company_name.Content;
+        order_data[
+          item_index
+        ].SendPhone = this.company_data.company_phone.Content;
+        order_data[
+          item_index
+        ].SendAddress = this.company_data.company_address.Content;
         // 空值
         order_data[item_index].Empty = '';
       });

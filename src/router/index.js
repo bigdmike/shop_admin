@@ -37,11 +37,39 @@ const routes = [
       ),
   },
   {
+    path: '/dealers',
+    name: '經銷據點管理',
+    component: () =>
+      import(/* webpackChunkName: "dealers" */ '../views/Dealers/index.vue'),
+  },
+  {
     path: '/home_carousel',
     name: '首頁大圖輪播',
     component: () =>
       import(
         /* webpackChunkName: "home_carousel" */ '../views/HomeCarousel/index.vue'
+      ),
+  },
+  {
+    path: '/video_category',
+    name: '影音相簿分類管理',
+    component: () =>
+      import(
+        /* webpackChunkName: "video_category" */ '../views/VideoCategory/index.vue'
+      ),
+  },
+  {
+    path: '/video',
+    name: '影音相簿管理',
+    component: () =>
+      import(/* webpackChunkName: "video" */ '../views/Video/index.vue'),
+  },
+  {
+    path: '/video/:id',
+    name: '影片編輯',
+    component: () =>
+      import(
+        /* webpackChunkName: "video_edit" */ '../views/VideoEdit/index.vue'
       ),
   },
   {

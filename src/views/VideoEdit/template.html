@@ -1,0 +1,88 @@
+<div id="VideoEdit">
+  <DeleteDialog ref="DeleteDialog" @delete-action="DeleteData" />
+  <v-container v-if="video_data!=null">
+    <v-row>
+      <v-col cols="12">
+        <Breadcrumb :link_array="breadcrumb_data" />
+      </v-col>
+      <v-col cols="12" md="12" lg="8" class="mx-auto py-0">
+        <div class="header d-flex justify-space-between align-center">
+          <h3 class="my-0 text-h5 font-weight-black">
+            影片 / {{video_data.Title}}
+            <span
+              class="text-body-2 grey--text text--darken-1 font-weight-regular ml-2"
+              >最後更新於 : {{video_data.updated_at}}</span
+            >
+          </h3>
+        </div>
+      </v-col>
+      <v-col cols="12" md="12" lg="4" class="mx-auto py-0 d-flex justify-end">
+        <v-btn @click="OpenDeleteDialog" class="elevation-0" color="error">
+          <v-icon small>mdi-trash-can-outline</v-icon>刪除影片
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" lg="8">
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <p class="mt-0 mb-2">影片標題*</p>
+          <v-text-field
+            v-model="video_data.Title"
+            dense
+            outlined
+          ></v-text-field>
+          <p class="mt-0 mb-2">影片網址*</p>
+          <v-text-field
+            v-model="video_data.Content2"
+            dense
+            outlined
+          ></v-text-field>
+          <p class="mt-0 mb-2">影片介紹內容</p>
+          <FroalaEditor v-model="video_data.Content1" />
+        </v-card>
+      </v-col>
+      <v-col cols="12" lg="4">
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center">
+            <v-icon class="mr-2">mdi-shape-outline</v-icon>影片分類
+          </h3>
+          <v-select
+            class="mb-8"
+            v-model="video_data.CategoryID"
+            :items="category_data"
+            placeholder="請選擇影片分類"
+            item-text="Title"
+            item-value="VideoCategoryID"
+            hide-details
+          ></v-select>
+        </v-card>
+
+        <v-card elevation="2" class="pa-8 mb-5 rounded-lg">
+          <h3 class="d-flex align-center mb-4">
+            <v-icon class="mr-2">mdi-image</v-icon>封面圖
+          </h3>
+          <input
+            style="display: none;"
+            type="file"
+            ref="ImageUpload1"
+            @change="ChangeImageFile($event.target.files,1)"
+          />
+          <v-hover v-slot="{ hover }">
+            <v-card
+              class="image_card"
+              elevation="0"
+              :class="{ 'on-hover': hover }"
+            >
+              <MainImageCard
+                :aspect_ratio="16/9"
+                :image_data="video_data"
+                upload_key="Image1"
+                @update-action="ChangeImage"
+              />
+            </v-card>
+          </v-hover>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

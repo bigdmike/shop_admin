@@ -126,10 +126,10 @@ export default {
     },
     Validate() {
       let error_msg = '';
-      if (this.image_pc == null) {
+      if (this.edit_type != 'edit' && this.image_pc == null) {
         error_msg += '- 請上傳電腦版圖片<br/>';
       }
-      if (this.image_mb == null) {
+      if (this.edit_type != 'edit' && this.image_mb == null) {
         error_msg += '- 請上傳手機版圖片<br/>';
       }
 

@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb/';
 import TCATExcelExport from '@/components/Orders/TCATExcelExport/';
 import ExcelExport from '@/components/Orders/ExcelExport/';
 import { GetOrderList } from '@/api/order.js';
+import { get_common_column } from '@/api/common_column';
 export default {
   name: 'Products',
   components: {
@@ -75,6 +76,7 @@ export default {
       payment_list: [],
       select_order: [],
       zip_code_data: null,
+      company_data: null,
     };
   },
   methods: {
@@ -91,6 +93,14 @@ export default {
           return new Date(b.created_at) - new Date(a.created_at);
         });
         this.order_data = res[0].data.List;
+
+        get_common_column([
+          'company_name',
+          'company_phone',
+          'company_address',
+        ]).then((res) => {
+          this.company_data = res;
+        });
       });
     },
     UpdateSelectOrder(val) {

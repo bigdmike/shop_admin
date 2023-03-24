@@ -1,0 +1,38 @@
+<div id="Products">
+  <template>
+    <EditDialog
+      ref="EditDialog"
+      v-on:update-action="UpdateData"
+      v-on:create-action="CreateData"
+    />
+    <DeleteDialog ref="DeleteDialog" v-on:delete-action="DeleteData" />
+  </template>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <div class="d-flex justify-space-between align-end">
+          <Breadcrumb :link_array="breadcrumb_data" class="pb-0" />
+          <v-btn
+            @click="OpenCreateDialog"
+            color="light-blue lighten-1 white--text elevation-0 font-weight-bold"
+            >新增分類</v-btn
+          >
+        </div>
+      </v-col>
+      <v-col cols="12" md="12" lg="12">
+        <v-row>
+          <v-col cols="12">
+            <MainDragList
+              :options="options"
+              :headers="headers"
+              @delete-action="OpenDeleteDialog"
+              @title-action="OpenEditDialog"
+              @sort-action="SortData"
+              v-model="video_categories"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
+</div>

@@ -1,0 +1,27 @@
+<div id="Products">
+  <DeleteDialog ref="DeleteDialog" @delete-action="DeleteData" />
+  <v-container v-if="video_data!=null">
+    <v-row>
+      <v-col cols="12">
+        <div class="d-flex justify-space-between align-end">
+          <Breadcrumb :link_array="breadcrumb_data" class="pb-0" />
+          <v-btn
+            @click="$router.push('/video/new')"
+            color="light-blue lighten-1 white--text elevation-0  font-weight-bold"
+            >新增影片</v-btn
+          >
+        </div>
+      </v-col>
+      <v-col cols="12">
+        <MainDragList
+          :options="options"
+          :headers="headers"
+          @delete-action="OpenDeleteDialog"
+          @title-action="$router.push(`video/${$event.VideoID}`)"
+          @sort-action="SortData"
+          v-model="video_data"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+</div>
