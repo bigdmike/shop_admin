@@ -411,6 +411,7 @@ export default {
         error_msg += '- 請輸入贈品名稱<br/>';
       }
       if (
+        this.type != 'edit' &&
         this.discount_data.DiscountType == 'G' &&
         this.discount_data.Image1 == null
       ) {
