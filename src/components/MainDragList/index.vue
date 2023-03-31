@@ -19,6 +19,11 @@ export default {
       require: true,
       type: Object,
     },
+    hide_footer: {
+      // 隱藏分頁
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -30,10 +35,21 @@ export default {
       this.drag = false;
       this.$emit('sort-action', this.value);
     },
+
+    onDropCallback(event) {
+      console.log('onDropCallback');
+      const movedItem = this.table_data.splice(event.oldIndex, 1)[0];
+      this.table_data.splice(event.newIndex, 0, movedItem);
+      this.drag = false;
+      this.$emit('sort-action', this.value);
+    },
   },
   computed: {
     drag_headers() {
       return [{ text: '', value: 'DragColumn' }, ...this.headers];
+    },
+    table_data() {
+      return this.value;
     },
   },
 };

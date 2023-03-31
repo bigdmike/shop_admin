@@ -2,19 +2,24 @@
   <v-data-table
     :disable-sort="true"
     :headers="drag_headers"
-    :items="value"
-    :disable-pagination="true"
-    :hide-default-footer="true"
+    :items="table_data"
+    item-key="StockID"
+    :disable-pagination="hide_footer"
+    :hide-default-footer="hide_footer"
+    :footer-props="{
+      'items-per-page-text':'每頁顯示'
+    }"
     class="elevation-1 pb-10"
   >
     <template v-slot:body="props">
       <draggable
-        :list="value"
+        :list="props.items"
         tag="tbody"
         handle=".page__grab-icon"
-        @end="ChangeSort"
+        @end="onDropCallback"
       >
-        <tr v-for="(item, index) in value" :key="index">
+        <!-- @end="ChangeSort" -->
+        <tr v-for="(item, index) in props.items" :key="index">
           <td>
             <v-icon small class="page__grab-icon">
               mdi-dots-grid

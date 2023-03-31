@@ -46,7 +46,7 @@ module.exports = {
   productionSourceMap: false,
   lintOnSave: process.env.NODE_ENV !== 'production',
   devServer: {
-    port: 8887,
+    port: 8881,
     hot: true,
     compress: true, // 是否启动压缩 gzip
     proxy: {

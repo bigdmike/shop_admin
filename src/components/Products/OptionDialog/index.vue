@@ -5,6 +5,10 @@
     hide-overlay
     transition="dialog-bottom-transition"
   >
+    <OptionTitleDialog
+      ref="OptionTitleDialog"
+      @update-action="UpdateOptionTitle"
+    />
     <EditDialog
       ref="EditDialog"
       @update-action="UpdateOptionData"
@@ -17,7 +21,13 @@
       :option_2="option_2"
       v-on:update-stock="CreateStockData"
     />
-    <v-card class="grey lighten-3 overflow-hidden">
+    <EditMultipleStockDialog
+      ref="EditMultipleStockDialog"
+      :option_1="option_1"
+      :option_2="option_2"
+      @update-stock="CreateMultipleStockData"
+    />
+    <v-card v-if="product != null" class="grey lighten-3 overflow-hidden">
       <v-toolbar class="white primary--text elevation-1">
         <v-toolbar-title>
           <p class="ma-0 font-weight-bold">商品庫存設定</p>
@@ -33,12 +43,18 @@
       <v-row class="pa-8">
         <v-col cols="12" md="6">
           <div class="d-flex justify-space-between align-center mb-2">
-            <h3>選項一</h3>
-            <v-btn
-              @click="OpenCreateOptionDialog('Color')"
-              class="light-blue lighten-1 white--text font-weight-bold elevation-0"
-              >新增</v-btn
-            >
+            <h3>{{ product.Option1 }}</h3>
+            <div>
+              <v-btn
+                @click="OpenOptionTitleEdit"
+                class="green lighten-1 white--text mr-2 font-weight-bold elevation-0"
+                >編輯選項標題</v-btn
+              ><v-btn
+                @click="OpenCreateOptionDialog('Color')"
+                class="light-blue lighten-1 white--text font-weight-bold elevation-0"
+                >新增</v-btn
+              >
+            </div>
           </div>
           <MainList
             v-if="option_1 != null && option_1 != undefined"
@@ -51,12 +67,20 @@
         </v-col>
         <v-col cols="12" md="6">
           <div class="d-flex justify-space-between align-center mb-2">
-            <h3>選項二</h3>
-            <v-btn
-              @click="OpenCreateOptionDialog('Size')"
-              class="light-blue lighten-1 white--text font-weight-bold elevation-0"
-              >新增</v-btn
-            >
+            <h3>{{ product.Option2 }}</h3>
+
+            <div>
+              <v-btn
+                @click="OpenOptionTitleEdit"
+                class="green lighten-1 white--text mr-2 font-weight-bold elevation-0"
+                >編輯選項標題</v-btn
+              >
+              <v-btn
+                @click="OpenCreateOptionDialog('Size')"
+                class="light-blue lighten-1 white--text font-weight-bold elevation-0"
+                >新增</v-btn
+              >
+            </div>
           </div>
           <MainList
             v-if="option_2 != null && option_2 != undefined"
@@ -73,6 +97,29 @@
             <div class="d-flex align-center">
               <v-select
                 class="mr-5"
+                v-model="option_1_key"
+                :items="color_select_list"
+                item-text="ColorTitle"
+                item-value="ColorID"
+                label="選項一篩選"
+                dense
+                hide-details=""
+                outlined
+              ></v-select>
+              <v-select
+                class="mr-5"
+                v-model="option_2_key"
+                :items="size_select_list"
+                item-text="SizeTitle"
+                item-value="SizeID"
+                label="選項二篩選"
+                dense
+                hide-details=""
+                outlined
+              ></v-select>
+
+              <v-select
+                class="mr-5"
                 v-model="stock_filter"
                 :items="stock_filter_list"
                 label="篩選設定"
@@ -80,6 +127,12 @@
                 hide-details=""
                 outlined
               ></v-select>
+
+              <v-btn
+                @click="OpenEditMultipleStockDialog()"
+                class="green mr-2 lighten-1 white--text font-weight-bold elevation-0"
+                >大量管理庫存</v-btn
+              >
               <v-btn
                 @click="OpenCreateStockDialog()"
                 class="light-blue lighten-1 white--text font-weight-bold elevation-0"
@@ -92,6 +145,7 @@
             v-if="stocks != null"
             :options="stock_table_options"
             :headers="stock_table_headers"
+            :hide_footer="false"
             @sort-action="SortStockData"
             @edit-action="OpenEditStockDialog"
             v-model="filter_stock"
@@ -103,7 +157,7 @@
 </template>
 
 <script>
-import { get_goods } from '@/api/products.js';
+import { get_goods, update_goods } from '@/api/products.js';
 import {
   getOptionStock,
   create_color,
@@ -118,6 +172,8 @@ import MainDragList from '@/components/MainDragList/index';
 import EditDialog from './EditDialog/index.vue';
 import EditStockDialog from './EditStockDialog/index.vue';
 import DeleteDialog from '@/components/MainDeleteDialog/index.vue';
+import OptionTitleDialog from '@/components/Products/OptionDialog/EditOptionTitleDialog/index.vue';
+import EditMultipleStockDialog from '@/components/Products/OptionDialog/EditMultipleStockDialog/index.vue';
 export default {
   name: 'OptionDialog',
   components: {
@@ -126,6 +182,8 @@ export default {
     EditStockDialog,
     MainList,
     MainDragList,
+    OptionTitleDialog,
+    EditMultipleStockDialog,
   },
   data() {
     return {
@@ -135,6 +193,8 @@ export default {
       option_2: null,
       stocks: null,
       dialog: false,
+      option_1_key: 0,
+      option_2_key: 0,
       stock_filter_list: ['全部顯示', '只顯示啟用', '只顯示停用'],
       stock_filter: '只顯示啟用',
       option_table_options: {
@@ -214,13 +274,35 @@ export default {
       if (this.stocks == null) {
         return null;
       }
-      if (this.stock_filter == '全部顯示') {
-        return this.stocks;
-      } else if (this.stock_filter == '只顯示啟用') {
-        return this.stocks.filter((item) => item.Status == 'Y');
+      let tmp_stock = JSON.parse(JSON.stringify(this.stocks));
+      if (this.stock_filter == '只顯示啟用') {
+        tmp_stock = tmp_stock.filter((item) => item.Status == 'Y');
       } else {
-        return this.stocks.filter((item) => item.Status == 'N');
+        tmp_stock = tmp_stock.filter((item) => item.Status == 'N');
       }
+      if (this.option_1_key != 0) {
+        tmp_stock = tmp_stock.filter(
+          (item) => item.ColorID == this.option_1_key
+        );
+      }
+      if (this.option_2_key != 0) {
+        tmp_stock = tmp_stock.filter(
+          (item) => item.SizeID == this.option_2_key
+        );
+      }
+      return tmp_stock;
+    },
+    color_select_list() {
+      if (this.option_1 == null) {
+        return [{ ColorID: 0, ColorTitle: '全部' }];
+      }
+      return [{ ColorID: 0, ColorTitle: '全部' }, ...this.option_1];
+    },
+    size_select_list() {
+      if (this.option_2 == null) {
+        return [{ SizeID: 0, SizeTitle: '全部' }];
+      }
+      return [{ SizeID: 0, SizeTitle: '全部' }, ...this.option_2];
     },
   },
   methods: {
@@ -237,8 +319,10 @@ export default {
     GetGoodsStockData() {
       get_goods().then((res) => {
         this.product = res.data.filter((item) => item.GoodsID == this.id)[0];
+        this.stock_table_headers[0].text = this.product.Option1;
+        this.stock_table_headers[1].text = this.product.Option2;
         getOptionStock(this.product.GoodsID).then((res) => {
-          console.log(res[1].data);
+          console.log(res);
           this.option_1 = this.SortOption(res[0].data, 'ColorTitle');
           this.option_2 = this.SortOption(res[1].data, 'SizeTitle');
           this.stocks = res[2].data;
@@ -259,6 +343,9 @@ export default {
         'edit'
       );
     },
+    OpenOptionTitleEdit() {
+      this.$refs.OptionTitleDialog.Open(this.product);
+    },
     OpenDelete(item) {
       this.$refs.DeleteDialog.Open(item);
     },
@@ -269,7 +356,6 @@ export default {
       data = data.filter((item) => item.Status == 'Y' && item.SizeTitle != 'F');
       data.forEach((item, item_index) => {
         data[item_index].TableTitle = item[title];
-        console.log(data[item_index]);
         if (data[item_index].TableTitle == '無') {
           data[item_index].TitleActionDisable = true;
           data[item_index].ActionDisable = true;
@@ -279,7 +365,6 @@ export default {
       let first_option = data.filter((item) => item[title] == '無')[0];
       data.splice(data.indexOf(first_option), 1);
       data.splice(0, 0, first_option);
-      console.log(data);
       return data;
     },
     CreateOptionData(data) {
@@ -340,6 +425,9 @@ export default {
     OpenEditStockDialog(item) {
       this.$refs.EditStockDialog.Open(item, 'edit');
     },
+    OpenEditMultipleStockDialog() {
+      this.$refs.EditMultipleStockDialog.Open();
+    },
     CreateStockData(data) {
       data.GoodsID = this.id;
       create_stock(data).then(() => {
@@ -347,7 +435,30 @@ export default {
         this.GetGoodsStockData();
       });
     },
+    async CreateMultipleStockData({ data, options }) {
+      for (let option_item of options) {
+        let tmp_data = Object.assign({}, data);
+        tmp_data.GoodsID = this.id;
+        tmp_data.ColorID = option_item[0];
+        tmp_data.SizeID = option_item[1];
+        let result = await create_stock(tmp_data);
+        console.log(result);
+        await setTimeout(() => {}, 1000);
+      }
+      this.$refs.EditMultipleStockDialog.Cancel();
+    },
+    UpdateOptionTitle({ Option1, Option2 }) {
+      this.product.Option1 = Option1;
+      this.product.Option2 = Option2;
+      this.product.ID = this.product.GoodsID;
+      update_goods(this.product).then((res) => {
+        console.log(res);
+        this.GetGoodsStockData();
+        this.$refs.OptionTitleDialog.Cancel();
+      });
+    },
     SortStockData(data) {
+      console.log(data);
       let tmp_data = JSON.parse(JSON.stringify(data));
       tmp_data.forEach((item, item_index) => {
         tmp_data[item_index].Seq = item_index + 2;
