@@ -1,0 +1,55 @@
+{
+    "page_title": "關於我們",
+    "column_keys": [
+        "about_slogan",
+        "about_content",
+        "about_image"
+    ],
+    "edit_block": [
+        {
+            "type": "card",
+            "columns": [
+                {
+                    "cols": 4,
+                    "components": [
+                        {
+                            "type": "image",
+                            "column_key": "about_image",
+                            "title": "主要圖片",
+                            "aspect_ratio": "16/9",
+                            "file": null,
+                            "preview_image": "",
+                            "original_image": ""
+                        }
+                    ]
+                },
+                {
+                    "cols": 8,
+                    "components": [
+                        {
+                            "type": "text_feild",
+                            "column_key": "about_slogan",
+                            "title": "標語",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_editor",
+                            "column_key": "about_content",
+                            "title": "主要內文",
+                            "value": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "image_card",
+            "column_key": "about_image",
+            "title": "主要圖片",
+            "aspect_ratio": "16/9",
+            "file": null,
+            "preview_image": "",
+            "original_image": ""
+        }
+    ]
+}

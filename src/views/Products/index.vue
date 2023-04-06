@@ -5,7 +5,7 @@ import FilterDialog from '@/components/Products/FilterDialog/index';
 import DeleteDialog from '@/components/MainDeleteDialog';
 import GridShow from '@/components/Products/GridShow/index';
 import MainDragList from '@/components/MainDragList/index';
-import OptionDialog from '@/components/Products/OptionDialog/index';
+import OptionDialog from '@/components/ProductOption/index';
 import ImageEditDialog from '@/components/Products/ImageEditDialog/index.vue';
 import CustomizeDialog from '@/components/Products/CustomizeDialog/index.vue';
 import Breadcrumb from '@/components/Breadcrumb/';
@@ -161,15 +161,16 @@ export default {
           res[1].data[item_index].StockCount = stock_count;
         });
         this.product_data = res[1].data;
+        this.CheckSort();
         // StockCount
       });
     },
     CheckSort() {
       let is_sort = true;
       this.product_data.forEach((item, item_index) => {
-        item.position == item_index + 1 ? '' : (is_sort = false);
+        item.Seq == item_index + 1 ? '' : (is_sort = false);
       });
-      is_sort ? '' : this.UpdateProductSort();
+      is_sort ? '' : this.UpdateProductSort(this.product_data);
     },
     async UpdateProductSort(data) {
       let tmp_data = [];

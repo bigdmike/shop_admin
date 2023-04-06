@@ -23,6 +23,12 @@ const routes = [
       import(/* webpackChunkName: "login" */ '../views/Login/index.vue'),
   },
   {
+    path: '/page_edit/:id',
+    name: '頁面編輯',
+    component: () =>
+      import(/* webpackChunkName: "home_page" */ '../views/PageEdit/index.vue'),
+  },
+  {
     path: '/home_page',
     name: '首頁頁面管理',
     component: () =>

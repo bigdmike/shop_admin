@@ -73,6 +73,7 @@ export default {
         'SEO編輯',
         '新增銷售頁',
         '編輯銷售頁',
+        '頁面編輯',
       ];
       this.change_header =
         pages.filter((item) => item == this.$route.name).length > 0

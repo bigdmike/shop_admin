@@ -1,0 +1,46 @@
+<div>
+  <input
+    ref="ImageUpload"
+    @change="UploadImage($event.target.files)"
+    type="file"
+    style="display: none;"
+    accept=".jpg,.jpeg,.png,.gif,.webp"
+  />
+  <v-hover v-slot="{ hover }">
+    <v-card
+      class="image_card"
+      :elevation="hover ? 12 : 2"
+      :class="{ 'on-hover': hover }"
+    >
+      <v-img
+        :src="image_data.preview_image"
+        :aspect-ratio="aspect_ratio"
+        :style="dark_mode?'background-color: #999':''"
+      >
+        <v-card-title
+          :class="image_data.preview_image==''?'show':hover?'show':''"
+          class="text-h6 white--text fill-height img_card_control"
+        >
+          <div
+            class="d-flex justify-space-between align-center my-auto mx-auto"
+          >
+            <v-btn
+              @click="OpenUpload()"
+              :class="image_data.preview_image==''?'show-btns':hover?'show-btns':''"
+              color="rgba(255, 255, 255, 0)"
+              icon
+            >
+              <v-icon
+                :class="image_data.preview_image==''?'show-btns':hover?'show-btns':''"
+                small
+                color="rgba(255, 255, 255, 0)"
+              >
+                mdi-pencil-outline
+              </v-icon>
+            </v-btn>
+          </div>
+        </v-card-title>
+      </v-img>
+    </v-card>
+  </v-hover>
+</div>

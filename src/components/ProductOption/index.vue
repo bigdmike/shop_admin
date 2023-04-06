@@ -15,12 +15,6 @@
       @create-action="CreateOptionData"
     />
     <DeleteDialog ref="DeleteDialog" @delete-action="DeleteOptionData" />
-    <EditStockDialog
-      ref="EditStockDialog"
-      :option_1="option_1"
-      :option_2="option_2"
-      v-on:update-stock="CreateStockData"
-    />
     <EditMultipleStockDialog
       ref="EditMultipleStockDialog"
       :option_1="option_1"
@@ -133,11 +127,6 @@
                 class="green mr-2 lighten-1 white--text font-weight-bold elevation-0"
                 >大量管理庫存</v-btn
               >
-              <v-btn
-                @click="OpenCreateStockDialog()"
-                class="light-blue lighten-1 white--text font-weight-bold elevation-0"
-                >新增庫存</v-btn
-              >
             </div>
           </div>
 
@@ -164,22 +153,20 @@ import {
   create_size,
   update_color,
   update_size,
-  create_stock,
   update_stock_sort,
+  create_multiple_stock,
 } from '@/api/product_option.js';
 import MainList from '@/components/MainList/';
 import MainDragList from '@/components/MainDragList/index';
 import EditDialog from './EditDialog/index.vue';
-import EditStockDialog from './EditStockDialog/index.vue';
 import DeleteDialog from '@/components/MainDeleteDialog/index.vue';
-import OptionTitleDialog from '@/components/Products/OptionDialog/EditOptionTitleDialog/index.vue';
-import EditMultipleStockDialog from '@/components/Products/OptionDialog/EditMultipleStockDialog/index.vue';
+import OptionTitleDialog from '@/components/ProductOption/EditOptionTitleDialog/index.vue';
+import EditMultipleStockDialog from '@/components/ProductOption/EditMultipleStockDialog/index.vue';
 export default {
   name: 'OptionDialog',
   components: {
     DeleteDialog,
     EditDialog,
-    EditStockDialog,
     MainList,
     MainDragList,
     OptionTitleDialog,
@@ -306,7 +293,6 @@ export default {
     },
   },
   methods: {
-    // main dialog
     Open(id) {
       this.id = id;
       this.GetGoodsStockData();
@@ -316,25 +302,10 @@ export default {
       this.id = -1;
       this.dialog = false;
     },
-    GetGoodsStockData() {
-      get_goods().then((res) => {
-        this.product = res.data.filter((item) => item.GoodsID == this.id)[0];
-        this.stock_table_headers[0].text = this.product.Option1;
-        this.stock_table_headers[1].text = this.product.Option2;
-        getOptionStock(this.product.GoodsID).then((res) => {
-          console.log(res);
-          this.option_1 = this.SortOption(res[0].data, 'ColorTitle');
-          this.option_2 = this.SortOption(res[1].data, 'SizeTitle');
-          this.stocks = res[2].data;
-        });
-      });
-    },
-    // options
     OpenCreateOptionDialog(option_type) {
       this.$refs.EditDialog.Open(0, this.id, option_type, '', 'create');
     },
     OpenEditOptionDialog(option, option_type) {
-      console.log(option, option_type);
       this.$refs.EditDialog.Open(
         option[`${option_type}ID`],
         this.id,
@@ -349,24 +320,10 @@ export default {
     OpenDelete(item) {
       this.$refs.DeleteDialog.Open(item);
     },
-    SortOption(data, title) {
-      data = data.filter(
-        (item) => item.GoodsID == this.product.GoodsID || item.GoodsID == 0
-      );
-      data = data.filter((item) => item.Status == 'Y' && item.SizeTitle != 'F');
-      data.forEach((item, item_index) => {
-        data[item_index].TableTitle = item[title];
-        if (data[item_index].TableTitle == '無') {
-          data[item_index].TitleActionDisable = true;
-          data[item_index].ActionDisable = true;
-        }
-      });
-
-      let first_option = data.filter((item) => item[title] == '無')[0];
-      data.splice(data.indexOf(first_option), 1);
-      data.splice(0, 0, first_option);
-      return data;
+    OpenEditMultipleStockDialog() {
+      this.$refs.EditMultipleStockDialog.Open();
     },
+    // options
     CreateOptionData(data) {
       if (data.ColorTitle) {
         create_color(data).then(() => {
@@ -392,6 +349,24 @@ export default {
           this.GetGoodsStockData();
         });
       }
+    },
+    SortOption(data, title) {
+      data = data.filter(
+        (item) => item.GoodsID == this.product.GoodsID || item.GoodsID == 0
+      );
+      data = data.filter((item) => item.Status == 'Y' && item.SizeTitle != 'F');
+      data.forEach((item, item_index) => {
+        data[item_index].TableTitle = item[title];
+        if (data[item_index].TableTitle == '無') {
+          data[item_index].TitleActionDisable = true;
+          data[item_index].ActionDisable = true;
+        }
+      });
+
+      let first_option = data.filter((item) => item[title] == '無')[0];
+      data.splice(data.indexOf(first_option), 1);
+      data.splice(0, 0, first_option);
+      return data;
     },
     async DeleteOptionData(data) {
       // 停用相關庫存
@@ -419,33 +394,33 @@ export default {
       this.$refs.DeleteDialog.Cancel();
     },
     // stocks
-    OpenCreateStockDialog() {
-      this.$refs.EditStockDialog.Open(null, 'create');
-    },
-    OpenEditStockDialog(item) {
-      this.$refs.EditStockDialog.Open(item, 'edit');
-    },
-    OpenEditMultipleStockDialog() {
-      this.$refs.EditMultipleStockDialog.Open();
-    },
-    CreateStockData(data) {
-      data.GoodsID = this.id;
-      create_stock(data).then(() => {
-        this.$refs.EditStockDialog.Cancel();
-        this.GetGoodsStockData();
+    GetGoodsStockData() {
+      get_goods().then((res) => {
+        this.product = res.data.filter((item) => item.GoodsID == this.id)[0];
+        this.stock_table_headers[0].text = this.product.Option1;
+        this.stock_table_headers[1].text = this.product.Option2;
+        getOptionStock(this.product.GoodsID).then((res) => {
+          console.log(res);
+          this.option_1 = this.SortOption(res[0].data, 'ColorTitle');
+          this.option_2 = this.SortOption(res[1].data, 'SizeTitle');
+          this.stocks = res[2].data;
+        });
       });
     },
-    async CreateMultipleStockData({ data, options }) {
+    CreateMultipleStockData({ data, options }) {
+      let list = [];
       for (let option_item of options) {
         let tmp_data = Object.assign({}, data);
         tmp_data.GoodsID = this.id;
         tmp_data.ColorID = option_item[0];
         tmp_data.SizeID = option_item[1];
-        let result = await create_stock(tmp_data);
-        console.log(result);
-        await setTimeout(() => {}, 1000);
+        list.push(tmp_data);
       }
-      this.$refs.EditMultipleStockDialog.Cancel();
+      create_multiple_stock(list).then((res) => {
+        console.log(res);
+        this.$refs.EditMultipleStockDialog.Cancel();
+        this.GetGoodsStockData();
+      });
     },
     UpdateOptionTitle({ Option1, Option2 }) {
       this.product.Option1 = Option1;

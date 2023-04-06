@@ -59,7 +59,7 @@ export default {
           sortable: false,
           value: 'TableTitle',
         },
-        { text: '上架時間', value: 'created_at' },
+        // { text: '上架時間', value: 'created_at' },
         { text: '手續費', value: 'ShippingFee' },
         { text: '啟用狀態', value: 'Status' },
         { text: '操作', value: 'action' },
@@ -111,7 +111,7 @@ export default {
       });
     },
     DeleteData(item) {
-      delete_shipping(item).then((res) => {
+      delete_shipping(item.ShippingID).then((res) => {
         if (res.code == 200) {
           this.GetData();
           this.$refs.DeleteDialog.Cancel();

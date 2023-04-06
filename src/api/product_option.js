@@ -4,6 +4,11 @@ import { patch, del, put, get, post } from '@/common/request';
 export function create_stock(list_item) {
   return post('admin/goods/stock', list_item, '已成功更新商品庫存');
 }
+
+export function create_multiple_stock(list) {
+  return post('admin/goods/stockBatch', list, '已成功更新商品庫存');
+}
+
 export function update_stock_sort(list) {
   let tmp_data = [];
   list.forEach((item, item_index) => {
