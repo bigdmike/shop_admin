@@ -1,0 +1,123 @@
+{
+    "page_title": "首頁",
+    "column_keys": [
+        "home_product_1_title",
+        "home_product_1_subtitle",
+        "home_product_1_link",
+        "home_product_1_image",
+        "home_product_2_title",
+        "home_product_2_subtitle",
+        "home_product_2_link",
+        "home_product_2_image",
+        "home_video"
+    ],
+    "block_title": [
+        "主打商品區塊",
+        "背景影片區塊"
+    ],
+    "edit_block": [
+        {
+            "type": "card",
+            "block_title": "主打商品區塊",
+            "columns": [
+                {
+                    "cols": 6,
+                    "components": [
+                        {
+                            "type": "image",
+                            "column_key": "home_product_1_image",
+                            "title": "區塊圖片",
+                            "aspect_ratio": "16/9",
+                            "file": null,
+                            "preview_image": "",
+                            "original_image": ""
+                        }
+                    ]
+                },
+                {
+                    "cols": 6,
+                    "components": [
+                        {
+                            "type": "text_feild",
+                            "column_key": "home_product_1_title",
+                            "title": "標題",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "home_product_1_subtitle",
+                            "title": "副標題",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "home_product_1_link",
+                            "title": "連結",
+                            "value": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "card",
+            "block_title": "主打商品區塊",
+            "columns": [
+                {
+                    "cols": 6,
+                    "components": [
+                        {
+                            "type": "image",
+                            "column_key": "home_product_2_image",
+                            "title": "區塊圖片",
+                            "aspect_ratio": "16/9",
+                            "file": null,
+                            "preview_image": "",
+                            "original_image": ""
+                        }
+                    ]
+                },
+                {
+                    "cols": 6,
+                    "components": [
+                        {
+                            "type": "text_feild",
+                            "column_key": "home_product_2_title",
+                            "title": "標題",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "home_product_2_subtitle",
+                            "title": "副標題",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "home_product_2_link",
+                            "title": "連結",
+                            "value": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "card",
+            "block_title": "背景影片區塊",
+            "columns": [
+                {
+                    "cols": 12,
+                    "components": [
+                        {
+                            "type": "text_feild",
+                            "column_key": "home_video",
+                            "title": "Youtube影片連結",
+                            "value": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

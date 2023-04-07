@@ -4,56 +4,61 @@
       <v-col cols="12">
         <Breadcrumb :link_array="breadcrumb_data" />
       </v-col>
-      <v-col
-        v-for="(edit_block,edit_block_index) in edit_block_data.edit_block"
-        :key="`block_${edit_block_index}`"
-        cols="12"
-      >
-        <v-card v-if="edit_block.type=='card'" class="pa-5 elevation-1">
-          <v-row>
-            <v-col
-              v-for="(column_item,column_item_index) in edit_block.columns"
-              :key="`column_${edit_block_index}_${column_item_index}`"
-              cols="12"
-              :md="column_item.cols"
-            >
-              <template v-for="(item,item_index) in column_item.components">
-                <div
-                  :key="`text_editor_${edit_block_index}_${column_item_index}_${item_index}`"
-                >
-                  <p class="caption my-0">{{item.title}}</p>
-                  <v-text-field
-                    v-if="item.type =='text_feild'"
-                    v-model="page_data[item.column_key].Content"
-                    dense
-                    outlined
-                  ></v-text-field>
 
-                  <FroalaEditor
-                    v-if="item.type =='text_editor'"
-                    v-model="page_data[item.column_key].Content"
-                  />
+      <template v-for="(title,title_index) in edit_block_data.block_title">
+        <v-col :key="`title_${title_index}`" cols="12" class="pb-0">
+          <p class="mt-0 mb-0 primary--text font-weight-bold">{{title}}</p>
+        </v-col>
+        <v-col
+          v-for="(edit_block,edit_block_index) in GetBlockCards(title)"
+          :key="`block_${title_index}_${edit_block_index}`"
+          cols="12"
+        >
+          <v-card v-if="edit_block.type=='card'" class="pa-5 elevation-1">
+            <v-row>
+              <v-col
+                v-for="(column_item,column_item_index) in edit_block.columns"
+                :key="`column_${edit_block_index}_${column_item_index}`"
+                cols="12"
+                :md="column_item.cols"
+              >
+                <template v-for="(item,item_index) in column_item.components">
+                  <div
+                    :key="`text_editor_${edit_block_index}_${column_item_index}_${item_index}`"
+                  >
+                    <p class="caption my-0">{{item.title}}</p>
+                    <v-text-field
+                      v-if="item.type =='text_feild'"
+                      v-model="page_data[item.column_key].Content"
+                      dense
+                      outlined
+                    ></v-text-field>
 
-                  <MainImageCard
-                    v-if="item.type =='image'"
-                    :aspect_ratio="GetAspectRatio(item.aspect_ratio)"
-                    :image_data="page_data[item.column_key]"
-                    @update-action="UpdateImage(item.column_key,$event)"
-                  />
-                </div>
-              </template>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-      <!-- <v-col cols="12">
-        <MainImageCard
-          :aspect_ratio="16/9"
-          :image_data="page_data.about_image"
-          upload_key="about_image"
-          @update-action="UpdateImage"
-        />
-      </v-col> -->
+                    <FroalaEditor
+                      v-if="item.type =='text_editor'"
+                      v-model="page_data[item.column_key].Content"
+                    />
+
+                    <MainImageCard
+                      v-if="item.type =='image'"
+                      :aspect_ratio="GetAspectRatio(item.aspect_ratio)"
+                      :image_data="page_data[item.column_key]"
+                      @update-action="UpdateImage(item.column_key,$event)"
+                    />
+                  </div>
+                </template>
+              </v-col>
+            </v-row>
+          </v-card>
+
+          <MainImageCard
+            v-else-if="edit_block.type=='image_card'"
+            :aspect_ratio="GetAspectRatio(edit_block.aspect_ratio)"
+            :image_data="page_data[edit_block.column_key]"
+            @update-action="UpdateImage(edit_block.column_key,$event)"
+          />
+        </v-col>
+      </template>
     </v-row>
   </v-container>
 </div>

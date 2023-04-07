@@ -30,6 +30,11 @@ export default {
     };
   },
   methods: {
+    GetBlockCards(title) {
+      return this.edit_block_data.edit_block.filter(
+        (item) => item.block_title == title
+      );
+    },
     GetAspectRatio(val) {
       return eval(val);
     },
@@ -54,6 +59,13 @@ export default {
     UpdateImage(key, val) {
       this.$set(this.page_data[key], 'PreviewImage', val.preview_url);
       this.$set(this.page_data[key], 'Image1', val.file);
+    },
+  },
+  watch: {
+    $route() {
+      this.page_data = null;
+      this.edit_block_data = null;
+      this.GetPageData();
     },
   },
   created() {

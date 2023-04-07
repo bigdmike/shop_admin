@@ -1,0 +1,28 @@
+{
+    "page_title": "會員責任規範條款",
+    "column_keys": [
+        "terms_of_customer"
+    ],
+    "block_title": [
+        "條款內文"
+    ],
+    "edit_block": [
+        {
+            "type": "card",
+            "block_title": "條款內文",
+            "columns": [
+                {
+                    "cols": 12,
+                    "components": [
+                        {
+                            "type": "text_editor",
+                            "column_key": "terms_of_customer",
+                            "title": "",
+                            "value": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

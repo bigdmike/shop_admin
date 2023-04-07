@@ -29,20 +29,6 @@ const routes = [
       import(/* webpackChunkName: "home_page" */ '../views/PageEdit/index.vue'),
   },
   {
-    path: '/home_page',
-    name: '首頁頁面管理',
-    component: () =>
-      import(/* webpackChunkName: "home_page" */ '../views/HomePage/index.vue'),
-  },
-  {
-    path: '/about_page',
-    name: '關於頁面管理',
-    component: () =>
-      import(
-        /* webpackChunkName: "about_page" */ '../views/AboutPage/index.vue'
-      ),
-  },
-  {
     path: '/dealers',
     name: '經銷據點管理',
     component: () =>
@@ -248,35 +234,10 @@ const routes = [
       import(/* webpackChunkName: "shipping" */ '../views/Shipping/index.vue'),
   },
   {
-    path: '/privacy_page',
-    name: '隱私權政策管理',
-    component: () =>
-      import(
-        /* webpackChunkName: "privacy_page" */ '../views/PrivacyPage/index.vue'
-      ),
-  },
-  {
-    path: '/terms_of_customer',
-
-    name: '會員條款管理',
-    component: () =>
-      import(
-        /* webpackChunkName: "terms_of_customer" */ '../views/TermsOfCustomer/index.vue'
-      ),
-  },
-  {
     path: '/coupon',
     name: '優惠券代碼',
     component: () =>
       import(/* webpackChunkName: "coupon" */ '../views/Coupon/index.vue'),
-  },
-  {
-    path: '/company_info',
-    name: '公司資訊管理',
-    component: () =>
-      import(
-        /* webpackChunkName: "company_info" */ '../views/CompanyInfo/index.vue'
-      ),
   },
   {
     path: '/seo_list',
