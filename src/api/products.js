@@ -9,7 +9,10 @@ export function create_goods(goods_item) {
   return put('admin/goods', goods_item, '已成功新增商品');
 }
 export function update_goods(goods_item) {
-  return patch('admin/goods', goods_item, '已成功更新商品');
+  let tmp_goods = Object.assign({}, goods_item);
+  delete tmp_goods.Image1;
+  delete tmp_goods.Image2;
+  return patch('admin/goods', tmp_goods, '已成功更新商品');
 }
 export function update_goods_sort(list) {
   return patch('admin/goods/updateSeqBatch', list, '已成功更新商品排序');
