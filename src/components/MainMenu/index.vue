@@ -6,14 +6,6 @@ export default {
   data() {
     return {
       menu: [
-        // {
-        //   title: '首頁',
-        //   icon: 'mdi-home',
-        //   type: 'U',
-        //   link: '/',
-        //   group: false,
-        //   list: [],
-        // },
         {
           title: '頁面編輯',
           icon: 'mdi-pencil',
@@ -27,39 +19,48 @@ export default {
             // },
             {
               title: '首頁管理',
-              link: '/home_page',
+              link: '/page_edit/home',
             },
             {
               title: '關於我們頁面管理',
-              link: '/about_page',
+              link: '/page_edit/about',
             },
             {
               title: '首頁大圖輪播',
               link: '/home_carousel',
             },
             {
-              title: '最新消息分類',
-              link: '/news_category',
-            },
-            {
-              title: '最新消息',
-              link: '/news',
-            },
-            {
               title: '公司資訊',
-              link: '/company_info',
+              link: '/page_edit/company_info',
             },
             {
               title: '隱私權政策',
-              link: '/privacy_page',
+              link: '/page_edit/site_privacy',
             },
             {
               title: '會員責任規範條款',
-              link: '/terms_of_customer',
+              link: 'page_edit/terms_of_customer',
             },
             {
               title: 'SEO設定',
               link: '/seo_list',
+            },
+          ],
+        },
+        {
+          title: '最新消息',
+          icon: 'mdi-note-edit-outline',
+          type: 'U',
+          link: '/news',
+          group: true,
+          list: [
+            {
+              title: '分類管理',
+              link: '/news_category',
+            },
+            {
+              title: '文章管理',
+              link: '/news',
             },
           ],
         },
@@ -86,16 +87,6 @@ export default {
           type: 'U',
           link: '/dealers',
           group: false,
-          list: [
-            // {
-            //   title: '',
-            //   link: '/terms_of_customer',
-            // },
-            // {
-            //   title: 'SEO設定',
-            //   link: '/seo_list',
-            // },
-          ],
         },
         {
           title: '訂單管理',

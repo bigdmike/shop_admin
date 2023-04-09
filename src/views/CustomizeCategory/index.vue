@@ -91,10 +91,10 @@ export default {
           title: this.$route.params.name,
           link: '',
         });
-        this.breadcrumb_data.push({
+        this.breadcrumb_data[2] = {
           title: '選項分類',
           link: `/customize_category/${this.$route.params.id}/${this.$route.params.name}`,
-        });
+        };
       });
     },
     CreateData(category_item) {

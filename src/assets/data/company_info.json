@@ -1,0 +1,77 @@
+{
+    "page_title": "公司資訊",
+    "column_keys": [
+        "company_facebook",
+        "company_instagram",
+        "company_name",
+        "company_phone",
+        "company_email",
+        "company_address",
+        "company_time",
+        "company_messenger"
+    ],
+    "block_title": [
+        "公司資訊"
+    ],
+    "edit_block": [
+        {
+            "type": "card",
+            "block_title": "公司資訊",
+            "columns": [
+                {
+                    "cols": 12,
+                    "components": [
+                        {
+                            "type": "text_feild",
+                            "column_key": "company_name",
+                            "title": "公司名稱",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "company_email",
+                            "title": "公司信箱",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "company_phone",
+                            "title": "公司電話",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "company_address",
+                            "title": "公司地址",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "company_time",
+                            "title": "營業時間",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "company_facebook",
+                            "title": "Facebook連結",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "company_instagram",
+                            "title": "Instagram連結",
+                            "value": ""
+                        },
+                        {
+                            "type": "text_feild",
+                            "column_key": "company_messenger",
+                            "title": "線上客服連結",
+                            "value": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

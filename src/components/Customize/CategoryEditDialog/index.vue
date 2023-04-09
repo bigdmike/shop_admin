@@ -9,6 +9,7 @@
         <v-row>
           <v-col cols="12" sm="12" md="12">
             <v-text-field
+              :autofocus="true"
               v-model="menu_data.Title"
               label="選項類型標題"
               placeholder="請輸入類型標題"

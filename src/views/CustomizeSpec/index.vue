@@ -122,7 +122,7 @@ export default {
             link: `/customize_category/${this.$route.params.goods_id}/${this.$route.params.name}`,
           });
           this.breadcrumb_data.push({
-            title: '選項管理',
+            title: this.category_data.Title,
             link: '',
           });
         }

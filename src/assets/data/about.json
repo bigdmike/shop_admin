@@ -5,9 +5,13 @@
         "about_content",
         "about_image"
     ],
+    "block_title": [
+        "關於我們主要內文"
+    ],
     "edit_block": [
         {
             "type": "card",
+            "block_title": "關於我們主要內文",
             "columns": [
                 {
                     "cols": 4,
@@ -41,15 +45,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "type": "image_card",
-            "column_key": "about_image",
-            "title": "主要圖片",
-            "aspect_ratio": "16/9",
-            "file": null,
-            "preview_image": "",
-            "original_image": ""
         }
     ]
 }
