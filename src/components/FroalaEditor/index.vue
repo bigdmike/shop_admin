@@ -14,7 +14,7 @@ export default {
           'image.uploaded': function(response) {
             // Parse response to get image url.
             var img_url =
-              'https://api.yaowenfruit.com/' + JSON.parse(response).link;
+              'https://api.krace.com.tw/' + JSON.parse(response).link;
 
             // Insert image.
             this.image.insert(img_url, false, null, this.image.get(), response);

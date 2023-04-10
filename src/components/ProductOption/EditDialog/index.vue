@@ -14,7 +14,9 @@
               hide-details="auto"
               outlined
               dense
+              autofocus
               required
+              @keypress.enter="Validate"
             ></v-text-field>
           </v-col>
         </v-row>

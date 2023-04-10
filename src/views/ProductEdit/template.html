@@ -69,6 +69,7 @@
                   ></v-select>
 
                   <v-select
+                    v-if="edit_type!='edit'"
                     class="mb-8"
                     v-model="product_data.IsCustom"
                     :items="customize_data"
@@ -76,6 +77,13 @@
                     item-value="value"
                     hide-details
                   ></v-select>
+                  <v-text-field
+                    v-else
+                    :value="product_data.IsCustom?'客製化商品':'一般商品'"
+                    dense
+                    hide-details
+                    readonly
+                  ></v-text-field>
                   <div>
                     <v-checkbox
                       :hide-details="true"

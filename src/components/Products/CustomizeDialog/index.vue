@@ -339,6 +339,7 @@ export default {
           });
           return category_exist.length > 0;
         });
+        console.log(res);
         this.stock_data = res[2].data;
         this.black_list = this.GetFullSpecList(res[3].data);
         this.change_price_list = this.GetFullSpecList(res[4].data);
