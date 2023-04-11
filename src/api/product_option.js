@@ -1,14 +1,17 @@
 import { patch, del, put, get, post } from '@/common/request';
 
-// 商品分類
+// 新增&更新商品庫存
+// 當傳入的ColorID與SizeID已經存在時則會進行更新，反之則會新增
 export function create_stock(list_item) {
   return post('admin/goods/stock', list_item, '已成功更新商品庫存');
 }
 
+// 一次新增&更新多個商品庫存
 export function create_multiple_stock(list) {
   return post('admin/goods/stockBatch', list, '已成功更新商品庫存');
 }
 
+// 更新庫存排序
 export function update_stock_sort(list) {
   let tmp_data = [];
   list.forEach((item, item_index) => {
@@ -48,6 +51,7 @@ export function delete_size(id) {
   return del('admin/size/' + id, '已成功刪除商品規格');
 }
 
+// 取得庫存資訊與所有選項
 export function getOptionStock(id) {
   //選項一
   var option_1 = get('admin/color');

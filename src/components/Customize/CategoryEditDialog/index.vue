@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" width="500">
     <v-card v-if="menu_data != null">
       <v-card-title class="primary--text">
-        {{ type_title }}選項類型
+        {{ type_title }}選項{{ data_type }}
       </v-card-title>
 
       <v-card-text>
@@ -11,8 +11,8 @@
             <v-text-field
               :autofocus="true"
               v-model="menu_data.Title"
-              label="選項類型標題"
-              placeholder="請輸入類型標題"
+              :label="`選項${data_type}標題`"
+              :placeholder="`請輸入${data_type}標題`"
               hide-details="auto"
               outlined
               dense
@@ -49,11 +49,15 @@
 
 <script>
 export default {
-  name: 'MenuEditDialog',
+  name: 'CustomCategoryEditDialog',
   props: {
     category_list: {
       require: true,
       type: Array,
+    },
+    data_type: {
+      type: String,
+      default: '類型',
     },
   },
   data() {
@@ -76,10 +80,13 @@ export default {
   methods: {
     Open(item, edit_type) {
       this.edit_type = edit_type;
+      // 若為編輯模式則將傳入的資料設定至menu_data
       if (edit_type == 'edit') {
         this.menu_data = item;
         this.menu_data.ID = this.menu_data.CustomSpecID;
-      } else {
+      }
+      // 若為新增模式則設定初始化資料至menu_data
+      else {
         this.menu_data = Object.assign(
           {},
           {
@@ -96,10 +103,11 @@ export default {
       this.menu_data = null;
       this.dialog = false;
     },
+    // 驗證內容填寫狀態
     Validate() {
       let error_msg = '';
       if (this.menu_data.Title == '') {
-        error_msg += '- 請輸入分類名稱<br/>';
+        error_msg += `- 請輸入${this.data_type}名稱<br/>`;
       }
       if (this.menu_data.Status == '') {
         error_msg += '- 請選擇啟用狀態<br/>';
@@ -116,6 +124,7 @@ export default {
         });
       }
     },
+    // 送出資料
     SendData() {
       if (this.edit_type == 'edit') {
         console.log('edit here');

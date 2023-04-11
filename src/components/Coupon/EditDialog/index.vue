@@ -243,29 +243,38 @@ export default {
     };
   },
   methods: {
+    // 打開編輯視窗
     Open(item, type) {
       this.type = type;
+      // 編輯模式則將傳入的資料設定至data
       if (type == 'edit') {
         this.coupon_data = Object.assign({}, item);
+        // 更新資料需要將ID帶入CouponID，否則後端會將資料全數更改
         this.coupon_data.ID = this.coupon_data.CouponID;
+        // 將時間與日期拆開編輯
         this.coupon_data.StartDate = item.StartTime.slice(0, 10);
         this.coupon_data.StartTime = item.StartTime.slice(11, 20);
         this.coupon_data.EndDate = item.EndTime.slice(0, 10);
         this.coupon_data.EndTime = item.EndTime.slice(11, 20);
+        // 字串轉布林
         this.coupon_member_only =
           this.coupon_data.LimitMember == 'Y' ? true : false;
         this.coupon_account_only =
           this.coupon_data.OnlyMember == 'Y' ? true : false;
         this.coupon_status = this.coupon_data.Status == 'Y' ? true : false;
-      } else {
+      }
+      // 新增模式則將data資料設為預設值
+      else {
         this.Reset();
       }
+      // 預設關閉日期時間編輯選單
       this.start_date_menu = false;
       this.start_time_menu = false;
       this.end_date_menu = false;
       this.end_time_menu = false;
       this.dialog = true;
     },
+    // 設定資料為預設值
     Reset() {
       this.coupon_data = Object.assign(
         {},
@@ -286,10 +295,12 @@ export default {
         }
       );
     },
+    // 取消編輯，復原資料狀態並關閉視窗
     Cancel() {
       this.Reset();
       this.dialog = false;
     },
+    // 驗證資料填寫狀況
     Validate() {
       let error_msg = '';
       if (this.coupon_data.Title == '') {
@@ -318,12 +329,16 @@ export default {
         });
       }
     },
+    // 送出資料
     SendData() {
       let tmp_data = Object.assign({}, this.coupon_data);
+      // 將日期時間重新合併
       tmp_data.StartTime = tmp_data.StartDate + ' ' + tmp_data.StartTime;
       tmp_data.EndTime = tmp_data.EndDate + ' ' + tmp_data.EndTime;
+      // 將金額轉為數字
       tmp_data.Money = parseInt(tmp_data.Money);
       tmp_data.Threshold = parseInt(tmp_data.Threshold);
+      // 刪除後端API無使用的欄位
       delete tmp_data.StartDate;
       delete tmp_data.EndDate;
 

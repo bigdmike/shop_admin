@@ -136,7 +136,7 @@
             :headers="stock_table_headers"
             :hide_footer="false"
             @sort-action="SortStockData"
-            @edit-action="OpenEditStockDialog"
+            @edit-action="OpenEditMultipleStockDialog"
             v-model="filter_stock"
           />
         </v-col>
@@ -320,8 +320,8 @@ export default {
     OpenDelete(item) {
       this.$refs.DeleteDialog.Open(item);
     },
-    OpenEditMultipleStockDialog() {
-      this.$refs.EditMultipleStockDialog.Open();
+    OpenEditMultipleStockDialog(item = null) {
+      this.$refs.EditMultipleStockDialog.Open(item);
     },
     // options
     CreateOptionData(data) {
@@ -369,24 +369,32 @@ export default {
       return data;
     },
     async DeleteOptionData(data) {
+      let stock_data = [];
       // 停用相關庫存
       if (data.ColorTitle) {
         data.ID = data.ColorID;
         for (let item of this.stocks) {
           if (item.ColorID == data.ColorID) {
-            item.Status = 'N';
-            await this.CreateStockData(item);
+            let tmp_data = Object.assign({}, item);
+            tmp_data.Status = 'N';
+            stock_data.push(tmp_data);
           }
         }
       } else {
         data.ID = data.SizeID;
         for (let item of this.stocks) {
           if (item.SizeID == data.SizeID) {
-            item.Status = 'N';
-            await this.CreateStockData(item);
+            let tmp_data = Object.assign({}, item);
+            tmp_data.Status = 'N';
+            stock_data.push(tmp_data);
           }
         }
       }
+      await this.CreateMultipleStockData({
+        data: null,
+        data_list: stock_data,
+        options: null,
+      });
 
       // 停用該選項
       data.Status = 'N';
@@ -400,21 +408,24 @@ export default {
         this.stock_table_headers[0].text = this.product.Option1;
         this.stock_table_headers[1].text = this.product.Option2;
         getOptionStock(this.product.GoodsID).then((res) => {
-          console.log(res);
           this.option_1 = this.SortOption(res[0].data, 'ColorTitle');
           this.option_2 = this.SortOption(res[1].data, 'SizeTitle');
           this.stocks = res[2].data;
         });
       });
     },
-    CreateMultipleStockData({ data, options }) {
+    CreateMultipleStockData({ data, data_list = null, options }) {
       let list = [];
-      for (let option_item of options) {
-        let tmp_data = Object.assign({}, data);
-        tmp_data.GoodsID = this.id;
-        tmp_data.ColorID = option_item[0];
-        tmp_data.SizeID = option_item[1];
-        list.push(tmp_data);
+      if (data_list) {
+        list = data_list;
+      } else {
+        for (let option_item of options) {
+          let tmp_data = Object.assign({}, data);
+          tmp_data.GoodsID = this.id;
+          tmp_data.ColorID = option_item[0];
+          tmp_data.SizeID = option_item[1];
+          list.push(tmp_data);
+        }
       }
       create_multiple_stock(list).then((res) => {
         console.log(res);

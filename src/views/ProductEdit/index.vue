@@ -12,7 +12,6 @@ import {
   create_goods_all,
   delete_goods,
 } from '@/api/products';
-import { StrToBool, BoolToStr, ImageUrl } from '@/common/filter.js';
 export default {
   name: 'ProductEdit',
   components: {
@@ -115,17 +114,22 @@ export default {
     GetProductData() {
       const id = this.$route.params.id != 'new' ? this.$route.params.id : -1;
       getGoodsAndCategory(id).then((res) => {
+        // 只過濾出商品分類放入category_data
         this.category_data = res[0].data.filter(
           (item) => item.Content5 != '獨立銷售頁'
         );
+        // 只過濾出銷售業資料放入event_data
         this.event_data = res[0].data.filter(
           (item) => item.Content5 == '獨立銷售頁'
         );
+        // 取出ID相符的商品資料
         let product_data = res[1].data.filter(
           (item) => item.GoodsID == this.$route.params.id
         );
+        // 如果沒有相符的商品或是router id是new，則設定新增模式
         if (product_data.length <= 0 || this.$route.params.id == 'new') {
           this.edit_type = 'create';
+          // 初始化新商品資料
           this.product_data = Object.assign(
             {},
             {
@@ -153,22 +157,29 @@ export default {
               EventID: [],
             }
           );
-        } else {
+        }
+        // 若有相符商品則為編輯模式
+        else {
           this.edit_type = 'edit';
+          // 若商品有設定販售時間則將GoodsTimeSet = true
           product_data[0].GoodsTimeSet =
             product_data[0].GoodsTimeStart != null &&
             product_data[0].GoodsTimeEnd != null
               ? true
               : false;
+          // 若沒有設定販售時間則將預設null改為空字串
           if (product_data[0].GoodsTimeStart == null) {
             product_data[0].GoodsTimeStart = '';
           }
           if (product_data[0].GoodsTimeEnd == null) {
             product_data[0].GoodsTimeEnd = '';
           }
+          // 設定商品關聯銷售頁陣列
           product_data[0].EventID = [];
           this.product_data = product_data[0];
+          // 設定商品關聯分類陣列
           this.product_data.MenuID = [];
+          // 將商品關聯的分類與銷售頁分類放入陣列
           this.product_data.Menu.forEach((item) => {
             if (item.Content5 == '獨立銷售頁') {
               this.product_data.EventID.push(item.MenuID);
@@ -177,12 +188,14 @@ export default {
             }
           });
 
-          this.product_data = StrToBool(this.product_data);
+          // 將Y/N字串轉為布林方便編輯
+          this.product_data = this.$StrToBool(this.product_data);
 
-          this.cover_file.cover_1_preview_url = ImageUrl(
+          // 將商品圖片資料放入cover_file
+          this.cover_file.cover_1_preview_url = this.$ImageUrl(
             this.product_data.Image1
           );
-          this.cover_file.cover_2_preview_url = ImageUrl(
+          this.cover_file.cover_2_preview_url = this.$ImageUrl(
             this.product_data.Image2
           );
         }
@@ -210,20 +223,26 @@ export default {
     },
     async UpdateProductData() {
       const images = [this.cover_file.cover_1, this.cover_file.cover_2];
+      // 如果沒有設定販售期間則將日期設定為null(後端規範)
       if (!this.product_data.GoodsTimeSet) {
         this.product_data.GoodsTimeStart = null;
         this.product_data.GoodsTimeEnd = null;
       }
+      // 傳送前將product_data中的布林轉回字串
       if (this.edit_type == 'edit') {
-        update_goods_all(BoolToStr(this.product_data), images).then(() => {
-          this.GetProductData();
-        });
-      } else {
-        create_goods_all(BoolToStr(this.product_data), images).then((res) => {
-          if (res[0].code == 200) {
-            this.$router.push('/products');
+        update_goods_all(this.$BoolToStr(this.product_data), images).then(
+          () => {
+            this.GetProductData();
           }
-        });
+        );
+      } else {
+        create_goods_all(this.$BoolToStr(this.product_data), images).then(
+          (res) => {
+            if (res[0].code == 200) {
+              this.$router.push('/products');
+            }
+          }
+        );
       }
     },
     DeleteData(id) {

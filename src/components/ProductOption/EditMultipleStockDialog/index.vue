@@ -156,22 +156,28 @@ export default {
     };
   },
   methods: {
-    Open() {
-      this.stock_data = Object.assign(
-        {},
-        {
-          SizeID: 0,
-          ColorID: 0,
-          Stock: 0,
-          DeliverVolume: 0,
-          DeliverWeight: 0,
-          Price: 0,
-          SellPrice: 0,
-          MemberSellPrice: 0,
-          Status: 'Y',
-          Seq: 1,
-        }
-      );
+    Open(item = null) {
+      if (item == null) {
+        this.stock_data = Object.assign(
+          {},
+          {
+            SizeID: 0,
+            ColorID: 0,
+            Stock: 0,
+            DeliverVolume: 0,
+            DeliverWeight: 0,
+            Price: 0,
+            SellPrice: 0,
+            MemberSellPrice: 0,
+            Status: 'Y',
+            Seq: 1,
+          }
+        );
+      } else {
+        this.stock_data = Object.assign({}, item);
+        this.option_1_list.push(item.ColorID);
+        this.option_2_list.push(item.SizeID);
+      }
       this.dialog = true;
     },
     Cancel() {

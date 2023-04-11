@@ -10,8 +10,17 @@ var prerender_token = 'tu37YqwPnaadhzMbeNIE';
 //     ]
 // }
 
+export function recacheVideo(id) {
+  const url = 'https://www.krace.com.tw/video/' + id;
+  const data = {
+    prerenderToken: prerender_token,
+    url: url,
+  };
+  return prerender_post('https://api.prerender.io/recache', data);
+}
+
 export function recacheProduct(id) {
-  const url = 'https://www.yaowenfruit.com/product/' + id;
+  const url = 'https://www.krace.com.tw/product/' + id;
   const data = {
     prerenderToken: prerender_token,
     url: url,
@@ -20,7 +29,7 @@ export function recacheProduct(id) {
 }
 
 export function recacheNews(id) {
-  const url = 'https://www.yaowenfruit.com/news/page/' + id;
+  const url = 'https://www.krace.com.tw/news/page/' + id;
   const data = {
     prerenderToken: prerender_token,
     url: url,
@@ -35,7 +44,7 @@ export function recacheSeo(column_title) {
     productlist: '/collections',
     newslist: '/news',
   };
-  const url = 'https://www.yaowenfruit.com' + page_list[column_title];
+  const url = 'https://www.krace.com.tw' + page_list[column_title];
   const data = {
     prerenderToken: prerender_token,
     url: url,

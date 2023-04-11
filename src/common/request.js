@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import qs from "qs";
 import store from '@/store/index.js';
 import router from '@/router';
 
@@ -11,14 +10,8 @@ const service = axios.create({
   timeout: 30000, // 請求超時時間
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
-    // "Access-Control-Allow-Origin-Type": "*",
-    // "Access-Control-Allow-Origin": "*",
-    // "content-type": 'application/x-www-form-urlencoded'
   },
-  // withCredentials: true
 });
-// axios.defaults.withCredentials = true; // 若跨域請求需要帶 cookie 身份識別
-// axios.defaults.headers.post["Access-Control-Allow-Origin-Type"] = "*"; // 允許跨域
 const err = (error) => {
   if (error.response) {
     let data = error.response.data;
@@ -70,9 +63,9 @@ service.interceptors.request.use(
     Promise.reject(error);
   }
 );
+
 // respone攔截器
 service.interceptors.response.use((response) => {
-  // console.log("response.data", response.data);
   return response.data;
 }, err);
 
@@ -84,7 +77,6 @@ service.interceptors.response.use((response) => {
 export function get(url, params = {}, success_text = '') {
   store.commit('SetPageLoading', 1);
   return new Promise((resolve, reject) => {
-    // console.log("process.env.VUE_APP_BASE_API", process.env.VUE_APP_BASE_API);
     service({
       url: url,
       method: 'get',
@@ -243,8 +235,6 @@ export function post_image(url, params = {}, success_text = '') {
   });
   store.commit('SetPageLoading', 1);
   return new Promise((resolve, reject) => {
-    // console.log(service)
-    // service.headers["Content-Type"] = "multipart/form-data;charset=UTF-8"
     service({
       url: url,
       method: 'post',

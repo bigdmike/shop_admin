@@ -10,9 +10,8 @@ import PrintHCT from '@/components/OrderEdit/PrintHCT';
 import MainDeleteDialog from '@/components/MainDeleteDialog/index';
 import ProductCard from '@/components/OrderEdit/ProductCard/index.vue';
 import CustomProductCard from '@/components/OrderEdit/CustomProductCard/index.vue';
-import { hex_to_ascii } from '@/common/filter.js';
 import {
-  GetOrderAndProduct,
+  GetOrderList,
   UpdateOrderInfo,
   GetHCTOrder,
   GetCVSOrder,
@@ -43,6 +42,7 @@ export default {
           link: '',
         },
       ],
+      // 訂單狀態顏色
       status_color: {
         W: '',
         P: 'blue lighten-1 white--text',
@@ -52,6 +52,7 @@ export default {
         F: 'green white--text',
         C: 'black white--text',
       },
+      // 訂單狀態
       status_array: {
         W: {
           label: '尚未付款',
@@ -87,14 +88,14 @@ export default {
   },
   methods: {
     async GetOrders() {
-      GetOrderAndProduct().then((res) => {
-        this.products = res[0].data;
-        this.discount_list = res[2].data;
-        this.coupon_list = res[3].data;
+      GetOrderList().then((res) => {
+        this.products = res[3].data;
+        this.discount_list = res[5].data;
+        this.coupon_list = res[6].data;
         this.payment_list = res[4].data;
-        this.shipway_list = res[5].data;
-        this.zip_code = res[6].data;
-        let order_data = res[1].data.List.filter(
+        this.shipway_list = res[1].data;
+        this.zip_code = res[2].data;
+        let order_data = res[0].data.List.filter(
           (item) => item.TradeID == this.$route.params.id
         )[0];
         this.order_data = order_data;
@@ -155,7 +156,7 @@ export default {
     },
     GetHCTOrder() {
       GetHCTOrder(this.order_data.TradeID).then((res) => {
-        this.HCT_image = hex_to_ascii(res.data.image);
+        this.HCT_image = this.$HexToAscii(res.data.image);
         this.$refs.PrintHCT.Print();
         this.GetOrders();
       });

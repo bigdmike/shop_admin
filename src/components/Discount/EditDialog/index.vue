@@ -309,7 +309,7 @@ export default {
           value: 'G',
         },
         {
-          title: '全館免運',
+          title: '免運',
           value: 'D',
         },
       ],

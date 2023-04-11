@@ -5,7 +5,7 @@ import Breadcrumb from '@/components/Breadcrumb/';
 import TotalPriceChart from '@/components/Charts/TotalPriceChart';
 import ProductPriceChart from '@/components/Charts/ProductPriceChart';
 
-import { GetOrderAndProduct } from '@/api/order.js';
+import { GetOrderList } from '@/api/order.js';
 export default {
   name: 'Charts',
   components: {
@@ -48,15 +48,15 @@ export default {
       this.$refs.dialog.save(date);
     },
     GetData() {
-      GetOrderAndProduct().then((res) => {
-        this.product_data = res[0].data;
-        this.trade_data = res[1].data.List;
+      GetOrderList().then((res) => {
+        this.product_data = res[3].data;
+        this.trade_data = res[0].data.List;
         this.trade_data = this.trade_data.filter((item) => item.Status != 'C');
-        this.discount_data = res[2].data;
-        this.coupon_data = res[3].data;
+        this.discount_data = res[5].data;
+        this.coupon_data = res[6].data;
         this.payment_data = res[4].data;
-        this.shipping_data = res[5].data;
-        this.zip_code_data = res[6].data;
+        this.shipping_data = res[2].data;
+        this.zip_code_data = res[3].data;
       });
     },
   },

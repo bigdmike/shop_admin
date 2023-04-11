@@ -12,7 +12,6 @@ import {
   create_menu,
   get_menu,
 } from '@/api/product_menu';
-// import { StrToBool, BoolToStr, ImageUrl } from '@/common/filter.js';
 export default {
   name: 'EventPageEdit',
   components: {

@@ -1,22 +1,7 @@
 import { patch, del, put, get, post } from '@/common/request';
 
-// 商品分類
 export function create_stock(list_item) {
   return post('admin/customgoods/stock', list_item, '已成功更新商品庫存');
-}
-export function update_stock_sort(list) {
-  let tmp_data = [];
-  list.forEach((item, item_index) => {
-    tmp_data.push({
-      GoodsID: item.GoodsID,
-      Seq: item_index + 1,
-    });
-  });
-  return patch(
-    'admin/customgoods/stock/updateSeqBatch',
-    tmp_data,
-    '已成功更新商品庫存排序'
-  );
 }
 
 //選項分類
@@ -35,6 +20,27 @@ export function delete_category(id) {
 export function update_category_sort(list) {
   return patch(
     'admin/customgoods/category/updateSeqBatch',
+    list,
+    '已成功更新選項排序'
+  );
+}
+
+//選項規格
+export function get_spec(id) {
+  return get('admin/customgoods/spec/' + id);
+}
+export function create_spec(item) {
+  return put('admin/customgoods/spec', item, '已成功新增選項規格');
+}
+export function update_spec(item) {
+  return patch('admin/customgoods/spec', item, '已成功更新選項規格');
+}
+export function delete_spec(id) {
+  return del('admin/customgoods/spec/' + id, '已成功刪除選項規格');
+}
+export function update_spec_sort(list) {
+  return patch(
+    'admin/customgoods/spec/updateSeqBatch',
     list,
     '已成功更新選項排序'
   );
@@ -62,27 +68,6 @@ export function delete_change_price(id) {
   return del('admin/customgoods/changeprice/' + id, '已成功刪除特殊價格組合');
 }
 
-//選項規格
-export function get_spec(id) {
-  return get('admin/customgoods/spec/' + id);
-}
-export function create_spec(item) {
-  return put('admin/customgoods/spec', item, '已成功新增選項規格');
-}
-export function update_spec(item) {
-  return patch('admin/customgoods/spec', item, '已成功更新選項規格');
-}
-export function delete_spec(id) {
-  return del('admin/customgoods/spec/' + id, '已成功刪除選項規格');
-}
-export function update_spec_sort(list) {
-  return patch(
-    'admin/customgoods/spec/updateSeqBatch',
-    list,
-    '已成功更新選項排序'
-  );
-}
-
 // 取得全部資訊
 export function getOptionStock(id) {
   //選項一
@@ -93,7 +78,7 @@ export function getOptionStock(id) {
   var stocks = get('admin/customgoods/stock/' + id);
   // 黑名單
   var blacklist = get('/admin/customgoods/blacklist/' + id);
-  // 黑名單
+  // 特殊價格組合
   var change_price_list = get('/admin/customgoods/changeprice/' + id);
 
   let promise_list = [category, spec, stocks, blacklist, change_price_list];
@@ -108,9 +93,9 @@ export function getOptionStock(id) {
   );
 }
 export function getOption(good_id, id) {
-  //選項一
+  //選項
   var category = get('admin/customgoods/category/' + good_id);
-  //選項二
+  //規格
   var spec = get('admin/customgoods/spec/' + id);
 
   let promise_list = [category, spec];
