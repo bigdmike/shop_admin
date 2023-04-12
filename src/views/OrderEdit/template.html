@@ -177,6 +177,25 @@
                   cols="12"
                   class="py-0 d-flex align-center justify-space-between"
                 >
+                  <p class="my-0 body-2 blue--text">商品原價總計</p>
+                  <p class="my-0  body-2">
+                    NT$ {{ original_product_price | money_format}}
+                  </p>
+                </v-col>
+                <v-col
+                  v-if="discount_price!=0"
+                  cols="12"
+                  class="py-0 mt-2 d-flex align-center justify-space-between"
+                >
+                  <p class="my-0 body-2 blue--text">優惠折扣</p>
+                  <p class="my-0  body-2">
+                    NT$ {{ discount_price | money_format}}
+                  </p>
+                </v-col>
+                <v-col
+                  cols="12"
+                  class="py-0 mt-2 d-flex align-center justify-space-between"
+                >
                   <p class="my-0 body-2 blue--text">運費</p>
                   <p class="my-0  body-2">
                     NT$ {{( order_data.ShippingFree == 1? 0:

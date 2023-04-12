@@ -7,6 +7,7 @@ import {
   update_coupon,
   delete_coupon,
 } from '@/api/coupon.js';
+import { get_member } from '@/api/member';
 import MainList from '@/components/MainList/index';
 import Breadcrumb from '@/components/Breadcrumb/';
 import DeleteDialog from '@/components/MainDeleteDialog/';
@@ -53,6 +54,7 @@ export default {
         { text: '結束時間', value: 'EndTime' },
         { text: '動作', value: 'action' },
       ],
+      member_list: [],
       coupon_data: [],
     };
   },
@@ -67,11 +69,14 @@ export default {
       this.$refs.DeleteDialog.Open(item.CouponID);
     },
     GetData() {
-      get_coupon().then((res) => {
-        res.data.forEach((item, item_index) => {
-          res.data[item_index].TableTitle = item.Title;
+      get_member().then((res) => {
+        this.member_list = res[0].data.List;
+        get_coupon().then((res) => {
+          res.data.forEach((item, item_index) => {
+            res.data[item_index].TableTitle = item.Title;
+          });
+          this.coupon_data = res.data;
         });
-        this.coupon_data = res.data;
       });
     },
 

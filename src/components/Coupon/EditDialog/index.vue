@@ -6,13 +6,12 @@
         style="border-bottom: 1px solid rgb(218, 218, 218)"
       >
         {{ type_title }}優惠代碼
-        <v-switch v-model="coupon_status" label="啟用狀態"></v-switch>
       </v-card-title>
 
       <v-card-text class="pt-5">
         <v-container>
           <v-row>
-            <v-col cols="12" sm="12" md="12">
+            <v-col cols="12" md="12">
               <v-text-field
                 label="優惠名稱"
                 v-model="coupon_data.Title"
@@ -22,7 +21,7 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12" md="12">
+            <v-col cols="12" md="6">
               <v-text-field
                 label="優惠代碼"
                 v-model="coupon_data.CouponNumber"
@@ -32,7 +31,7 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12" md="12">
+            <v-col cols="12" md="6">
               <v-text-field
                 label="優惠券數量"
                 v-model="coupon_data.CouponCount"
@@ -42,7 +41,7 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 label="折扣金額"
                 v-model="coupon_data.Money"
@@ -52,7 +51,7 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 label="優惠門檻"
                 v-model="coupon_data.Threshold"
@@ -62,7 +61,7 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-menu
                 v-model="start_date_menu"
                 :close-on-content-click="false"
@@ -75,7 +74,7 @@
                   <v-text-field
                     v-model="coupon_data.StartDate"
                     label="優惠開始日期"
-                    prepend-icon="mdi-calendar"
+                    prepend-icon=""
                     hide-details="auto"
                     outlined
                     dense
@@ -90,7 +89,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-menu
                 ref="start_time_menu"
                 v-model="start_time_menu"
@@ -126,7 +125,7 @@
                 ></v-time-picker>
               </v-menu>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-menu
                 v-model="end_date_menu"
                 :close-on-content-click="false"
@@ -139,7 +138,7 @@
                   <v-text-field
                     v-model="coupon_data.EndDate"
                     label="優惠結束時間"
-                    prepend-icon="mdi-calendar"
+                    prepend-icon=""
                     hide-details="auto"
                     outlined
                     dense
@@ -155,7 +154,7 @@
               </v-menu>
             </v-col>
 
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-menu
                 ref="end_time_menu"
                 v-model="end_time_menu"
@@ -189,6 +188,18 @@
                 ></v-time-picker>
               </v-menu>
             </v-col>
+            <v-col cols="12">
+              <v-select
+                v-model="coupon_data.Status"
+                :items="status_list"
+                item-text="title"
+                item-value="value"
+                label="啟用狀態"
+                hide-details="auto"
+                outlined
+                dense
+              ></v-select>
+            </v-col>
             <v-col cols="6">
               <v-checkbox
                 v-model="coupon_member_only"
@@ -200,6 +211,17 @@
                 v-model="coupon_account_only"
                 label="指定帳號使用"
               ></v-checkbox>
+            </v-col>
+
+            <v-col cols="12" v-if="coupon_account_only">
+              <v-autocomplete
+                label="指定帳號"
+                :items="member_list"
+                item-text="Account"
+                item-value="MemberID"
+                v-model="coupon_data.MemberID"
+                multiple
+              ></v-autocomplete>
             </v-col>
           </v-row>
         </v-container>
@@ -224,6 +246,10 @@ export default {
       require: true,
       type: Array,
     },
+    member_list: {
+      require: true,
+      type: Array,
+    },
   },
   data() {
     return {
@@ -240,6 +266,16 @@ export default {
       coupon_data: null,
       dialog: false,
       type: 'edit',
+      status_list: [
+        {
+          title: '已啟用',
+          value: 'Y',
+        },
+        {
+          title: '已停用',
+          value: 'N',
+        },
+      ],
     };
   },
   methods: {
@@ -261,7 +297,7 @@ export default {
           this.coupon_data.LimitMember == 'Y' ? true : false;
         this.coupon_account_only =
           this.coupon_data.OnlyMember == 'Y' ? true : false;
-        this.coupon_status = this.coupon_data.Status == 'Y' ? true : false;
+        // this.coupon_status = this.coupon_data.Status == 'Y' ? true : false;
       }
       // 新增模式則將data資料設為預設值
       else {
@@ -281,6 +317,7 @@ export default {
         {
           ID: 0,
           CouponID: 0,
+          MemberID: [],
           Title: '',
           Status: 'Y',
           CouponNumber: '',
@@ -342,6 +379,10 @@ export default {
       delete tmp_data.StartDate;
       delete tmp_data.EndDate;
 
+      if (tmp_data.OnlyMember == 'N') {
+        tmp_data.MemberID = [];
+      }
+
       if (this.type == 'edit') {
         this.$emit('update-action', tmp_data);
       } else {
@@ -356,9 +397,9 @@ export default {
     coupon_account_only() {
       this.coupon_data.OnlyMember = this.coupon_account_only ? 'Y' : 'N';
     },
-    coupon_status() {
-      this.coupon_data.Status = this.coupon_status ? 'Y' : 'N';
-    },
+    // coupon_status() {
+    //   this.coupon_data.Status = this.coupon_status ? 'Y' : 'N';
+    // },
   },
   computed: {
     type_title() {

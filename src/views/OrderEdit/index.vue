@@ -278,6 +278,20 @@ export default {
         return product_list;
       }
     },
+    original_product_price() {
+      let price = 0;
+      this.trade_product_data.forEach((item) => {
+        price += parseInt(item.SellPrice);
+      });
+      return price;
+    },
+    discount_price() {
+      let price = 0;
+      this.trade_product_data.forEach((item) => {
+        price += parseInt(item.FinalPrice) - parseInt(item.SellPrice);
+      });
+      return price;
+    },
   },
   created() {
     this.GetOrders();

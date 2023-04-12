@@ -38,21 +38,28 @@
     <v-col
       cols="12"
       class="py-0 px-2 d-flex align-center"
-      v-if="shopcart_item.DiscountID_PercentMenu != 0"
+      v-if="
+        shopcart_item.DiscountID_PercentMenu != 0 ||
+          shopcart_item.DiscountID_PercentFull != 0
+      "
     >
-      <v-chip class="mr-4" small>
+      <v-chip
+        v-if="shopcart_item.DiscountID_PercentMenu != 0"
+        class="mr-2"
+        small
+      >
         {{
           GetProductDiscount(shopcart_item.DiscountID_PercentMenu).Title
         }}</v-chip
       >
-      <span class="caption"
-        >-NT${{
-          shopcart_item.SellPrice *
-            (GetProductDiscount(shopcart_item.DiscountID_PercentMenu)
-              .DiscountPercent /
-              100) *
-            shopcart_item.Amount
-        }}</span
+      <v-chip
+        v-if="shopcart_item.DiscountID_PercentFull != 0"
+        class="mr-2"
+        small
+      >
+        {{
+          GetProductDiscount(shopcart_item.DiscountID_PercentFull).Title
+        }}</v-chip
       >
     </v-col>
     <v-col cols="12">

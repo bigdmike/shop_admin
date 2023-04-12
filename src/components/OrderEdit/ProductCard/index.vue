@@ -3,7 +3,9 @@
     <v-col cols="6" md="4">
       <p class="my-0 blue--text">{{ shopcart_item.ProductData.Title }}</p>
       <span class="caption">
-        {{ stock_data.ColorTitle }} / {{ stock_data.SizeTitle }}</span
+        {{ shopcart_item.ProductData.Option1 }}:{{ stock_data.ColorTitle }}
+        <br />
+        {{ shopcart_item.ProductData.Option2 }}:{{ stock_data.SizeTitle }}</span
       >
     </v-col>
     <v-col cols="6" md="4" class=" d-flex align-center justify-end">
@@ -28,21 +30,28 @@
     <v-col
       cols="12"
       class="py-0 px-2 d-flex align-center"
-      v-if="shopcart_item.DiscountID_PercentMenu != 0"
+      v-if="
+        shopcart_item.DiscountID_PercentMenu != 0 ||
+          shopcart_item.DiscountID_PercentFull != 0
+      "
     >
-      <v-chip class="mr-4" small>
+      <v-chip
+        v-if="shopcart_item.DiscountID_PercentMenu != 0"
+        class="mr-2"
+        small
+      >
         {{
           GetProductDiscount(shopcart_item.DiscountID_PercentMenu).Title
         }}</v-chip
       >
-      <span class="caption"
-        >-NT${{
-          shopcart_item.SellPrice *
-            (GetProductDiscount(shopcart_item.DiscountID_PercentMenu)
-              .DiscountPercent /
-              100) *
-            shopcart_item.Amount
-        }}</span
+      <v-chip
+        v-if="shopcart_item.DiscountID_PercentFull != 0"
+        class="mr-2"
+        small
+      >
+        {{
+          GetProductDiscount(shopcart_item.DiscountID_PercentFull).Title
+        }}</v-chip
       >
     </v-col>
     <v-col cols="12">

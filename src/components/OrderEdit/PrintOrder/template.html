@@ -83,7 +83,11 @@
             v-if="item.ProductData.IsCustom=='N'"
             style="border: 1px solid black;border-collapse: collapse;padding: 5px;"
           >
-            {{GetStock(item).SizeTitle}} / {{GetStock(item).ColorTitle}}
+            <span class="caption">
+              {{ item.ProductData.Option1 }}:{{ GetStock(item).ColorTitle }}
+              <br />
+              {{ item.ProductData.Option2 }}:{{GetStock(item).SizeTitle }}</span
+            >
           </td>
           <td
             v-else
@@ -93,7 +97,7 @@
               v-for="(option,option_index) in GetStock(item)"
               :key="`option_${item_index}_${option_index}`"
             >
-              {{option.SpecCategoryTitle}}:{{option.SpecTitle}}/
+              {{option.SpecCategoryTitle}}:{{option.SpecTitle}}<br />
             </span>
           </td>
           <td
@@ -118,15 +122,6 @@
         金流手續費: {{order_data.PaymentSubtotalFee | money_format}}
         <span style="font-size: 12px;">TWD</span>
       </p>
-
-      <p
-        style="font-size: 14px;margin-bottom: 10px;"
-        v-if="order_data.CouponMoney"
-      >
-        優惠券折扣: - {{order_data.CouponMoney | money_format}}
-        <span style="font-size: 12px;">TWD</span>
-      </p>
-
       <p style="font-size: 14px;">
         總計: {{order_data.Price | money_format}}
         <span style="font-size: 12px;">TWD</span>
