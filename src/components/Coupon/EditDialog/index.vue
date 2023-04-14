@@ -284,7 +284,11 @@ export default {
       this.type = type;
       // 編輯模式則將傳入的資料設定至data
       if (type == 'edit') {
-        this.coupon_data = Object.assign({}, item);
+        let member_list = [];
+        item.MemberList.forEach((member) => {
+          member_list.push(member.MemberID);
+        });
+        this.coupon_data = Object.assign({ MemberID: member_list }, item);
         // 更新資料需要將ID帶入CouponID，否則後端會將資料全數更改
         this.coupon_data.ID = this.coupon_data.CouponID;
         // 將時間與日期拆開編輯

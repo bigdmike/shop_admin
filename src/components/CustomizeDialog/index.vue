@@ -267,8 +267,8 @@ import {
   delete_change_price,
 } from '@/api/product_customize.js';
 import { getOptionStock } from '@/api/product_customize.js';
-import BlackListDialog from '@/components/Products/CustomizeDialog/BlackListDialog';
-import ChangePriceDialog from '@/components/Products/CustomizeDialog/ChangePriceDialog';
+import BlackListDialog from '@/components/CustomizeDialog/BlackListDialog';
+import ChangePriceDialog from '@/components/CustomizeDialog/ChangePriceDialog';
 import MainDeleteDialog from '@/components/MainDeleteDialog/index.vue';
 export default {
   name: 'CustomizeDialog',

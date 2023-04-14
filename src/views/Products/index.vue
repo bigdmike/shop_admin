@@ -6,8 +6,8 @@ import DeleteDialog from '@/components/MainDeleteDialog';
 import GridShow from '@/components/Products/GridShow/index';
 import MainDragList from '@/components/MainDragList/index';
 import OptionDialog from '@/components/ProductOption/index';
-import ImageEditDialog from '@/components/Products/ImageEditDialog/index.vue';
-import CustomizeDialog from '@/components/Products/CustomizeDialog/index.vue';
+import ImageEditDialog from '@/components/ProductImageEdit/index.vue';
+import CustomizeDialog from '@/components/CustomizeDialog/index.vue';
 import Breadcrumb from '@/components/Breadcrumb/';
 import SortDialog from '@/components/Products/SortDialog/index.vue';
 import {
