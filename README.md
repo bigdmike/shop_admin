@@ -1,29 +1,20 @@
-# krace_admin
+# 電商後台-後端評估需求用
 
-## Project setup
+## 專案環境與版本
 
 ```
-npm install
+NodeJS v16.17.0
+vue/cli 5.0.8
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
-npm run serve
+npm run serve --mode dev
 ```
 
 ### Compiles and minifies for production
 
 ```
-npm run build
+npm run build --mode prod
 ```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
